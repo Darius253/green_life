@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:green_life/shared/exports.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = PageController(viewportFraction: 0.8, keepPage: true);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
@@ -40,7 +42,7 @@ class OnboardingScreen extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: EdgeInsets.only(top: height * 0.136),
+                padding: EdgeInsets.only(top: height * 0.1),
                 child: Column(
                   children: [
                     Container(
@@ -66,24 +68,38 @@ class OnboardingScreen extends StatelessWidget {
                     SizedBox(
                       height: height * 0.01,
                     ),
-                    const Text(
-                      'Our App allows fast, secure online loan applications',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14,
-                          color: Colors.black),
+                    Padding(
+                      padding:  EdgeInsets.symmetric(horizontal: width*0.59),
+                      child: const Text(
+                        'Our App allows fast, secure online loan applications',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                            color: Colors.black),
+                      ),
                     ),
                     SizedBox(
                       height: height * 0.05,
                     ),
-                    const Icon(Icons.more_horiz),
+                    SmoothPageIndicator(
+                        controller: controller,
+                        count: 4,
+                        axisDirection: Axis.horizontal,
+                        effect:  SlideEffect(
+                            spacing: 8.0,
+                            dotWidth: width*0.03,
+                            dotHeight: width*0.03,
+                            paintStyle: PaintingStyle.stroke,
+                            strokeWidth: 1.5,
+                            dotColor: Colors.grey,
+                            activeDotColor: const Color.fromARGB(209, 52, 168, 83))),
                   ],
                 ),
               ),
               Padding(
                 padding: EdgeInsets.only(
-                  top: height * 0.65,
+                  top: height * 0.6,
                 ),
                 child: Column(
                   children: [
