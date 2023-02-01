@@ -1,14 +1,42 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:green_life/screens/sign_in/sign_in.dart';
 import 'package:green_life/shared/exports.dart';
+import 'package:green_life/widgets/onboarding_widget.dart';
 
-class OnboardingScreen extends StatelessWidget {
+class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
 
   @override
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends State<OnboardingScreen> {
+  int currentIndex = 0;
+  final controller = CarouselController();
+  @override
   Widget build(BuildContext context) {
-    final controller = PageController(viewportFraction: 0.8, keepPage: true);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+    List<Widget> pages = [
+      onboardingPages(width, height, 'Fast Online Process',
+          'Our App allows fast, secure online loan applications.', 'image'),
+      onboardingPages(
+          width,
+          height,
+          'Fair Charges',
+          'Our interest rate is lower, with no hidden charges and processing fees.',
+          'image'),
+      onboardingPages(
+          width,
+          height,
+          'Instant Deposit',
+          'Immediate deposit into your account after you can confirm the loan.',
+          'image'),
+      onboardingPages(width, height, 'Flexible Payment',
+          'Flexible repayments for your convenience.', 'image'),
+    ];
 
     return Scaffold(
       body: SafeArea(
@@ -42,80 +70,75 @@ class OnboardingScreen extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: EdgeInsets.only(top: height * 0.1),
+                padding: EdgeInsets.only(
+                  top: height * 0.1,
+                ),
                 child: Column(
                   children: [
-                    Container(
-                      height: height * 0.3,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(36),
-                        color: Colors.grey,
-                      ),
-                    ),
+                    CarouselSlider(
+                        items: pages,
+                        carouselController: controller,
+                        options: CarouselOptions(
+                          height: height * 0.45,
+                          aspectRatio: 16 / 9,
+                          viewportFraction: 1,
+                          initialPage: 0,
+                          enableInfiniteScroll: true,
+                          reverse: false,
+                          autoPlay: true,
+                          autoPlayInterval: const Duration(seconds: 3),
+                          autoPlayAnimationDuration: const Duration(seconds: 1),
+                          autoPlayCurve: Curves.fastOutSlowIn,
+                          enlargeCenterPage: true,
+                          enlargeFactor: 0.3,
+                          onPageChanged: (index, reason) {
+                            setState(() {
+                              currentIndex = index;
+                            });
+                          },
+                          scrollDirection: Axis.horizontal,
+                        )),
                     SizedBox(
-                      height: height * 0.017,
+                      height: height * 0.035,
                     ),
-                    const Center(
-                      child: Text(
-                        'Fast Online Process',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 32,
-                            color: Color.fromARGB(221, 81, 81, 81)),
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.01,
-                    ),
-                    Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: width*0.59),
-                      child: const Text(
-                        'Our App allows fast, secure online loan applications',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14,
-                            color: Colors.black),
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.05,
-                    ),
-                    SmoothPageIndicator(
-                        controller: controller,
-                        count: 4,
+                    AnimatedSmoothIndicator(
+                        activeIndex: currentIndex,
+                        count: pages.length,
                         axisDirection: Axis.horizontal,
-                        effect:  SlideEffect(
+                        effect: WormEffect(
                             spacing: 8.0,
-                            dotWidth: width*0.03,
-                            dotHeight: width*0.03,
+                            dotWidth: width * 0.03,
+                            dotHeight: width * 0.03,
                             paintStyle: PaintingStyle.stroke,
                             strokeWidth: 1.5,
                             dotColor: Colors.grey,
-                            activeDotColor: const Color.fromARGB(209, 52, 168, 83))),
+                            activeDotColor:
+                                const Color.fromARGB(209, 52, 168, 83))),
                   ],
                 ),
               ),
               Padding(
                 padding: EdgeInsets.only(
-                  top: height * 0.6,
+                  top: height * 0.65,
                 ),
                 child: Column(
                   children: [
-                    Container(
-                      height: height * 0.07,
-                      width: width,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: const Color.fromARGB(207, 52, 168, 83)),
-                      child: const Center(
-                        child: Text(
-                          'Get started',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 24,
-                              color: Colors.white),
+                    GestureDetector(
+                      onTap: () => Get.off(() => const SignIn()),
+                      child: Container(
+                        height: height * 0.07,
+                        width: width,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: const Color.fromARGB(207, 52, 168, 83)),
+                        child: const Center(
+                          child: Text(
+                            'Get started',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 24,
+                                color: Colors.white),
+                          ),
                         ),
                       ),
                     ),
