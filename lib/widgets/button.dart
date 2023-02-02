@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../shared/exports.dart';
+
 Widget button(double height, width, Function() ontap, String text) {
   return GestureDetector(
     onTap: ontap,
@@ -18,4 +20,13 @@ Widget button(double height, width, Function() ontap, String text) {
       ),
     ),
   );
+}
+
+Widget backButton() {
+  return IconButton(
+      onPressed: () => Get.back(),
+      icon: const Icon(
+        Icons.arrow_back_ios,
+        color: Colors.black,
+      ));
 }
