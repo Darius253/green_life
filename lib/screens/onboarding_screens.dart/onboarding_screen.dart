@@ -10,6 +10,15 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
+  @override
+  void didChangeDependencies() {
+    precacheImage(const AssetImage('assets/images/1.png'), context);
+    precacheImage(const AssetImage('assets/images/2.png'), context);
+    precacheImage(const AssetImage('assets/images/3.png'), context);
+    precacheImage(const AssetImage('assets/images/4.png'), context);
+    super.didChangeDependencies();
+  }
+
   int currentIndex = 0;
   final controller = CarouselController();
   @override
@@ -17,22 +26,33 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     List<Widget> pages = [
-      onboardingPages(width, height, 'Fast Online Process',
-          'Our App allows fast, secure online loan applications.', 'image'),
-      onboardingPages(
-          width,
-          height,
-          'Fair Charges',
-          'Our interest rate is lower, with no hidden charges and processing fees.',
-          'image'),
-      onboardingPages(
-          width,
-          height,
-          'Instant Deposit',
-          'Immediate deposit into your account after you can confirm the loan.',
-          'image'),
-      onboardingPages(width, height, 'Flexible Payment',
-          'Flexible repayments for your convenience.', 'image'),
+      OnboardingPages(
+          width: width,
+          height: height,
+          header: 'Fast Online Process',
+          about: 'Our App allows fast, secure online loan applications.',
+          image: 'assets/images/1.png'),
+      OnboardingPages(
+          width: width,
+          height: height,
+          header: 'Fair Charges',
+          about:
+              'Our interest rate is lower, with no hidden charges and processing fees.',
+          image: 'assets/images/3.png'),
+      OnboardingPages(
+          width: width,
+          height: height,
+          header: 'Instant Deposit',
+          about:
+              'Immediate deposit into your account after you can confirm the loan.',
+          image: 'assets/images/2.png'),
+      OnboardingPages(
+        width: width,
+        height: height,
+        header: 'Flexible Payment',
+        about: 'Flexible repayments for your convenience.',
+        image: 'assets/images/4.png',
+      ),
     ];
 
     return Scaffold(
@@ -45,14 +65,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             children: [
               Row(
                 children: [
-                  const Expanded(child: SizedBox()),
-                  const Text('Logo'),
                   SizedBox(
                     width: width * 0.2,
                   ),
+                  Image.asset(
+                    'assets/images/logo_green.png',
+                    height: height * 0.1,
+                  ),
+                  const Expanded(child: SizedBox()),
                   Container(
                       height: height * 0.029,
-                      width: width * 0.2,
+                      width: width * 0.15,
                       decoration: BoxDecoration(
                           color: const Color.fromARGB(204, 217, 241, 223),
                           borderRadius: BorderRadius.circular(20)),
@@ -68,7 +91,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
               Padding(
                 padding: EdgeInsets.only(
-                  top: height * 0.1,
+                  top: height * 0.15,
                 ),
                 child: Column(
                   children: [
@@ -83,7 +106,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           enableInfiniteScroll: true,
                           reverse: false,
                           autoPlay: true,
-                          autoPlayInterval: const Duration(seconds: 3),
+                          autoPlayInterval: const Duration(seconds: 5),
                           autoPlayAnimationDuration: const Duration(seconds: 1),
                           autoPlayCurve: Curves.fastOutSlowIn,
                           enlargeCenterPage: true,
@@ -96,7 +119,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           scrollDirection: Axis.horizontal,
                         )),
                     SizedBox(
-                      height: height * 0.035,
+                      height: height * 0.001,
                     ),
                     AnimatedSmoothIndicator(
                         activeIndex: currentIndex,
@@ -128,7 +151,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     loginOrsignin(
                       "Don't have account? ",
                       "Sign up",
-                      () => Get.to(() => const SignUp()),
+                      () => Get.off(() => const SignUp()),
                     )
                   ],
                 ),
