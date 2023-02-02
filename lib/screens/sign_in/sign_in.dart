@@ -50,6 +50,8 @@ class _SignInState extends State<SignIn> {
                     children: [
                       textform(
                         'Mobile number',
+                        height,
+                        width,
                         TextInputType.number,
                         _mobileNumberController,
                         (value) {},
@@ -71,6 +73,9 @@ class _SignInState extends State<SignIn> {
                         onChanged: (value) {},
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: width * 0.09,
+                                vertical: height * 0.025),
                             hintText: 'Password',
                             suffixIcon: obscurePassword == true
                                 ? IconButton(
@@ -133,9 +138,7 @@ class _SignInState extends State<SignIn> {
                         height: height * 0.033,
                       ),
                       button(height, width, () {
-                        if (_formKey.currentState!.validate()) {
-                          print('Good to go');
-                        }
+                        if (_formKey.currentState!.validate()) {}
                       }, 'Log in'),
                       SizedBox(
                         height: height * 0.054,
