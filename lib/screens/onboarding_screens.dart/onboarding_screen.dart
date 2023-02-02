@@ -1,9 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:green_life/screens/sign_in/sign_in.dart';
 import 'package:green_life/shared/exports.dart';
-import 'package:green_life/widgets/onboarding_widget.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -123,46 +120,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
                 child: Column(
                   children: [
-                    GestureDetector(
-                      onTap: () => Get.off(() => const SignIn()),
-                      child: Container(
-                        height: height * 0.07,
-                        width: width,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: const Color.fromARGB(207, 52, 168, 83)),
-                        child: const Center(
-                          child: Text(
-                            'Get started',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 24,
-                                color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
+                    button(height, width, () => Get.off(() => const SignUp()),
+                        'Get started'),
                     SizedBox(
                       height: height * 0.02,
                     ),
-                    const Text.rich(
-                      TextSpan(children: <TextSpan>[
-                        TextSpan(
-                          text: "Don't have an account? ",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                              color: Colors.black),
-                        ),
-                        TextSpan(
-                          text: "Sign up",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                              color: Colors.green),
-                        )
-                      ]),
-                    ),
+                    loginOrsignin(
+                      "Don't have account? ",
+                      "Sign up",
+                      () => Get.to(() => const SignUp()),
+                    )
                   ],
                 ),
               ),
