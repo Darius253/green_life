@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:green_life/screens/sign_in/sign_in.dart';
 import 'package:green_life/shared/exports.dart';
 
 class SignUp extends StatefulWidget {
@@ -58,6 +57,8 @@ class _SignUpState extends State<SignUp> {
                         ),
                         textform(
                           'Name',
+                          height,
+                          width,
                           TextInputType.name,
                           _nameController,
                           (value) {},
@@ -67,6 +68,8 @@ class _SignUpState extends State<SignUp> {
                         ),
                         textform(
                           'Mobile number',
+                          height,
+                          width,
                           TextInputType.number,
                           _mobileNumberController,
                           (value) {},
@@ -76,6 +79,8 @@ class _SignUpState extends State<SignUp> {
                         ),
                         textform(
                           'Email',
+                          height,
+                          width,
                           TextInputType.emailAddress,
                           _emailController,
                           (value) {},
@@ -120,6 +125,9 @@ class _SignUpState extends State<SignUp> {
                                         });
                                       },
                                     ),
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: width * 0.09,
+                                  vertical: height * 0.025),
                               hintStyle: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
@@ -143,15 +151,21 @@ class _SignUpState extends State<SignUp> {
                                   borderRadius: BorderRadius.circular(20))),
                         ),
                         SizedBox(
-                          height: height * 0.058,
+                          height: height * 0.07,
                         ),
-                        button(height, width, () {
-                          if (_formKey.currentState!.validate()) {
-                            print('Good to go');
-                          }
-                        }, 'Create Account'),
+                        button(
+                          height,
+                          width,
+                          () {
+                            Get.to(() => const LoanType());
+                            // if (_formKey.currentState!.validate()) {
+                            //   print('Good to go');
+                            // }
+                          },
+                          'Create Account',
+                        ),
                         SizedBox(
-                          height: height * 0.030,
+                          height: height * 0.05,
                         ),
                         Center(
                           child: loginOrsignin(
