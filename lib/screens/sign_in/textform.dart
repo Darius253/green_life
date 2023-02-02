@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 Widget textform(
-     String hint,
+    String hint,
+    double width,
+    double height,
     TextInputType? keyboardType,
     TextEditingController controller,
     Function(String?) onchanged) {
@@ -17,12 +19,14 @@ Widget textform(
     onChanged: onchanged,
     autovalidateMode: AutovalidateMode.onUserInteraction,
     decoration: InputDecoration(
+        contentPadding: EdgeInsets.symmetric(
+            horizontal: width * 0.04, vertical: height * 0.05),
         hintText: hint,
         hintStyle: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w400,
             color: Color.fromARGB(218, 178, 178, 178)),
-            border: OutlineInputBorder(
+        border: OutlineInputBorder(
             borderSide:
                 const BorderSide(color: Color.fromARGB(211, 52, 168, 83)),
             borderRadius: BorderRadius.circular(20)),
@@ -30,9 +34,10 @@ Widget textform(
             borderSide:
                 const BorderSide(color: Color.fromARGB(211, 52, 168, 83)),
             borderRadius: BorderRadius.circular(20)),
-        errorBorder:
-            OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide:
-                const BorderSide(color: Color.fromARGB(210, 231, 7, 7)),),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: const BorderSide(color: Color.fromARGB(210, 231, 7, 7)),
+        ),
         focusedBorder: OutlineInputBorder(
             borderSide:
                 const BorderSide(color: Color.fromARGB(211, 52, 168, 83)),
