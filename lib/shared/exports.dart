@@ -7,6 +7,7 @@ export 'package:green_life/screens/sign_up/sign_up.dart';
 export 'package:green_life/screens/sign_in/sign_in.dart';
 export 'package:green_life/widgets/onboarding_widget.dart';
 export 'package:green_life/screens/sign_up/loan_type.dart';
+export 'package:green_life/screens/sign_up/registration/widgets/buttons.dart';
 
 
 //pub.dev
