@@ -27,10 +27,7 @@ class OnboardingPages extends StatefulWidget {
 class _OnboardingPagesState extends State<OnboardingPages> {
   @override
   Widget build(BuildContext context) {
-    didChangeDependencies();
-    {
-      precacheImage(AssetImage(widget.image), context);
-    }
+    
 
     return Column(children: [
       ClipRRect(
