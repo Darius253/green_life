@@ -29,7 +29,10 @@ class SplashScreenState extends State<Splash> {
             Color.fromARGB(209, 84, 165, 49)
           ])),
       child: Center(
-        child: Image.asset('assets/images/logo.png'),
+        child: Image.asset(
+          'assets/images/logo.png',
+          filterQuality: FilterQuality.high,
+        ),
       ),
     );
   }
