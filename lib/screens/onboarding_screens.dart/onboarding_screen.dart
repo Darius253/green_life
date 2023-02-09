@@ -10,14 +10,7 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  @override
-  void didChangeDependencies() {
-    precacheImage(const AssetImage('assets/images/1.png'), context);
-    precacheImage(const AssetImage('assets/images/2.png'), context);
-    precacheImage(const AssetImage('assets/images/3.png'), context);
-    precacheImage(const AssetImage('assets/images/4.png'), context);
-    super.didChangeDependencies();
-  }
+ 
 
   int currentIndex = 0;
   final controller = CarouselController();
@@ -71,6 +64,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   Image.asset(
                     'assets/images/logo_green.png',
                     height: height * 0.1,
+                    filterQuality: FilterQuality.high,
                   ),
                   const Expanded(child: SizedBox()),
                   Container(
