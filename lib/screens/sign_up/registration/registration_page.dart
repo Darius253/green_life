@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:green_life/screens/sign_up/registration/widgets/picture_upload.dart';
 import 'package:green_life/screens/sign_up/registration/widgets/textbox.dart';
 import 'package:green_life/shared/exports.dart';
 
@@ -21,6 +22,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
     List<Widget> pages = [
       RegistrationTextField(
         formkey: formKey,
+        keyboardType: TextInputType.emailAddress,
         hintText: 'Name',
         onChanged: (value) {
           setState(() {
@@ -33,14 +35,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
           });
         },
         validator: (value) {
-          if (controller.text.isEmpty) {
-            return 'This Field Cannot Be Empty';
+          if (value == null || value.isEmpty) {
+            return 'Please enter your email';
           }
-          return '';
+          return null;
         },
         onTap: () {
-          print(name);
           if (formKey.currentState!.validate()) {
+            print(name);
             pageController.animateToPage(pageIndex + 1,
                 duration: const Duration(milliseconds: 300),
                 curve: Curves.easeIn);
@@ -51,13 +53,16 @@ class _RegistrationPageState extends State<RegistrationPage> {
         index: pageIndex,
         subtitle: 'Just as it appears on your Ghana Card',
       ),
-      const Buttons(
-        title: 'Marital Status',
-        firstOption: 'Single',
-        secondOption: 'Married',
-        thirdOption: 'Divorced',
-        fourthOption: "Widow / Widower",
-      )
+      Buttons(
+          title: 'Marital Status',
+          firstOption: 'Single',
+          secondOption: 'Married',
+          thirdOption: 'Divorced',
+          fourthOption: "Widow / Widower",
+          onTap: () {
+            Get.to(const UploadPicture());
+          }),
+      const UploadPicture()
     ];
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -101,7 +106,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                          height: height * 0.12,
+                          height: height * 0.15,
                         ),
                         Container(
                           height: height * 0.15,
@@ -125,6 +130,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             padding: EdgeInsets.only(
                                 left: width * 0.15, right: width * 0.1),
                             child: PageView(
+                              physics: const NeverScrollableScrollPhysics(),
                               controller: pageController,
                               children: pages,
                               onPageChanged: (index) {
