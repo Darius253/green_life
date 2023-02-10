@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:green_life/shared/exports.dart';
 
 class Buttons extends StatelessWidget {
   final String title, firstOption, secondOption, thirdOption;
   final String? fourthOption;
+  final Function()? onTap;
 
   const Buttons(
       {super.key,
@@ -10,6 +12,7 @@ class Buttons extends StatelessWidget {
       required this.firstOption,
       required this.secondOption,
       required this.thirdOption,
+      required this.onTap,
       this.fourthOption});
 
   @override
@@ -30,37 +33,45 @@ class Buttons extends StatelessWidget {
         SizedBox(
           height: height * 0.02,
         ),
-        button(firstOption, width, height),
+        button(firstOption, width, height, onTap),
         SizedBox(
           height: height * 0.01,
         ),
-        button(secondOption, width, height),
+        button(
+          secondOption,
+          width,
+          height,
+          onTap
+        ),
         SizedBox(
           height: height * 0.01,
         ),
-        button(thirdOption, width, height),
+        button(thirdOption, width, height, onTap),
         SizedBox(
           height: height * 0.01,
         ),
         fourthOption != null || fourthOption!.isNotEmpty
-            ? button(fourthOption!, width, height)
+            ? button(fourthOption!, width, height, onTap)
             : const SizedBox.shrink()
       ],
     );
   }
 
-  Widget button(String option, double height, width) {
-    return Container(
-      height: height * 0.09,
-      width: width * 0.5,
-      decoration: BoxDecoration(
-          color: const Color.fromARGB(230, 214, 247, 222),
-          borderRadius: BorderRadius.circular(10)),
-      child: Center(
-        child: Text(
-          option,
-          style: const TextStyle(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w400),
+  Widget button(String option, double height, width, Function()? onTap) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        height: height * 0.09,
+        width: width * 0.5,
+        decoration: BoxDecoration(
+            color: const Color.fromARGB(230, 214, 247, 222),
+            borderRadius: BorderRadius.circular(10)),
+        child: Center(
+          child: Text(
+            option,
+            style: const TextStyle(
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w400),
+          ),
         ),
       ),
     );
