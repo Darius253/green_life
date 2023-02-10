@@ -11,6 +11,7 @@ class RegistrationTextField extends StatelessWidget {
   final TextEditingController controller;
   final Function(String?)? onChanged;
   final Function(String?)? onSaved;
+  final TextInputType? keyboardType;
   const RegistrationTextField({
     super.key,
     required this.controller,
@@ -22,6 +23,7 @@ class RegistrationTextField extends StatelessWidget {
     required this.validator,
     required this.onChanged,
     required this.onSaved,
+    required this.keyboardType,
     this.subtitle,
   });
 
@@ -36,6 +38,7 @@ class RegistrationTextField extends StatelessWidget {
         children: [
           TextFormField(
             controller: controller,
+            keyboardType: keyboardType,
             validator: validator,
             onChanged: onChanged,
             onSaved: onSaved,
@@ -102,6 +105,7 @@ class RegistrationTextField extends StatelessWidget {
               ),
             ),
           )
+        
         ],
       ),
     );
