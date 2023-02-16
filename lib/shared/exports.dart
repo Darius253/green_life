@@ -8,8 +8,10 @@ export 'package:green_life/screens/sign_in/sign_in.dart';
 export 'package:green_life/widgets/onboarding_widget.dart';
 export 'package:green_life/screens/sign_up/loan_type.dart';
 export 'package:green_life/screens/sign_up/registration/widgets/buttons.dart';
+export 'package:green_life/screens/image_upload/id_front.dart';
 
 
 //pub.dev
 export 'package:smooth_page_indicator/smooth_page_indicator.dart';
 export 'package:get/get.dart';
+export 'package:image_picker/image_picker.dart';
