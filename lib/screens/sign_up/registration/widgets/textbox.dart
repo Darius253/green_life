@@ -105,7 +105,6 @@ class RegistrationTextField extends StatelessWidget {
               ),
             ),
           )
-        
         ],
       ),
     );
