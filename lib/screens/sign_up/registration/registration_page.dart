@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:green_life/screens/sign_up/registration/widgets/loan_summary.dart';
 import 'package:green_life/screens/sign_up/registration/widgets/picture_upload.dart';
 import 'package:green_life/screens/sign_up/registration/widgets/textbox.dart';
 import 'package:green_life/shared/exports.dart';
@@ -24,7 +25,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
   String? income = '';
   String? amount = '';
   String? accountNumber = '';
-  double _currentSliderValue = 20;
+  double firstSliderValue = 1000;
+  double seconderSliderValue = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -547,28 +549,64 @@ What made you default?''',
               SizedBox(
                 height: height * 0.05,
               ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+                child: Row(
+                  children: const [
+                    Text(
+                      '¢1000',
+                      style: TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                    Expanded(child: SizedBox()),
+                    Text(
+                      '¢6000',
+                      style: TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                  ],
+                ),
+              ),
               Slider.adaptive(
-                value: 1000,
+                activeColor: Colors.white,
+                value: firstSliderValue,
+                min: 1000,
                 max: 6000,
-                divisions: 100,
-                label: _currentSliderValue.round().toString(),
+                divisions: 6000,
+                label: '¢${firstSliderValue.round().toString()}',
                 onChanged: (double value) {
                   setState(() {
-                    _currentSliderValue = value;
+                    firstSliderValue = value;
                   });
                 },
               ),
               SizedBox(
                 height: height * 0.1,
               ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+                child: Row(
+                  children: const [
+                    Text(
+                      '1 month',
+                      style: TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                    Expanded(child: SizedBox()),
+                    Text(
+                      '12 months',
+                      style: TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                  ],
+                ),
+              ),
               Slider.adaptive(
-                value: 1,
+                activeColor: Colors.white,
+                value: seconderSliderValue,
+                min: 1,
                 max: 12,
                 divisions: 12,
-                label: _currentSliderValue.round().toString(),
+                label: '${seconderSliderValue.round().toString()} months',
                 onChanged: (double value) {
                   setState(() {
-                    _currentSliderValue = value;
+                    seconderSliderValue = value;
                   });
                 },
               ),
@@ -586,56 +624,15 @@ What made you default?''',
                       vertical: height * 0.03, horizontal: width * 0.1),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children:  [
-                      const Text(
-                        'Loan Amount',
-                        style: TextStyle(
-                            fontSize: 14,
-                            height: 2,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500),
+                    children: [
+                      loanSummary('Loan Amount', 'Hello', width),
+                      loanSummary('Interest', 'Hello', width),
+                      loanSummary('Pay per month', 'Hello', width),
+                      loanSummary('Deadline', 'Hello', width),
+                      SizedBox(
+                        height: height * 0.03,
                       ),
-                     const  Text(
-                        'Interest',
-                        style: TextStyle(
-                            fontSize: 14,
-                            height: 2,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500),
-                      ),
-                     const  Text(
-                        'Pay/month',
-                        style: TextStyle(
-                            fontSize: 14,
-                            height: 2,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      const Text(
-                        'Interest',
-                        style: TextStyle(
-                            fontSize: 14,
-                            height: 2,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      const Text(
-                        'Deadline',
-                        style: TextStyle(
-                            fontSize: 14,
-                            height: 2,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      SizedBox(height: height * 0.03),
-                      const Text(
-                        'Total Amount',
-                        style: TextStyle(
-                            fontSize: 14,
-                            height: 2,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500),
-                      ),
+                      loanSummary('Total Amount', 'Hello', width),
                     ],
                   ),
                 ),
