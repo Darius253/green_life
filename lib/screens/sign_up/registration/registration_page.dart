@@ -424,11 +424,15 @@ What made you default?''',
     return Scaffold(
         body: SafeArea(
             child: Container(
+      height: height,
       decoration: const BoxDecoration(
-          gradient: LinearGradient(colors: [
-        Color.fromARGB(255, 0, 127, 95),
-        Color.fromARGB(255, 52, 168, 83)
-      ])),
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+            Color.fromARGB(255, 0, 127, 95),
+            Color.fromARGB(255, 52, 168, 83)
+          ])),
       child: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: width * 0.05, vertical: height * 0.03),
@@ -577,7 +581,74 @@ What made you default?''',
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     color: const Color.fromARGB(255, 3, 85, 64)),
-              )
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: height * 0.03, horizontal: width * 0.1),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children:  [
+                      const Text(
+                        'Loan Amount',
+                        style: TextStyle(
+                            fontSize: 14,
+                            height: 2,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500),
+                      ),
+                     const  Text(
+                        'Interest',
+                        style: TextStyle(
+                            fontSize: 14,
+                            height: 2,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500),
+                      ),
+                     const  Text(
+                        'Pay/month',
+                        style: TextStyle(
+                            fontSize: 14,
+                            height: 2,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      const Text(
+                        'Interest',
+                        style: TextStyle(
+                            fontSize: 14,
+                            height: 2,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      const Text(
+                        'Deadline',
+                        style: TextStyle(
+                            fontSize: 14,
+                            height: 2,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      SizedBox(height: height * 0.03),
+                      const Text(
+                        'Total Amount',
+                        style: TextStyle(
+                            fontSize: 14,
+                            height: 2,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: height * 0.02,
+              ),
+              Container(
+                  width: width,
+                  height: height * 0.07,
+                  decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 255, 217, 2)),
+                  child: const Center(child: Text('Apply Now'))),
             ],
           ),
         ),
