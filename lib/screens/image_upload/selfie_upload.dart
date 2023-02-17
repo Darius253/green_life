@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:green_life/shared/exports.dart';
 
-class IDFront extends StatefulWidget {
-  const IDFront({super.key});
+class SelfieUpload extends StatefulWidget {
+  const SelfieUpload({super.key});
 
   @override
-  State<IDFront> createState() => _IDFrontState();
+  State<SelfieUpload> createState() => _SelfieUploadState();
 }
 
-class _IDFrontState extends State<IDFront> {
-  var idfront;
+class _SelfieUploadState extends State<SelfieUpload> {
+  var selfiepic;
 
   Future getImage() async {
     var image = await ImagePicker().pickImage(source: ImageSource.camera);
     setState(() {
-      idfront = image;
+      selfiepic = image;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-   final double height = MediaQuery.of(context).size.height;
-   final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
     return SafeArea(
         child: Scaffold(
       body: Stack(
@@ -64,27 +64,7 @@ class _IDFrontState extends State<IDFront> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: height * 0.01,
-                ),
-                const Text(
-                  'You need to Upload your',
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500),
-                ),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                const Text(
-                  'Ghana Card (Front)',
-                  style: TextStyle(
-                      fontSize: 22,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600),
-                ),
-                SizedBox(
-                  height: height * 0.03,
+                  height: height * 0.05,
                 ),
                 const ImageHolder(),
                 SizedBox(
@@ -92,13 +72,9 @@ class _IDFrontState extends State<IDFront> {
                 ),
                 const UseCameraButton(),
                 SizedBox(
-                  height: height * 0.027,
+                  height: height * 0.065,
                 ),
-                const SelectDocument(),
-                SizedBox(
-                  height: height * 0.038,
-                ),
-                SubmitButton(ontap: (){}),
+                SubmitButton(ontap: () {}),
               ],
             ),
           ))

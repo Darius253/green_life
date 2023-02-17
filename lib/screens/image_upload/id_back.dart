@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:green_life/shared/exports.dart';
 
-class IDFront extends StatefulWidget {
-  const IDFront({super.key});
+class IDBack extends StatefulWidget {
+  const IDBack({super.key});
 
   @override
-  State<IDFront> createState() => _IDFrontState();
+  State<IDBack> createState() => _IDBackState();
 }
 
-class _IDFrontState extends State<IDFront> {
-  var idfront;
+class _IDBackState extends State<IDBack> {
+  var idback;
 
   Future getImage() async {
     var image = await ImagePicker().pickImage(source: ImageSource.camera);
     setState(() {
-      idfront = image;
+      idback = image;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-   final double height = MediaQuery.of(context).size.height;
-   final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
     return SafeArea(
         child: Scaffold(
       body: Stack(
@@ -77,7 +77,7 @@ class _IDFrontState extends State<IDFront> {
                   height: height * 0.01,
                 ),
                 const Text(
-                  'Ghana Card (Front)',
+                  'Ghana Card (Back)',
                   style: TextStyle(
                       fontSize: 22,
                       color: Colors.white,
@@ -98,7 +98,7 @@ class _IDFrontState extends State<IDFront> {
                 SizedBox(
                   height: height * 0.038,
                 ),
-                SubmitButton(ontap: (){}),
+                SubmitButton(ontap: () {}),
               ],
             ),
           ))
