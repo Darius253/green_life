@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:green_life/shared/exports.dart';
 
 class Buttons extends StatelessWidget {
   final String title, firstOption, secondOption;
