@@ -30,7 +30,7 @@ class _SignUpState extends State<SignUp> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  backButton(),
+                  backButton(Colors.white),
                   SizedBox(
                     height: height * 0.012,
                   ),
