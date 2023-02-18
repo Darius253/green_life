@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:green_life/screens/sign_up/registration/summary.dart';
+import 'package:green_life/screens/sign_up/registration/uploads.dart';
 import 'package:green_life/screens/sign_up/registration/widgets/loan_summary.dart';
 import 'package:green_life/screens/sign_up/registration/widgets/picture_upload.dart';
 import 'package:green_life/screens/sign_up/registration/widgets/textbox.dart';
@@ -16,6 +18,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final pageController = PageController();
   final controller = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  final formkey = GlobalKey<FormState>();
   String? name = '';
   String? age = '';
   String? location = '';
@@ -32,7 +35,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   Widget build(BuildContext context) {
     List<Widget> pages = [
       RegistrationTextField(
-        formkey: formKey,
+        // formkey: formKey,
         keyboardType: TextInputType.emailAddress,
         hintText: 'Name',
         onChanged: (value) {
@@ -74,7 +77,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
             // Get.to(const UploadPicture());
           }),
       RegistrationTextField(
-        formkey: formKey,
+        // formkey: formKey,
         keyboardType: TextInputType.number,
         hintText: 'Enter your age',
         onChanged: (value) {
@@ -125,7 +128,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
             // Get.to(const UploadPicture());
           }),
       RegistrationTextField(
-        formkey: formKey,
+        // formkey: formKey,
         keyboardType: TextInputType.number,
         hintText: 'Enter your Address / Location',
         onChanged: (value) {
@@ -158,7 +161,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         subtitle: '',
       ),
       RegistrationTextField(
-        formkey: formKey,
+        // formkey: formKey,
         keyboardType: TextInputType.number,
         hintText: 'How long have you stayed there?',
         onChanged: (value) {
@@ -209,7 +212,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
             // Get.to(const UploadPicture());
           }),
       RegistrationTextField(
-        formkey: formKey,
+        // formkey: formKey,
         keyboardType: TextInputType.text,
         hintText: 'Type the work that you do here',
         onChanged: (value) {
@@ -242,7 +245,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         subtitle: '',
       ),
       RegistrationTextField(
-        formkey: formKey,
+        // formkey: formKey,
         keyboardType: TextInputType.number,
         hintText: 'Enter the number here',
         onChanged: (value) {
@@ -275,7 +278,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         subtitle: '',
       ),
       RegistrationTextField(
-        formkey: formKey,
+        // formkey: formKey,
         keyboardType: TextInputType.number,
         hintText: 'Enter the amount here',
         onChanged: (value) {
@@ -335,8 +338,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
             // Get.to(const UploadPicture());
           }),
       Buttons(
-          title: '''Did you default?
-What made you default?''',
+          title: 'Did you default?\n What made you default?',
           firstOption: 'Interest rate',
           secondOption: "Payment Schedule/Duration",
           thirdOption: "Friends and family",
@@ -345,7 +347,7 @@ What made you default?''',
             // Get.to(const UploadPicture());
           }),
       RegistrationTextField(
-        formkey: formKey,
+        // formkey: formKey,
         keyboardType: TextInputType.text,
         hintText: 'Enter the loan amount here',
         onChanged: (value) {
@@ -387,7 +389,7 @@ What made you default?''',
             // Get.to(const UploadPicture());
           }),
       RegistrationTextField(
-        formkey: formKey,
+        // formkey: formKey,
         keyboardType: TextInputType.text,
         hintText: 'Enter the account number here',
         onChanged: (value) {
@@ -419,237 +421,110 @@ What made you default?''',
         index: pageIndex,
         subtitle: '',
       ),
+      const SizedBox(),
+      const SizedBox(),
+      const SizedBox(),
+      const SizedBox(),
+      const SizedBox(),
     ];
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     // return pageIndex !=5
     return Scaffold(
         body: SafeArea(
-            child: Container(
-      height: height,
-      decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-            Color.fromARGB(255, 0, 127, 95),
-            Color.fromARGB(255, 52, 168, 83)
-          ])),
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: width * 0.05, vertical: height * 0.03),
-        child: SingleChildScrollView(
-          child:
-              //pageIndex != 20
-              //     ? Stack(
-              //         children: [
-              //           Row(
-              //             children: [
-              //               backButton(),
-              //               SizedBox(
-              //                 width: width * 0.25,
-              //               ),
-              //               Text(
-              //                 'STEP ${pageIndex + 1}/${pages.length}',
-              //                 style: const TextStyle(
-              //                     fontWeight: FontWeight.w500, fontSize: 15),
-              //               )
-              //             ],
-              //           ),
-              //           Center(
-              //             child: Padding(
-              //               padding: EdgeInsets.symmetric(vertical: height * 0.09),
-              //               child: Card(
-              //                 color: const Color.fromARGB(240, 247, 247, 247),
-              //                 shape: RoundedRectangleBorder(
-              //                     borderRadius: BorderRadius.circular(16)),
-              //                 shadowColor: const Color.fromARGB(210, 104, 101, 101),
-              //                 elevation: 20.0,
-              //                 borderOnForeground: false,
-              //                 child: Container(
-              //                   height: height * 0.7,
-              //                   width: width * 0.85,
-              //                   decoration: BoxDecoration(
-              //                       borderRadius: BorderRadius.circular(5)),
-              //                   child: Column(
-              //                     mainAxisAlignment: MainAxisAlignment.center,
-              //                     children: [
-              //                       SizedBox(
-              //                         height: height * 0.15,
-              //                       ),
-              //                       Container(
-              //                         height: height * 0.15,
-              //                         width: width * 0.6,
-              //                         padding: EdgeInsets.symmetric(
-              //                             horizontal: width * 0.1,
-              //                             vertical: height * 0.01),
-              //                         decoration: BoxDecoration(
-              //                             color: const Color.fromARGB(
-              //                                 230, 214, 247, 222),
-              //                             borderRadius: BorderRadius.circular(20)),
-              //                         child: const Text(
-              //                           'Ads or some relevant information about the application can be displayed here',
-              //                           textAlign: TextAlign.center,
-              //                           style: TextStyle(height: 1.5),
-              //                         ),
-              //                       ),
-              //                       SizedBox(
-              //                         height: height * 0.05,
-              //                       ),
-              //                       Expanded(
-              //                         child: Padding(
-              //                           padding: EdgeInsets.only(
-              //                               left: width * 0.15, right: width * 0.1),
-              //                           child: PageView(
-              //                             controller: pageController,
-              //                             children: pages,
-              //                             onPageChanged: (index) {
-              //                               setState(() {
-              //                                 pageIndex = index;
-              //                               });
-              //                             },
-              //                           ),
-              //                         ),
-              //                       )
-              //                     ],
-              //                   ),
-              //                 ),
-              //               ),
-              //             ),
-              //           )
-              //         ],
-              //       )
-              // :
-              Column(
-            children: [
-              Text(
-                'STEP ${pageIndex + 1}/${pages.length}',
-                style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 15,
-                    color: Colors.white),
-              ),
-              SizedBox(
-                height: height * 0.03,
-              ),
-              Row(children: [
-                backButton(),
-                Padding(
-                  padding: EdgeInsets.only(left: width * 0.1),
-                  child: const Text(
-                    'Fill the following options\n to choose how much\n you want to borrow and\n for how long?',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15,
-                        color: Colors.white),
-                    textAlign: TextAlign.center,
+      child: pageIndex == 19
+          ? Uploads(
+              pageController: pageController,
+              page: pages,
+              pagesIndex: pageIndex,
+            )
+          : Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: width * 0.05, vertical: height * 0.03),
+              child: SingleChildScrollView(
+                  child: Stack(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: height * 0.7),
+                    child: Image.asset('assets/images/Vector.png'),
                   ),
-                ),
-              ]),
-              SizedBox(
-                height: height * 0.05,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-                child: Row(
-                  children: const [
-                    Text(
-                      '¢1000',
-                      style: TextStyle(color: Colors.white, fontSize: 14),
-                    ),
-                    Expanded(child: SizedBox()),
-                    Text(
-                      '¢6000',
-                      style: TextStyle(color: Colors.white, fontSize: 14),
-                    ),
-                  ],
-                ),
-              ),
-              Slider.adaptive(
-                activeColor: Colors.white,
-                value: firstSliderValue,
-                min: 1000,
-                max: 6000,
-                divisions: 6000,
-                label: '¢${firstSliderValue.round().toString()}',
-                onChanged: (double value) {
-                  setState(() {
-                    firstSliderValue = value;
-                  });
-                },
-              ),
-              SizedBox(
-                height: height * 0.1,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-                child: Row(
-                  children: const [
-                    Text(
-                      '1 month',
-                      style: TextStyle(color: Colors.white, fontSize: 14),
-                    ),
-                    Expanded(child: SizedBox()),
-                    Text(
-                      '12 months',
-                      style: TextStyle(color: Colors.white, fontSize: 14),
-                    ),
-                  ],
-                ),
-              ),
-              Slider.adaptive(
-                activeColor: Colors.white,
-                value: seconderSliderValue,
-                min: 1,
-                max: 12,
-                divisions: 12,
-                label: '${seconderSliderValue.round().toString()} months',
-                onChanged: (double value) {
-                  setState(() {
-                    seconderSliderValue = value;
-                  });
-                },
-              ),
-              SizedBox(
-                height: height * 0.04,
-              ),
-              Container(
-                width: width,
-                height: height * 0.3,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: const Color.fromARGB(255, 3, 85, 64)),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      vertical: height * 0.03, horizontal: width * 0.1),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
                     children: [
-                      loanSummary('Loan Amount', 'Hello', width),
-                      loanSummary('Interest', 'Hello', width),
-                      loanSummary('Pay per month', 'Hello', width),
-                      loanSummary('Deadline', 'Hello', width),
+                      backButton(Colors.black),
                       SizedBox(
-                        height: height * 0.03,
+                        width: width * 0.25,
                       ),
-                      loanSummary('Total Amount', 'Hello', width),
+                      Text(
+                        'STEP ${pageIndex + 1}/${pages.length}',
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 15),
+                      )
                     ],
                   ),
-                ),
-              ),
-              SizedBox(
-                height: height * 0.02,
-              ),
-              Container(
-                  width: width,
-                  height: height * 0.07,
-                  decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 255, 217, 2)),
-                  child: const Center(child: Text('Apply Now'))),
-            ],
-          ),
-        ),
-      ),
-    )));
+                  Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: height * 0.09),
+                      child: Card(
+                        color: const Color.fromARGB(240, 247, 247, 247),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16)),
+                        shadowColor: const Color.fromARGB(210, 104, 101, 101),
+                        elevation: 20.0,
+                        borderOnForeground: false,
+                        child: Container(
+                          height: height * 0.7,
+                          width: width * 0.85,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: height * 0.15,
+                              ),
+                              Container(
+                                height: height * 0.15,
+                                width: width * 0.6,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: width * 0.1,
+                                    vertical: height * 0.01),
+                                decoration: BoxDecoration(
+                                    color: const Color.fromARGB(
+                                        230, 214, 247, 222),
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: const Text(
+                                  'Ads or some relevant information about the application can be displayed here',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(height: 1.5),
+                                ),
+                              ),
+                              SizedBox(
+                                height: height * 0.05,
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      left: width * 0.15, right: width * 0.1),
+                                  child: PageView(
+                                    controller: pageController,
+                                    children: pages,
+                                    onPageChanged: (index) {
+                                      setState(() {
+                                        pageIndex = index;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )),
+            ),
+    ));
   }
 }
