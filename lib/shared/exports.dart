@@ -8,6 +8,11 @@ export 'package:green_life/screens/sign_in/sign_in.dart';
 export 'package:green_life/widgets/onboarding_widget.dart';
 export 'package:green_life/screens/sign_up/loan_type.dart';
 export 'package:green_life/screens/sign_up/registration/widgets/buttons.dart';
+export 'package:green_life/screens/sign_up/registration/uploads.dart';
+export 'package:green_life/screens/sign_up/registration/widgets/textbox.dart';
+export 'package:green_life/screens/sign_up/registration/widgets/loan_summary.dart';
+export 'package:green_life/screens/sign_up/registration/summary.dart';
+export 'package:green_life/screens/sign_up/registration/widgets/picture_upload.dart';
 
 
 //pub.dev
