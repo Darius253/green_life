@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:green_life/shared/exports.dart';
 
-import '../../../../widgets/button.dart';
-
 Widget loanSummary(
   String title,
   info,
