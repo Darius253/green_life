@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:green_life/screens/sign_up/registration/summary.dart';
-import 'package:green_life/screens/sign_up/registration/widgets/loan_summary.dart';
-import 'package:green_life/screens/sign_up/registration/widgets/picture_upload.dart';
-
 import '../../../shared/exports.dart';
 
 class Uploads extends StatefulWidget {
