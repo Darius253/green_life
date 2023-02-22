@@ -42,6 +42,9 @@ dependencies:
   #G
   get:
 
+  #I
+  image_picker: 
+
 
   #S
   smooth_page_indicator:
