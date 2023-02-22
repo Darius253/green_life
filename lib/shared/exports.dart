@@ -14,7 +14,6 @@ export 'package:green_life/screens/sign_up/registration/widgets/textbox.dart';
 export 'package:green_life/screens/sign_up/registration/widgets/loan_summary.dart';
 export 'package:green_life/screens/sign_up/registration/summary.dart';
 export 'package:green_life/screens/sign_up/registration/widgets/picture_upload.dart';
-=======
 export 'package:green_life/screens/image_upload/id_front.dart';
 
 
