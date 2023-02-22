@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:green_life/screens/sign_up/registration/summary.dart';
-import 'package:green_life/screens/sign_up/registration/uploads.dart';
-import 'package:green_life/screens/sign_up/registration/widgets/loan_summary.dart';
-import 'package:green_life/screens/sign_up/registration/widgets/picture_upload.dart';
-import 'package:green_life/screens/sign_up/registration/widgets/textbox.dart';
 import 'package:green_life/shared/exports.dart';
 
 class RegistrationPage extends StatefulWidget {
