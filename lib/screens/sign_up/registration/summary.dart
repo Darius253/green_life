@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:green_life/screens/sign_up/registration/widgets/loan_summary.dart';
 
-import '../../../widgets/button.dart';
+import '../../../shared/exports.dart';
 
 class Summary extends StatelessWidget {
   const Summary({super.key});
