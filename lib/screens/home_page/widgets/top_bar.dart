@@ -12,26 +12,30 @@ class TopBar extends StatelessWidget {
     final double width = MediaQuery.of(context).size.height;
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        SizedBox(
+          width: width * 0.02,
+        ),
         const CircleAvatar(
           backgroundColor: Colors.white24,
           radius: 20,
           child: CircleAvatar(
             backgroundImage: AssetImage('assets/images/avatar.png'),
-            radius: 20,
+            radius: 16,
           ),
         ),
         SizedBox(
-          width: width * 0.18,
+          width: width * 0.02,
         ),
         Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'Welcome',
               style: TextStyle(
-                fontSize: 20,
-                color: Color.fromARGB(255, 88, 88, 88),
+                fontSize: 14,
+                color: Color(0xFFFB2B2B2),
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -41,16 +45,20 @@ class TopBar extends StatelessWidget {
             Text(
               position,
               style: const TextStyle(
-                fontSize: 20,
-                color: Color.fromARGB(255, 88, 88, 88),
+                fontSize: 15,
+                color: Colors.black,
                 fontWeight: FontWeight.w400,
               ),
             ),
           ],
         ),
+        SizedBox(
+          width: width * 0.12,
+        ),
         const Icon(
           Icons.menu,
-          size: 20,
+          color: Colors.black,
+          size: 25,
         )
       ],
     );

@@ -1,31 +1,33 @@
 import 'package:flutter/material.dart';
 
 class IconWidget extends StatelessWidget {
+  final VoidCallback onTap;
   final IconInfo idatas;
-  const IconWidget({super.key, required this.idatas});
+  const IconWidget({super.key, required this.idatas, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
     return GestureDetector(
-      onTap: () {},
+      onTap: onTap,
       child: Column(
         children: [
           Container(
-            width: width * 0.15,
-            height: height * 0.065,
+            width: width * 0.12,
+            height: height * 0.060,
             decoration: const BoxDecoration(
               shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.all(Radius.circular(12)),
-              color: Color(0xfff898686),
+              borderRadius: BorderRadius.all(Radius.circular(15)),
+              color: Color.fromARGB(255, 139, 138, 138),
             ),
             child: Padding(
               padding: const EdgeInsets.all(3.0),
               child: Center(
                 child: Icon(
                   idatas.iconData,
-                  size: 16,
+                  size: 20,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -34,10 +36,11 @@ class IconWidget extends StatelessWidget {
             height: 5,
           ),
           SizedBox(
-            width: 10,
+            width: 78,
             child: Text(
               idatas.wname,
-              style: const TextStyle(color: Color(0xfff898686), fontSize: 14),
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Color(0xfff898686), fontSize: 12),
             ),
           )
         ],

@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 class HistoryCard extends StatelessWidget {
   final VoidCallback onTap;
   final History hdatas;
-  final int index;
 
   const HistoryCard({
     super.key,
     required this.onTap,
-    required this.index, required this.hdatas,
+    required this.hdatas,
   });
 
   @override
@@ -18,7 +17,7 @@ class HistoryCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        height: 45,
+        height: height * 0.08,
         decoration: BoxDecoration(
             color: const Color.fromARGB(255, 239, 252, 249),
             borderRadius: BorderRadius.circular(10)),
@@ -58,11 +57,10 @@ class HistoryCard extends StatelessWidget {
                           color: Colors.black,
                           fontWeight: FontWeight.w400),
                     ),
-                    
                   ],
                 ),
                 SizedBox(
-                  width: width * 0.3,
+                  width: width * 0.07,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,9 +69,9 @@ class HistoryCard extends StatelessWidget {
                     const Text(
                       'Status',
                       style: TextStyle(
-                          fontSize: 10,
+                          fontSize: 13,
                           color: Colors.black,
-                          fontWeight: FontWeight.w400),
+                          fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(
                       height: 2,
@@ -81,22 +79,14 @@ class HistoryCard extends StatelessWidget {
                     Text(
                       hdatas.status,
                       style: const TextStyle(
-                          fontSize: 13,
+                          fontSize: 10,
                           color: Colors.black,
-                          fontWeight: FontWeight.w600),
+                          fontWeight: FontWeight.w400),
                     ),
-                    Text(
-                      hdatas.performance,
-                      style: const TextStyle(
-                          fontSize: 13,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    
                   ],
                 ),
-                 SizedBox(
-                  width: width * 0.3,
+                SizedBox(
+                  width: width * 0.07,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,9 +95,9 @@ class HistoryCard extends StatelessWidget {
                     const Text(
                       'Performance',
                       style: TextStyle(
-                          fontSize: 10,
+                          fontSize: 13,
                           color: Colors.black,
-                          fontWeight: FontWeight.w400),
+                          fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(
                       height: 2,
@@ -115,9 +105,9 @@ class HistoryCard extends StatelessWidget {
                     Text(
                       hdatas.performance,
                       style: const TextStyle(
-                          fontSize: 13,
+                          fontSize: 10,
                           color: Colors.black,
-                          fontWeight: FontWeight.w600),
+                          fontWeight: FontWeight.w400),
                     ),
                   ],
                 ),
@@ -135,7 +125,11 @@ class History {
   final String status;
   final String performance;
 
-  History(this.amount, this.status, this.performance,);
+  History(
+    this.amount,
+    this.status,
+    this.performance,
+  );
 }
 
 List<History> hdata = [

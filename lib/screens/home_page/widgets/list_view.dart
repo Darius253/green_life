@@ -14,6 +14,7 @@ class _MyListViewState extends State<MyListView> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      scrollDirection: Axis.horizontal,
       itemCount: _items.length,
       itemBuilder: (context, index) {
         return GestureDetector(
@@ -22,10 +23,17 @@ class _MyListViewState extends State<MyListView> {
               _selectedIndex = index;
             });
           },
-          child: Container(
-            height: 145,
-            width: 280,
-            color: _selectedIndex == index ? Colors.green : Colors.grey,
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Container(
+              height: 180,
+              width: 250,
+              decoration: BoxDecoration(
+                 color: _selectedIndex == index ? Colors.green : Colors.grey,
+                 shape: BoxShape.rectangle,
+                 borderRadius: const BorderRadius.all(Radius.circular(12))
+              ),
+            ),
           ),
         );
       },
