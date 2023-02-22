@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class UploadPicture extends StatefulWidget {
-  const UploadPicture({super.key});
+  final String description;
+  final Function()? onTap;
+  const UploadPicture({super.key, required this.description, required this.onTap});
 
   @override
   State<UploadPicture> createState() => _UploadPictureState();
@@ -44,9 +46,10 @@ class _UploadPictureState extends State<UploadPicture> {
                               fontWeight: FontWeight.w600,
                               color: Colors.white),
                         ),
-                        const Text(
-                          'Ghana Card (Front)',
-                          style: TextStyle(
+                        Text(
+                          widget.description,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w600,
                               color: Colors.white),
@@ -150,8 +153,8 @@ class _UploadPictureState extends State<UploadPicture> {
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: height * 0.8),
-              child: GestureDetector(
-                onTap: () {},
+              child: InkWell(
+                onTap: widget.onTap,
                 child: Center(
                   child: Container(
                     width: width * 0.3,
@@ -177,6 +180,10 @@ class _UploadPictureState extends State<UploadPicture> {
                   ),
                 ),
               ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: height * 0.7),
+              child: Image.asset('assets/images/Vector.png'),
             )
           ],
         ),

@@ -22,11 +22,11 @@ Widget button(double height, width, Function() ontap, String text) {
   );
 }
 
-Widget backButton() {
+Widget backButton(Color color) {
   return IconButton(
       onPressed: () => Get.back(),
-      icon: const Icon(
+      icon:  Icon(
         Icons.arrow_back_ios,
-        color: Colors.black,
+        color: color,
       ));
 }

@@ -5,7 +5,7 @@ class RegistrationTextField extends StatelessWidget {
   final String title;
   final String? subtitle;
   final int index;
-  final GlobalKey<FormState> formkey;
+  // final GlobalKey<FormState> formkey;
   final Function()? onTap;
   final String? Function(String?)? validator;
   final TextEditingController controller;
@@ -19,7 +19,7 @@ class RegistrationTextField extends StatelessWidget {
     required this.title,
     required this.onTap,
     required this.index,
-    required this.formkey,
+    // required this.formkey,
     required this.validator,
     required this.onChanged,
     required this.onSaved,
@@ -32,7 +32,7 @@ class RegistrationTextField extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Form(
-      key: formkey,
+      // key: formkey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -105,7 +105,6 @@ class RegistrationTextField extends StatelessWidget {
               ),
             ),
           )
-        
         ],
       ),
     );

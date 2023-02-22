@@ -24,27 +24,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           height: height,
           header: 'Fast Online Process',
           about: 'Our App allows fast, secure online loan applications.',
-          image: 'assets/images/1.png'),
+          image: 'assets/images/1.jpg'),
       OnboardingPages(
           width: width,
           height: height,
           header: 'Fair Charges',
           about:
               'Our interest rate is lower, with no hidden charges and processing fees.',
-          image: 'assets/images/3.png'),
+          image: 'assets/images/2.jpg'),
       OnboardingPages(
           width: width,
           height: height,
           header: 'Instant Deposit',
           about:
               'Immediate deposit into your account after you can confirm the loan.',
-          image: 'assets/images/2.png'),
+          image: 'assets/images/3.jpg'),
       OnboardingPages(
         width: width,
         height: height,
         header: 'Flexible Payment',
         about: 'Flexible repayments for your convenience.',
-        image: 'assets/images/4.png',
+        image: 'assets/images/4.jpg',
       ),
     ];
 
