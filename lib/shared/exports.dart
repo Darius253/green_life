@@ -15,6 +15,10 @@ export 'package:green_life/screens/sign_up/registration/widgets/loan_summary.dar
 export 'package:green_life/screens/sign_up/registration/summary.dart';
 export 'package:green_life/screens/sign_up/registration/widgets/picture_upload.dart';
 export 'package:green_life/screens/image_upload/id_front.dart';
+export 'package:green_life/screens/home_page/widgets/history_card.dart';
+export 'package:green_life/screens/home_page/widgets/icon_widget.dart';
+export 'package:green_life/screens/home_page/widgets/list_view.dart';
+export 'package:green_life/screens/home_page/widgets/top_bar.dart';
 
 
 //Widgets

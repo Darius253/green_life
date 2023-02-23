@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:green_life/screens/home_page/widgets/history_card.dart';
-import 'package:green_life/screens/home_page/widgets/icon_widget.dart';
-import 'package:green_life/screens/home_page/widgets/list_view.dart';
-import 'package:green_life/screens/home_page/widgets/top_bar.dart';
+import 'package:green_life/shared/exports.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
