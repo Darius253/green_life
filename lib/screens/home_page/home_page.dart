@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:green_life/screens/home_page/widgets/drawer_widget.dart';
 import 'package:green_life/shared/exports.dart';
 
 class HomePage extends StatelessWidget {
@@ -9,6 +10,7 @@ class HomePage extends StatelessWidget {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
     return Scaffold(
+      drawer: const DrawerWidget(),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -17,7 +19,7 @@ class HomePage extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const TopBar(position: 'Gen. Manager’s Name',),
+                 const TopBar(position: 'Gen. Manager’s Name',),
                   SizedBox(
                     height: height * 0.20,
                     child: const MyListView()

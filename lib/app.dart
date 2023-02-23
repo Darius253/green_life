@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_cupertino_app.dart';
-import 'package:green_life/screens/home_page/home_page.dart';
-import 'package:green_life/screens/notification/notification_page.dart';
-import 'package:green_life/screens/splash_screen.dart';
 import 'package:green_life/shared/exports.dart';
 
 class App extends StatelessWidget {
@@ -21,7 +18,7 @@ class App extends StatelessWidget {
         DefaultMaterialLocalizations.delegate,
         DefaultWidgetsLocalizations.delegate,
       ],
-      home: NotificationPage(),
+      home: HomePage(),
     );
   }
 }

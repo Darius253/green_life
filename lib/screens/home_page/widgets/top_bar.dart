@@ -10,8 +10,8 @@ class TopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.height;
-
     return Row(
+      
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         SizedBox(
@@ -26,7 +26,7 @@ class TopBar extends StatelessWidget {
           ),
         ),
         SizedBox(
-          width: width * 0.02,
+          width: width * 0.015,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,10 +55,14 @@ class TopBar extends StatelessWidget {
         SizedBox(
           width: width * 0.12,
         ),
-        const Icon(
-          Icons.menu,
-          color: Colors.black,
-          size: 25,
+        IconButton(
+          icon:  const Icon(
+            Icons.menu,
+            color: Colors.black,
+            size: 25,
+          ), onPressed: () { 
+            Scaffold.of(context).openDrawer();
+           },
         )
       ],
     );
