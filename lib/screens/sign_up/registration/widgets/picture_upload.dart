@@ -182,8 +182,8 @@ class _UploadPictureState extends State<UploadPicture> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: height * 0.7),
-              child: Image.asset('assets/images/Vector.png'),
+              padding: EdgeInsets.only(top: height * 0.79),
+              child: Image.asset('assets/images/vector.png'),
             )
           ],
         ),
