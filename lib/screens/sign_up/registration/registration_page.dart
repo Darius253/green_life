@@ -10,7 +10,9 @@ class RegistrationPage extends StatefulWidget {
 
 class _RegistrationPageState extends State<RegistrationPage> {
   int pageIndex = 0;
+  int mainPageIndex = 0;
   final pageController = PageController();
+  final mainPageController = PageController();
   final controller = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final formkey = GlobalKey<FormState>();
@@ -416,110 +418,174 @@ class _RegistrationPageState extends State<RegistrationPage> {
         index: pageIndex,
         subtitle: '',
       ),
-      const SizedBox(),
-      const SizedBox(),
-      const SizedBox(),
-      const SizedBox(),
-      const SizedBox(),
     ];
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     // return pageIndex !=5
     return Scaffold(
         body: SafeArea(
-      child: pageIndex == 19
-          ? Uploads(
-              pageController: pageController,
-              page: pages,
-              pagesIndex: pageIndex,
-            )
-          : Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: width * 0.05, vertical: height * 0.03),
-              child: SingleChildScrollView(
-                  child: Stack(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: height * 0.7),
-                    child: Image.asset('assets/images/Vector.png'),
-                  ),
-                  Row(
-                    children: [
-                      backButton(Colors.black),
-                      SizedBox(
-                        width: width * 0.25,
-                      ),
-                      Text(
-                        'STEP ${pageIndex + 1}/${pages.length}',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 15),
-                      )
-                    ],
-                  ),
-                  Center(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: height * 0.09),
-                      child: Card(
-                        color: const Color.fromARGB(240, 247, 247, 247),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16)),
-                        shadowColor: const Color.fromARGB(210, 104, 101, 101),
-                        elevation: 20.0,
-                        borderOnForeground: false,
-                        child: Container(
-                          height: height * 0.7,
-                          width: width * 0.85,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: height * 0.15,
-                              ),
-                              Container(
-                                height: height * 0.15,
-                                width: width * 0.6,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: width * 0.1,
-                                    vertical: height * 0.01),
-                                decoration: BoxDecoration(
-                                    color: const Color.fromARGB(
-                                        230, 214, 247, 222),
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: const Text(
-                                  'Ads or some relevant information about the application can be displayed here',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(height: 1.5),
+      child: Stack(
+        children: [
+          PageView(
+            controller: mainPageController,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: height * 0.03),
+                child: SingleChildScrollView(
+                    child: Stack(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: height * 0.73),
+                      child: Image.asset('assets/images/vector.png'),
+                    ),
+                    Row(
+                      children: [
+                        backButton(Colors.black),
+                        SizedBox(
+                          width: width * 0.25,
+                        ),
+                        Text(
+                          'STEP ${pageIndex + 1}/${pages.length}',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 15),
+                        )
+                      ],
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: height * 0.09),
+                        child: Card(
+                          color: const Color.fromARGB(240, 247, 247, 247),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16)),
+                          shadowColor: const Color.fromARGB(210, 104, 101, 101),
+                          elevation: 20.0,
+                          borderOnForeground: false,
+                          child: Container(
+                            height: height * 0.7,
+                            width: width * 0.85,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  height: height * 0.15,
                                 ),
-                              ),
-                              SizedBox(
-                                height: height * 0.05,
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                      left: width * 0.15, right: width * 0.1),
-                                  child: PageView(
-                                    controller: pageController,
-                                    children: pages,
-                                    onPageChanged: (index) {
-                                      setState(() {
-                                        pageIndex = index;
-                                      });
-                                    },
+                                Container(
+                                  height: height * 0.15,
+                                  width: width * 0.6,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: width * 0.1,
+                                      vertical: height * 0.01),
+                                  decoration: BoxDecoration(
+                                      color: const Color.fromARGB(
+                                          230, 214, 247, 222),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: const Text(
+                                    'Ads or some relevant information about the application can be displayed here',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(height: 1.5),
                                   ),
                                 ),
-                              )
-                            ],
+                                SizedBox(
+                                  height: height * 0.05,
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        left: width * 0.15, right: width * 0.1),
+                                    child: PageView(
+                                      controller: pageController,
+                                      children: pages,
+                                      onPageChanged: (index) {
+                                        setState(() {
+                                          pageIndex = index;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: width * 0.6,
+                                    ),
+                                    pageIndex + 1 == 19
+                                        ? const Text('Swipe Here >>')
+                                        : const SizedBox()
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: height * 0.05,
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              )),
-            ),
+                  ],
+                )),
+              ),
+              UploadPicture(
+                description: 'Ghana Card (Front)',
+                onTap: () {},
+              ),
+              UploadPicture(
+                description: 'Ghana Card (Back)',
+                onTap: () {},
+              ),
+              UploadPicture(
+                description: 'Recent Photo',
+                onTap: () {},
+              ),
+              AmountSummary(
+                  pages: pages,
+                  pageIndex: pageIndex,
+                  pageController: pageController,
+                  onTap: () {
+                    pageIndex + 1 > 24
+                        ? () => Get.to(const Summary())
+                        : showError(context);
+                  })
+            ],
+            onPageChanged: (index) {
+              setState(() {
+                mainPageIndex = index;
+              });
+            },
+          ),
+        ],
+      ),
     ));
+  }
+
+  showError(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        elevation: 5.0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(51)),
+        icon: Icon(
+          Icons.error,
+          size: MediaQuery.of(context).size.height * 0.15,
+          color: Colors.red,
+        ),
+        title: Center(
+          child: Text(
+            'Empty Fields',
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+                color: const Color.fromARGB(255, 52, 168, 83)),
+          ),
+        ),
+        content: const Text(
+          'You need to provide a response for each field before you can proceed.\n Please check your current step number',
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
   }
 }
