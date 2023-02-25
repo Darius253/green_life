@@ -54,8 +54,10 @@ class AmountSummary extends StatefulWidget {
 
 double firstSliderValue = 1000;
 double seconderSliderValue = 1;
+String amount = '';
 
 class _AmountSummaryState extends State<AmountSummary> {
+  final controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -77,7 +79,7 @@ class _AmountSummaryState extends State<AmountSummary> {
             child: Column(
               children: [
                 Text(
-                  'STEP ${widget.pageIndex + 5}/${widget.pages.length}',
+                  'STEP ${widget.pageIndex + 5}/24',
                   style: const TextStyle(
                       fontWeight: FontWeight.w500, fontSize: 15),
                 ),
@@ -127,11 +129,54 @@ class _AmountSummaryState extends State<AmountSummary> {
                   onChanged: (double value) {
                     setState(() {
                       firstSliderValue = value;
+                      controller.text = firstSliderValue.round().toString();
                     });
                   },
                 ),
                 SizedBox(
-                  height: height * 0.1,
+                  height: height * 0.02,
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: width * 0.1,
+                    ),
+                    const Text(
+                      'Input Amount here',
+                      style: TextStyle(
+                          fontSize: 16,
+                          height: 2,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    SizedBox(
+                      width: width * 0.25,
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      width: width * 0.2,
+                      height: height * 0.05,
+                      child: TextFormField(
+                        controller: controller,
+                        keyboardType: const TextInputType.numberWithOptions(),
+                        onChanged: (String value) {
+                          setState(() {
+                            amount = value;
+                            // firstSliderValue = ;
+                          });
+                        },
+                        decoration: const InputDecoration(
+                            hintText: 'Amount',
+                            hintStyle: TextStyle(color: Colors.grey)),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: height * 0.05,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: width * 0.05),
