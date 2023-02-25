@@ -73,20 +73,20 @@ class _LoanTypeState extends State<LoanType> {
                               SizedBox(
                                 height: height * 0.035,
                               ),
-                              button(height, width, () {
+                              button(height*0.08, width, () {
                                 Get.to(() => const RegistrationPage());
                                 setState(() {
                                   loanType = "Personal Loan";
                                 });
-                              }, 'Personal Loan'),
+                              }, 'Personal Loan', Colors.green, Colors.white),
                               SizedBox(
                                 height: height * 0.024,
                               ),
-                              button(height, width, () {
+                              button(height*0.08, width, () {
                                 setState(() {
                                   loanType = "SME's Loan";
                                 });
-                              }, "SME's Loan")
+                              }, "SME's Loan", Colors.green, Colors.white)
                             ],
                           ),
                         )),
@@ -94,7 +94,7 @@ class _LoanTypeState extends State<LoanType> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: height * 0.7),
-                  child: Image.asset('assets/images/Vector.png'),
+                  child: Image.asset('assets/images/vector.png'),
                 ),
               ],
             ),
