@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:green_life/screens/sign_up/guarantor/add_guarantors.dart';
 import '../../../shared/exports.dart';
 
 class Summary extends StatelessWidget {
@@ -81,7 +81,11 @@ class Summary extends StatelessWidget {
                               height: height * 0.06,
                             ),
                             GestureDetector(
-                              onTap: () => showSuccess(context),
+                              onTap: () {
+                                showSuccess(context);
+                                Future.delayed(const Duration(seconds: 3),
+                                    () => Get.off(() => const AddGuarantor()));
+                              },
                               child: Center(
                                 child: Container(
                                   width: width * 0.25,
