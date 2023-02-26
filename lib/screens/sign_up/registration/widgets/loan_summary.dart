@@ -79,7 +79,7 @@ class _AmountSummaryState extends State<AmountSummary> {
             child: Column(
               children: [
                 Text(
-                  'STEP ${widget.pageIndex + 5}/24',
+                  'STEP ${widget.pageIndex + 6}/24',
                   style: const TextStyle(
                       fontWeight: FontWeight.w500, fontSize: 15),
                 ),
@@ -142,7 +142,7 @@ class _AmountSummaryState extends State<AmountSummary> {
                       width: width * 0.1,
                     ),
                     const Text(
-                      'Input Amount here',
+                      'Enter Amount here',
                       style: TextStyle(
                           fontSize: 16,
                           height: 2,
@@ -150,23 +150,25 @@ class _AmountSummaryState extends State<AmountSummary> {
                           fontWeight: FontWeight.w500),
                     ),
                     SizedBox(
-                      width: width * 0.25,
+                      width: width * 0.15,
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: width * 0.05),
                       decoration: const BoxDecoration(
                         color: Colors.white,
                       ),
-                      width: width * 0.2,
+                      width: width * 0.25,
                       height: height * 0.05,
                       child: TextFormField(
                         controller: controller,
                         keyboardType: const TextInputType.numberWithOptions(),
-                        onChanged: (String value) {
-                          setState(() {
-                            amount = value;
-                            // firstSliderValue = ;
-                          });
+                        onChanged: (value) {
+                          if (double.parse(value) > 999 &&
+                              double.parse(value) < 6001) {
+                            setState(() {
+                              firstSliderValue = double.parse(value);
+                            });
+                          }
                         },
                         decoration: const InputDecoration(
                             hintText: 'Amount',
@@ -251,7 +253,11 @@ class _AmountSummaryState extends State<AmountSummary> {
                   height: height * 0.02,
                 ),
                 InkWell(
-                  onTap: widget.onTap,
+                  onTap: firstSliderValue > 999 && firstSliderValue < 6001
+                      ? widget.onTap
+                      : () {
+                          print('error');
+                        },
                   child: Container(
                       width: width,
                       height: height * 0.07,
