@@ -545,8 +545,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   pageIndex: pageIndex,
                   pageController: pageController,
                   onTap: () {
-                    pageIndex + 1 > 24
-                        ? () => Get.to(const Summary())
+                    pageIndex+6 == 24
+                        ? Get.to(const Summary())
                         : showError(context);
                   })
             ],
@@ -578,7 +578,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 fontWeight: FontWeight.bold,
                 fontSize: 24,
-                color: const Color.fromARGB(255, 52, 168, 83)),
+                color: const Color.fromARGB(255, 255, 0, 0)),
           ),
         ),
         content: const Text(
