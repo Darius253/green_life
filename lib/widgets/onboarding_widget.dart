@@ -59,6 +59,7 @@ class _OnboardingPagesState extends State<OnboardingPages> {
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     fontWeight: FontWeight.w700,
+                    height: 2,
                     fontSize: 32,
                     color: Color.fromARGB(221, 255, 255, 255)),
               ),
