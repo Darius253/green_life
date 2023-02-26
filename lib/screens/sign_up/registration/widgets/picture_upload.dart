@@ -27,8 +27,8 @@ class _UploadPictureState extends State<UploadPicture> {
                       bottomLeft: Radius.circular(10),
                       bottomRight: Radius.circular(10)),
                   gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
+                      begin: Alignment.topLeft,
+                      end: Alignment.topRight,
                       colors: [
                         Color.fromARGB(255, 52, 168, 83),
                         Color.fromARGB(255, 0, 127, 95)
