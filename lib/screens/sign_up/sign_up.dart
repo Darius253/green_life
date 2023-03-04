@@ -30,7 +30,7 @@ class _SignUpState extends State<SignUp> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  backButton(Colors.white),
+                  backButton(Colors.black),
                   SizedBox(
                     height: height * 0.012,
                   ),
@@ -158,17 +158,15 @@ class _SignUpState extends State<SignUp> {
                           SizedBox(
                             height: height * 0.07,
                           ),
-                          button(
-                            height,
-                            width,
-                            () {
-                              Get.to(() => const LoanType());
-                              // if (_formKey.currentState!.validate()) {
-                              //   print('Good to go');
-                              // }
-                            },
-                            'Create Account',
-                          ),
+                          button(height * 0.08, width, () {
+                            Get.to(() => const LoanType());
+                            // if (_formKey.currentState!.validate()) {
+                            //   print('Good to go');
+                            // }
+                          },
+                              'Create Account',
+                              const Color.fromARGB(207, 52, 168, 83),
+                              Colors.white),
                           SizedBox(
                             height: height * 0.05,
                           ),
@@ -176,7 +174,9 @@ class _SignUpState extends State<SignUp> {
                             child: loginOrsignin(
                               "Already have an account? ",
                               "Login",
-                              () => Get.to(() => const SignIn()),
+                              () {
+                                Get.to(() => const SignIn());
+                              },
                             ),
                           )
                         ],
@@ -186,8 +186,8 @@ class _SignUpState extends State<SignUp> {
                 ],
               ),
               Padding(
-                padding: EdgeInsets.only(top: height * 0.7),
-                child: Image.asset('assets/images/Vector.png'),
+                padding: EdgeInsets.only(top: height * 0.73),
+                child: Image.asset('assets/images/vector.png'),
               )
             ]),
           ),

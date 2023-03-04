@@ -18,7 +18,9 @@ class App extends StatelessWidget {
         DefaultMaterialLocalizations.delegate,
         DefaultWidgetsLocalizations.delegate,
       ],
-      home: HomePage(),
+
+      home: OnboardingScreen(),
+
     );
   }
 }

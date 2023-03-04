@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-
 import '../shared/exports.dart';
 
-Widget button(double height, width, Function() ontap, String text) {
+Widget button(double height, width, Function() ontap, String text, Color? color,
+    Color textColor) {
   return GestureDetector(
     onTap: ontap,
     child: Container(
-      height: height * 0.08,
+      height: height,
       width: width,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(40),
-          color: const Color.fromARGB(207, 52, 168, 83)),
+      decoration:
+          BoxDecoration(borderRadius: BorderRadius.circular(40), color: color),
       child: Center(
         child: Text(
           text,
-          style: const TextStyle(
-              fontWeight: FontWeight.w700, fontSize: 24, color: Colors.white),
+          style: TextStyle(
+              fontWeight: FontWeight.w700, fontSize: 18, color: textColor),
         ),
       ),
     ),
@@ -25,7 +24,7 @@ Widget button(double height, width, Function() ontap, String text) {
 Widget backButton(Color color) {
   return IconButton(
       onPressed: () => Get.back(),
-      icon:  Icon(
+      icon: Icon(
         Icons.arrow_back_ios,
         color: color,
       ));

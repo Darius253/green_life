@@ -27,8 +27,8 @@ class _UploadPictureState extends State<UploadPicture> {
                       bottomLeft: Radius.circular(10),
                       bottomRight: Radius.circular(10)),
                   gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
+                      begin: Alignment.topLeft,
+                      end: Alignment.topRight,
                       colors: [
                         Color.fromARGB(255, 52, 168, 83),
                         Color.fromARGB(255, 0, 127, 95)
@@ -182,8 +182,8 @@ class _UploadPictureState extends State<UploadPicture> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: height * 0.7),
-              child: Image.asset('assets/images/Vector.png'),
+              padding: EdgeInsets.only(top: height * 0.79),
+              child: Image.asset('assets/images/vector.png'),
             )
           ],
         ),

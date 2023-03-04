@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:green_life/screens/sign_up/registration/widgets/loan_summary.dart';
-
-import '../../../widgets/button.dart';
+import 'package:green_life/screens/sign_up/guarantor/add_guarantors.dart';
+import '../../../shared/exports.dart';
 
 class Summary extends StatelessWidget {
   const Summary({super.key});
@@ -69,20 +68,24 @@ class Summary extends StatelessWidget {
                             loanSummary('Loan Amount:', 'Hello', width,
                                 Colors.black, width * 0.1),
                             loanSummary('Recipient Account:', 'Hello', width,
-                                Colors.black, width*0.01),
-                            loanSummary(
-                                'Terms:', 'Hello', width, Colors.black, width*0.23),
+                                Colors.black, width * 0.01),
+                            loanSummary('Terms:', 'Hello', width, Colors.black,
+                                width * 0.23),
                             loanSummary('Amount to be Paid:', 'Hello', width,
-                                Colors.black, width*0.01),
+                                Colors.black, width * 0.01),
                             loanSummary('Payment Schedule:', 'Hello', width,
-                                Colors.black, width*0.01),
-                            loanSummary(
-                                'Deadline:', 'Hello', width, Colors.black, width*0.195),
+                                Colors.black, width * 0.01),
+                            loanSummary('Deadline:', 'Hello', width,
+                                Colors.black, width * 0.195),
                             SizedBox(
                               height: height * 0.06,
                             ),
                             GestureDetector(
-                              onTap: () => showSuccess(context),
+                              onTap: () {
+                                showSuccess(context);
+                                Future.delayed(const Duration(seconds: 3),
+                                    () => Get.off(() => const AddGuarantor()));
+                              },
                               child: Center(
                                 child: Container(
                                   width: width * 0.25,
@@ -130,8 +133,9 @@ class Summary extends StatelessWidget {
       builder: (context) => AlertDialog(
         elevation: 5.0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(51)),
-        icon: const Image(
-            height: 150, image: AssetImage('assets/images/success.jpg')),
+        icon: Image(
+            height: MediaQuery.of(context).size.height * 0.15,
+            image: const AssetImage('assets/images/success.jpg')),
         title: Center(
           child: Text(
             'Congratulations!',
