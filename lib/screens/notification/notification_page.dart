@@ -43,7 +43,7 @@ class NotificationPage extends StatelessWidget {
                   height: height * 0.30,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/images/Vector.png'),
+                      image: AssetImage('assets/images/vector.png'),
                     ),
                   ),
                 ),
