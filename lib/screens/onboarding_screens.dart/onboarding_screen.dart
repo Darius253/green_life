@@ -67,7 +67,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   autoPlayAnimationDuration: const Duration(seconds: 1),
                   autoPlayCurve: Curves.fastOutSlowIn,
                   enlargeCenterPage: true,
-                  enlargeFactor: 0.5,
+                  enlargeFactor: 0.0,
                   onPageChanged: (index, reason) {
                     setState(() {
                       currentIndex = index;
@@ -107,20 +107,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     filterQuality: FilterQuality.high,
                   ),
                   const Expanded(child: SizedBox()),
-                  Container(
-                      height: height * 0.029,
-                      width: width * 0.15,
-                      decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 217, 241, 223),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: const Center(
-                        child: Text(
-                          'Skip',
-                          style: TextStyle(
-                              color: Color.fromARGB(216, 85, 84, 84),
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ))
+                  InkWell(
+                    child: Container(
+                        height: height * 0.029,
+                        width: width * 0.15,
+                        decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 217, 241, 223),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: const Center(
+                          child: Text(
+                            'Skip',
+                            style: TextStyle(
+                                color: Color.fromARGB(216, 85, 84, 84),
+                                fontWeight: FontWeight.w500),
+                          ),
+                        )),
+                  )
                 ],
               ),
             ),
