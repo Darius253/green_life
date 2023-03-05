@@ -146,7 +146,8 @@ class _SignInState extends State<SignIn> {
                             height: height * 0.033,
                           ),
                           button(height * 0.08, width, () {
-                            if (_formKey.currentState!.validate()) {}
+                            Get.to(() => const HomePage());
+                            // if (_formKey.currentState!.validate()) {}
                           }, 'Log in', Colors.green, Colors.white),
                           SizedBox(
                             height: height * 0.054,
