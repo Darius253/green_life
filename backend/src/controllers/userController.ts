@@ -95,3 +95,57 @@ export async function signup(req:Request , res:Response){
 
 
 }
+
+/*
+const mongoose = require('mongoose');
+
+const RegistrationFormSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  sex: {
+    type: String,
+    required: true,
+    enum: ['Male', 'Female', 'Other']
+  },
+  age: {
+    type: Number,
+    required: true
+  },
+  employmentStatus: {
+    type: String,
+    required: true,
+    enum: ['Employed', 'Unemployed', 'Self-employed']
+  },
+  employer: {
+    type: String,
+    default: null
+  },
+  occupation: {
+    type: String,
+    default: null
+  },
+  income: {
+    type: Number,
+    default: null
+  }
+});
+
+// Set employer, occupation, and income fields to required if employment status is Employed or Self-employed
+RegistrationFormSchema.path('employer').required(function() {
+  return this.employmentStatus === 'Employed' || this.employmentStatus === 'Self-employed';
+}, 'Employer name is required for employed or self-employed applicants.');
+
+RegistrationFormSchema.path('occupation').required(function() {
+  return this.employmentStatus === 'Employed' || this.employmentStatus === 'Self-employed';
+}, 'Occupation is required for employed or self-employed applicants.');
+
+RegistrationFormSchema.path('income').required(function() {
+  return this.employmentStatus === 'Employed' || this.employmentStatus === 'Self-employed';
+}, 'Income is required for employed or self-employed applicants.');
+
+module.exports = mongoose.model('RegistrationForm', RegistrationFormSchema);
+
+
+*/
