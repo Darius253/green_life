@@ -11,8 +11,8 @@ name:{type:String , required:true} ,
 phoneNumber:{type:String , required:true  ,unique:true} , 
 email:{type:String, required:true , unique:true},
 registered:{type:Boolean , default:false , required:true} , 
-registration:{type:Schema.Types.ObjectId , required:true} , 
-password:{types:String , required:true }
+registration:{type:Schema.Types.ObjectId , ref:"REGISTRATION"} , 
+password:{type:String , required:true }
 
 } , {
     timestamps:true , toJSON:{
@@ -38,4 +38,4 @@ userSchema.pre("save" ,  async function(next){
 }) ; 
 
 
-export const User =  model("USER" , userSchema)
+export const User =  model("USER" , userSchema);
