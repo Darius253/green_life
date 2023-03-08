@@ -77,7 +77,7 @@ export interface Iregistration{
     Occupation:string ;
     Employer:string ;
     Income:number;
-    IncomeSave:number ;
+    Savings:number ;
     Surplus: Surplus ;
     NoOfDependants:number;
     CurrentlyServingaLoan:response ;
