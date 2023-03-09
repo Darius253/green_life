@@ -34,7 +34,7 @@ export enum EducationLevel{
 
 export enum residentialStatus{
     Resident = "Resident",
-    Nonresidents= "Non-residents"
+    Nonresidents= "Non-resident"
 }
 
 export enum employmentStatus {
