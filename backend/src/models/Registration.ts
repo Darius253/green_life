@@ -4,31 +4,54 @@ import {response , EducationLevel, employmentStatus, gender, Iregistration, Mari
 
 //creating the registration schema 
 const registrationSchema = new Schema<Iregistration>({
-
   fullName: { type: String, required: true },
-  gender: { type: String, enum: gender, required: true },
+  gender: { type: String, enum: Object.values(gender), required: true },
   age: { type: Number, required: true },
-  maritalStatus: { type: String, enum: MaritalStatus, required: true },
-  educationLevel: { type: String, enum: EducationLevel, required: true },
-  residentialStatus: { type: String, enum: residentialStatus, required: true },
+  maritalStatus: {
+    type: String,
+    enum: Object.values(MaritalStatus),
+    required: true,
+  },
+  educationLevel: {
+    type: String,
+    enum: Object.values(EducationLevel),
+    required: true,
+  },
+  residentialStatus: {
+    type: String,
+    enum: Object.values(residentialStatus),
+    required: true,
+  },
   residentialAddress: { type: String, required: true },
   NoYearsAtResidence: { type: Number, required: true },
   face: { type: String, required: true },
   ghanaCardBack: { type: String, required: true },
   ghanaCardFront: { type: String, required: true },
-  employmentStatus: { type: String, required: true, enum: employmentStatus },
-  Occupation: { type: String,  },
+  employmentStatus: {
+    type: String,
+    required: true,
+    enum: Object.values(employmentStatus),
+  },
+  Occupation: { type: String },
   Employer: { type: String, default: null },
   Income: { type: Number, default: null },
   Savings: { type: Number, default: null },
-  Surplus: { type: String, default:Surplus.None, enum: Surplus },
+  Surplus: {
+    type: String,
+    default: Surplus.None,
+    enum: Object.values(Surplus),
+  },
   NoOfDependants: { type: Number, required: true, default: 0 },
-  CurrentlyServingaLoan: { type: String, required: true, enum: response },
-  SourceOfLoan: { type: String , enum: Source  },
-  loanAmount: { type: Number  ,default:null },
-  loanApproved: { type: String, enum: response, },
-  defaulted: { type: String, enum: response },
-  NoMonthsDefaulted: { type: Number,default:null },
+  CurrentlyServingaLoan: {
+    type: String,
+    required: true,
+    enum: Object.values(response),
+  },
+  SourceOfLoan: { type: String, enum: Object.values(Source) },
+  loanAmount: { type: Number, default: null },
+  loanApproved: { type: String, enum: Object.values(response) },
+  defaulted: { type: String, enum: Object.values(response) },
+  NoMonthsDefaulted: { type: Number, default: null },
 });
 
 
