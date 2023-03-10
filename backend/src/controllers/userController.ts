@@ -3,6 +3,7 @@ import  {User} from  '@models/User'  ;
 import { BadAuthError } from '@utils/BadAuthError';
 import  {compare} from 'bcrypt' ;
 import  jwt from 'jsonwebtoken' ; 
+import { Payload } from 'app.interface';
   
 /* @ web app login controller for login in user returns 
 returns user details after checking if user exists.
@@ -115,7 +116,7 @@ export const mobileLogin =async (req:Request , res:Response) => {
      //creat two jwt one as a refreshToken  and one as an accessToken
      //create a jwt for user
      const accessToken = jwt.sign(
-       { id: user._id, email: user.email },
+       { id: user._id, email: user.email  },
        process.env.JWT_SECRET!,
        { expiresIn: "15m" }
      );
@@ -138,6 +139,105 @@ export const mobileLogin =async (req:Request , res:Response) => {
    
 
 }
+
+
+ //request for accessToken with the refresh token cookie
+ //return error if refresh token has expired 
+export const requestAccessToken  = async (req:Request , res:Response)=>{
+       
+const {refreshToken} =  req.signedCookies ; 
+     
+if(!refreshToken){
+  throw new BadAuthError("Authorization failed" , 401); 
+}
+
+
+try {
+   
+const payload =  jwt.verify(refreshToken , process.env.JWT_SECRET!) as Payload
+ 
+
+const user = await  User.findById(payload.id) ; 
+
+if(!user){
+
+  throw new BadAuthError("Authorization failed" , 401); 
+}
+ 
+
+const newaccessToken =  jwt.sign({id:user._id, email:user.email} , process.env.JWT_SECRET! , {expiresIn:"15m"}) 
+ 
+
+
+res.status(200).send({
+  success: true,
+  data: {
+    accessToken: newaccessToken,
+  },
+});
+ 
+
+ 
+} catch (error) {
+  console.log(error)
+    throw new BadAuthError("Authorization failed", 401); 
+}
+
+}
+
+
+ //request for accessToken with the refresh token header
+ //return error if refresh token has expired 
+export const requestAccessTokenMobile =  async (req:Request , res:Response)=>{
+      
+const refreshToken =  req.headers["x-refresh-token"] as string ; 
+     
+//check if header exist with the request;
+if(!refreshToken){
+  throw new BadAuthError("Authorization failed" , 401); 
+} 
+ 
+//take the token from the string  : refreshToken =  "Bearer {$Token}"
+  const  [_ ,token ] =  refreshToken.split(" ") ;
+
+  //extra check for token to improve security
+  if (!token) {
+    throw new BadAuthError("Authorization failed", 401);
+  } 
+try {
+   
+  //verify token
+const payload =  jwt.verify(token , process.env.JWT_SECRET!) as Payload
+ 
+
+const user = await  User.findById(payload.id) ; 
+
+if(!user){
+
+  throw new BadAuthError("Authorization failed" , 401); 
+}
+ 
+//create new user 
+const newaccessToken =  jwt.sign({id:user._id, email:user.email} , process.env.JWT_SECRET! , {expiresIn:"15m"}) 
+ 
+
+
+res.status(200).send({
+  success: true,
+  data: {
+    accessToken: newaccessToken,
+  },
+});
+ 
+
+ 
+} catch (error) {
+  console.log(error)
+    throw new BadAuthError("Authorization failed", 401); 
+}
+
+}
+
 
 /*
 const mongoose = require('mongoose');

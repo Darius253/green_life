@@ -1,10 +1,11 @@
 import { register } from '@controllers/registrationController';
+import { Auth } from '@middlewares/Auth';
 import express from 'express' ; 
 const Router =  express.Router(); 
 
 
 Router.route("/api/users/register")
-.post(register)
+.post( Auth, register)
 
 
 
