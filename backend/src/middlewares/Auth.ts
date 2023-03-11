@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
-// import { BadAuthError } from '@utils/BadAuthError'; 
-import {BadAuthError} from '../utils/BadAuthError'
+import { BadAuthError } from '@utils/BadAuthError'; 
 import { Payload } from 'app.interface';
 import {NextFunction, Request , Response} from 'express'
 
@@ -13,7 +12,7 @@ declare  global{
 }
 
 
-export const Auth = (req:any ,res:any ,next:any)=>{
+export const Auth = (req:Request ,res:Response ,next:NextFunction)=>{
      
     if(!req.headers["authorization"]){
         throw new BadAuthError("Authorization failed" , 401); 
