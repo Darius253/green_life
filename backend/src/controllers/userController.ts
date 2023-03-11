@@ -154,7 +154,7 @@ if(!refreshToken){
 
 try {
    
-const payload =  jwt.verify(refreshToken , process.env.JWT_SECRET!) as Payload
+const payload =  jwt.verify(refreshToken , process.env.JWT_refresh!) as Payload
  
 
 const user = await  User.findById(payload.id) ; 
@@ -189,7 +189,7 @@ res.status(200).send({
  //request for accessToken with the refresh token header
  //return error if refresh token has expired 
 export const requestAccessTokenMobile =  async (req:Request , res:Response)=>{
-      
+      console.log("f")
 const refreshToken =  req.headers["x-refresh-token"] as string ; 
      
 //check if header exist with the request;
@@ -207,7 +207,7 @@ if(!refreshToken){
 try {
    
   //verify token
-const payload =  jwt.verify(token , process.env.JWT_SECRET!) as Payload
+const payload =  jwt.verify(token , process.env.JWT_refresh!) as Payload
  
 
 const user = await  User.findById(payload.id) ; 
@@ -217,7 +217,7 @@ if(!user){
   throw new BadAuthError("Authorization failed" , 401); 
 }
  
-//create new user 
+//create new user
 const newaccessToken =  jwt.sign({id:user._id, email:user.email} , process.env.JWT_SECRET! , {expiresIn:"15m"}) 
  
 

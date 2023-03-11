@@ -1,6 +1,6 @@
 import { app } from "./src/app";
 import  mongoose from 'mongoose';
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 import "dotenv/config"
 
 (

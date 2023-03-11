@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
-import { BadAuthError } from '@utils/BadAuthError'; 
+// import { BadAuthError } from '@utils/BadAuthError'; 
+import {BadAuthError} from '../utils/BadAuthError'
 import { Payload } from 'app.interface';
 import {NextFunction, Request , Response} from 'express'
 
@@ -12,7 +13,7 @@ declare  global{
 }
 
 
-export const Auth = (req:Request ,res:Response ,next:NextFunction)=>{
+export const Auth = (req:any ,res:any ,next:any)=>{
      
     if(!req.headers["authorization"]){
         throw new BadAuthError("Authorization failed" , 401); 
@@ -28,8 +29,8 @@ export const Auth = (req:Request ,res:Response ,next:NextFunction)=>{
     try { 
     
         const payload =  jwt.verify(token , process.env.JWT_SECRET!)  as Payload ;
-             
-        req.user.id =  payload.id ; 
+             console.log(payload)
+        req.user=  payload ; 
       
         
     } catch (error) {
