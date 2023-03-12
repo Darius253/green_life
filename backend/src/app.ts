@@ -1,11 +1,12 @@
 import express from "express";
 import "express-async-errors";
 import logger from 'morgan';
-import  {UserRouter} from '@routes/UserRoutes';
+import  {UserRouter} from './routes/UserRoutes';
+// import  {UserRouter} from '@routes/UserRoutes';
 import "dotenv/config"
-import { errorHandler } from "middlewares/errorHandler";
+import { errorHandler } from "./middlewares/errorHandler";
 import cookieParser from "cookie-parser";
-import { registrationRouter } from "@routes/registrationRoutes";
+// import { registrationRouter } from "./routes/registrationRoutes";
 const app = express();
 
 app.use(express.json())
@@ -18,7 +19,7 @@ app.use(cookieParser("121121212"))
 
 
 app.use(UserRouter);
-app.use(registrationRouter) ; 
+// app.use(registrationRouter) ; 
 
 app.use(errorHandler);
 export { app };

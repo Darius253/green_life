@@ -1,6 +1,8 @@
 import  {Request , Response} from 'express'
-import  {User} from  '@models/User'  ; 
-import { BadAuthError } from '@utils/BadAuthError';
+import  {User} from  '../models/User'  ; 
+// import  {User} from  '@models/User'  ; 
+import { BadAuthError } from  '../utils/BadAuthError';
+// import { BadAuthError } from '@utils/BadAuthError';
 import  {compare} from 'bcrypt' ;
 import  jwt from 'jsonwebtoken' ; 
 import { Payload } from 'app.interface';
@@ -84,7 +86,7 @@ export async function signup(req:Request , res:Response){
 
 
           
-    res.status(200).send({
+    res.status(201).send({
          
         success:true 
     })  

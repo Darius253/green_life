@@ -1,5 +1,6 @@
 import  express from 'express';
-import  {login,mobileLogin,requestAccessToken,requestAccessTokenMobile,signup} from '@controllers/userController';
+// import  {login,mobileLogin,requestAccessToken,requestAccessTokenMobile,signup} from '@controllers/userController';
+import  {login,mobileLogin,requestAccessToken,requestAccessTokenMobile,signup} from '../controllers/userController';
 const Router = express.Router();
 
 
