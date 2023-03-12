@@ -418,7 +418,7 @@ test("it should return a 200 , should check if user is defined " , async ()=>{
     
   }) 
  ,
- test("should return a 200" ,async ()=>{
+ test("should return a 401" ,async ()=>{
     const res =  await request(app)
     .post("/api/auth/signup")
     .send({
@@ -438,16 +438,85 @@ test("it should return a 200 , should check if user is defined " , async ()=>{
     })
     .expect(200)
     // console.log(logres.header)
-    const  refreshToken=  logres.headers["set-cookie"][0]
+    const  refreshToken= "Dwew"
     // expect(logres.body.data.user).toBeDefined()
       
      
    await request(app)
     .get("/api/auth/requestMobile")
     .set("Cookie" ,refreshToken )
-    .expect(200)
+    .expect(401)
   }) 
-   
+    , 
+    test("should return a 200" ,async ()=>{
+        const res =  await request(app)
+        .post("/api/auth/signup")
+        .send({
+           name:"ekwekw" , 
+           phoneNumber:"121212121" , 
+           password:"223sdccerfefe"  ,
+           email:"lsdkslmer@gmial.com"
+        })
+        .expect(201) 
+    
+    
+       const logres =  await request(app)
+        .post("/api/auth/mobileLogin")
+        .send({
+            password:"223sdccerfefe"  ,
+            email:"lsdkslmer@gmial.com"
+        })
+        .expect(200)
+        // console.log(logres.header)
+        const {refreshToken} =  logres.body.data
+        // expect(logres.body.data.user).toBeDefined()
+          
+         
+       await request(app)
+        
+        .get("/api/auth/requestMobile")
+    
+        .set('x-refresh-token'  ,'Bearer '+refreshToken)
+         .expect(200)
+      }) 
+
+       ,
+
+       test("should return a 200" ,async ()=>{
+        const res =  await request(app)
+        .post("/api/auth/signup")
+        .send({
+           name:"ekwekw" , 
+           phoneNumber:"121212121" , 
+           password:"223sdccerfefe"  ,
+           email:"lsdkslmer@gmial.com"
+        })
+        .expect(201) 
+    
+    
+       const logres =  await request(app)
+        .post("/api/auth/mobileLogin")
+        .send({
+            password:"223sdccerfefe"  ,
+            email:"lsdkslmer@gmial.com"
+        })
+        .expect(200)
+        // console.log(logres.header)
+        const {refreshToken} =  logres.body.data
+        // expect(logres.body.data.user).toBeDefined()
+          
+         
+      const reqRes =  await request(app)
+        
+        .get("/api/auth/requestMobile")
+    
+        .set('x-refresh-token'  ,'Bearer '+refreshToken)
+         .expect(200)
+
+        expect(reqRes.body.data.accessToken).toBeDefined()
+      }) 
+
+
 
 
 

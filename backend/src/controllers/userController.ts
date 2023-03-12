@@ -193,8 +193,9 @@ res.status(200).send({
 export const requestAccessTokenMobile =  async (req:Request , res:Response)=>{
       console.log("f")
 const refreshToken =  req.headers["x-refresh-token"] as string ; 
-     
+     console.log(req.headers['accept'])
 //check if header exist with the request;
+console.log(refreshToken)
 if(!refreshToken){
   throw new BadAuthError("Authorization failed" , 401); 
 } 
