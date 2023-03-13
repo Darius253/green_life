@@ -1,4 +1,5 @@
 import  {Types} from 'mongoose'
+import { Type } from 'typescript';
 export interface Iuser{
 
  name:string ;
@@ -87,6 +88,18 @@ export interface Iregistration{
     amountApproved:number ;
     defaulted: response; 
     NoMonthsDefaulted:number ;
+
+
+}
+
+export interface Iguarantor{
+     
+    FullName:String ;
+    Loan: Types.ObjectId ;
+    Address: String ; 
+    phoneNumber:String ; 
+     
+
 
 
 }
