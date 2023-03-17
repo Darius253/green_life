@@ -43,6 +43,7 @@ dependencies:
 
   #F
   flutter_svg: ^2.0.4
+  
 
 
   #G
@@ -51,7 +52,9 @@ dependencies:
   #I
   image_picker: 
 
-
+  #P
+  pin_code_fields: ^7.4.0
+  
   #S
   smooth_page_indicator:
 
