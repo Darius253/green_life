@@ -25,7 +25,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: width * 0.1, vertical: height * 0.03),
+                horizontal: width * 0.07, vertical: height * 0.03),
             child: SingleChildScrollView(
               child: Column(
                 children: [
