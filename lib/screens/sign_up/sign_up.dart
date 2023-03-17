@@ -15,6 +15,7 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _referralCode = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -164,6 +165,17 @@ class _SignUpState extends State<SignUp> {
                                       borderRadius: BorderRadius.circular(20))),
                             ),
                             SizedBox(
+                              height: height * 0.02,
+                            ),
+                            textform(
+                              'Referral Code',
+                              height,
+                              width,
+                              TextInputType.text,
+                              _referralCode,
+                              (value) {},
+                            ),
+                            SizedBox(
                               height: height * 0.07,
                             ),
                             button(height * 0.08, width, () {
@@ -171,10 +183,7 @@ class _SignUpState extends State<SignUp> {
                               // if (_formKey.currentState!.validate()) {
                               //   print('Good to go');
                               // }
-                            },
-                                'Create Account',
-                                 Colors.green,
-                                24,
+                            }, 'Create Account', Colors.green, 24,
                                 Colors.white),
                             SizedBox(
                               height: height * 0.05,
