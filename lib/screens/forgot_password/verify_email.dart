@@ -21,6 +21,12 @@ class _VerifyEmailState extends State<VerifyEmail> {
   bool hasError = false;
 
   @override
+  void initState() {
+    errorController = StreamController<ErrorAnimationType>();
+    super.initState();
+  }
+
+  @override
   void dispose() {
     errorController.close();
 
@@ -114,7 +120,8 @@ class _VerifyEmailState extends State<VerifyEmail> {
                         fieldHeight: height * 0.08,
                         fieldWidth: width * 0.18,
                         disabledColor: Colors.white,
-                        inactiveFillColor: Colors.grey,
+                        inactiveFillColor:
+                            const Color.fromARGB(255, 231, 255, 237),
                         inactiveColor: Colors.green,
                         selectedColor: Colors.green,
                         selectedFillColor:
