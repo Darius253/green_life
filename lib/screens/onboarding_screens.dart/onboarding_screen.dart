@@ -139,6 +139,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           () => Get.off(() => const SignIn()),
                           'LOGIN',
                           Colors.white,
+                          15,
                           Colors.green),
                       const Expanded(child: SizedBox()),
                       button(
@@ -147,6 +148,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           () => Get.off(() => const SignUp()),
                           'GET STARTED',
                           Colors.green,
+                          15,
                           Colors.white),
                     ],
                   ),
