@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../shared/exports.dart';
 
 Widget button(double height, width, Function() ontap, String text, Color? color,
-    Color textColor) {
+    double fontSize, Color textColor) {
   return GestureDetector(
     onTap: ontap,
     child: Container(
@@ -14,7 +14,7 @@ Widget button(double height, width, Function() ontap, String text, Color? color,
         child: Text(
           text,
           style: TextStyle(
-              fontWeight: FontWeight.w700, fontSize: 20, color: textColor),
+              fontWeight: FontWeight.w700, fontSize: fontSize, color: textColor),
         ),
       ),
     ),
