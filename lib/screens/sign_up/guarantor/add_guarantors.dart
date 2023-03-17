@@ -136,7 +136,7 @@ class _AddGuarantorState extends State<AddGuarantor> {
                           ),
                           button(height * 0.08, width, () {
                             if (_formKey.currentState!.validate()) {}
-                          }, 'Submit', Colors.green, Colors.white),
+                          }, 'Submit', Colors.green, 24, Colors.white),
                           SizedBox(
                             height: height * 0.054,
                           ),
