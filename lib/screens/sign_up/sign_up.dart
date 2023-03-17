@@ -173,7 +173,8 @@ class _SignUpState extends State<SignUp> {
                               // }
                             },
                                 'Create Account',
-                                const Color.fromARGB(207, 52, 168, 83),
+                                 Colors.green,
+                                24,
                                 Colors.white),
                             SizedBox(
                               height: height * 0.05,
