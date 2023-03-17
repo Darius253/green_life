@@ -94,7 +94,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     height: height * 0.05,
                   ),
                   button(height * 0.07, width * 0.7, () => null, 'Send',
-                      const Color.fromARGB(255, 52, 168, 83), Colors.white)
+                      const Color.fromARGB(255, 52, 168, 83), 24, Colors.white)
                 ],
               ),
             ),
