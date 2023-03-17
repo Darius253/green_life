@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:green_life/screens/forgot_password/forgot_password.dart';
 import '../../shared/exports.dart';
 
 class SignIn extends StatefulWidget {
@@ -21,18 +22,22 @@ class _SignInState extends State<SignIn> {
 
     return Scaffold(
       body: SafeArea(
-          child: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: width * 0.02, vertical: height * 0.03),
-        child: SingleChildScrollView(
           child: Stack(
-            children: [
-              Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: height * 0.73),
+            child: Image.asset('assets/images/vector.png'),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: width * 0.07, vertical: height * 0.03),
+            child: SingleChildScrollView(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   backButton(Colors.black),
                   SizedBox(
-                    height: height * 0.034,
+                    height: height * 0.05,
                   ),
                   const Center(
                       child: Text(
@@ -132,7 +137,8 @@ class _SignInState extends State<SignIn> {
                             children: [
                               const Expanded(child: SizedBox()),
                               TextButton(
-                                  onPressed: () {},
+                                  onPressed: () =>
+                                      Get.to(const ForgotPassword()),
                                   child: const Text(
                                     'Forgotten password?',
                                     style: TextStyle(
@@ -163,13 +169,9 @@ class _SignInState extends State<SignIn> {
                   )
                 ],
               ),
-              Padding(
-                padding: EdgeInsets.only(top: height * 0.73),
-                child: Image.asset('assets/images/vector.png'),
-              )
-            ],
+            ),
           ),
-        ),
+        ],
       )),
     );
   }
