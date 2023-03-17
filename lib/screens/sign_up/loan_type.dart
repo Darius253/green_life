@@ -82,7 +82,7 @@ class _LoanTypeState extends State<LoanType> {
                                 setState(() {
                                   loanType = "Personal Loan";
                                 });
-                              }, 'Personal Loan', Colors.green, Colors.white),
+                              }, 'Personal Loan', Colors.green,24, Colors.white),
                               SizedBox(
                                 height: height * 0.024,
                               ),
@@ -90,7 +90,7 @@ class _LoanTypeState extends State<LoanType> {
                                 setState(() {
                                   loanType = "SME's Loan";
                                 });
-                              }, "SME's Loan", Colors.green, Colors.white)
+                              }, "SME's Loan", Colors.green,24, Colors.white)
                             ],
                           ),
                         )),
