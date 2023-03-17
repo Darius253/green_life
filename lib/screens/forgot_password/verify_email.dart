@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:green_life/screens/forgot_password/create_new_password.dart';
@@ -20,18 +18,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
   late StreamController<ErrorAnimationType> errorController;
   final formKey = GlobalKey<FormState>();
   String code = '';
-  var onTapRecognizer;
   bool hasError = false;
-
-  @override
-  void initState() {
-    onTapRecognizer = TapGestureRecognizer()
-      ..onTap = () {
-        Navigator.pop(context);
-      };
-    errorController = StreamController<ErrorAnimationType>();
-    super.initState();
-  }
 
   @override
   void dispose() {
