@@ -17,14 +17,18 @@ class _LoanTypeState extends State<LoanType> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: width * 0.02, vertical: height * 0.03),
-          child: SingleChildScrollView(
-            child: Stack(
-              children: [
-                Column(
+      body: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: height * 0.73),
+            child: Image.asset('assets/images/vector.png'),
+          ),
+          SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: width * 0.07, vertical: height * 0.03),
+              child: SingleChildScrollView(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     backButton(Colors.black),
@@ -73,7 +77,7 @@ class _LoanTypeState extends State<LoanType> {
                               SizedBox(
                                 height: height * 0.035,
                               ),
-                              button(height*0.08, width, () {
+                              button(height * 0.08, width, () {
                                 Get.to(() => const RegistrationPage());
                                 setState(() {
                                   loanType = "Personal Loan";
@@ -82,7 +86,7 @@ class _LoanTypeState extends State<LoanType> {
                               SizedBox(
                                 height: height * 0.024,
                               ),
-                              button(height*0.08, width, () {
+                              button(height * 0.08, width, () {
                                 setState(() {
                                   loanType = "SME's Loan";
                                 });
@@ -92,14 +96,10 @@ class _LoanTypeState extends State<LoanType> {
                         )),
                   ],
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: height * 0.7),
-                  child: Image.asset('assets/images/vector.png'),
-                ),
-              ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
