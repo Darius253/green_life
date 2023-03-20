@@ -8,7 +8,7 @@ export const register  =async (req:Request , res:Response) => {
     
 
  //register user
-const registration =  new Registration(req.body) ; 
+const registration =  new Registration({...req.body , user:req.user?.id}) ; 
 
 
 await registration.save(); 
@@ -19,9 +19,9 @@ const user =  await User.findById(req.user.id) ;
     throw new BadAuthError("user does not exist" , 404);
    }
 
- user?.set("registered" , true);
 
 
+   user.set("registered", true);
  
 
 res.status(201).send({

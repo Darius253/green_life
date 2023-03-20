@@ -1,3 +1,4 @@
+import { types } from '@babel/core';
 import  {Types} from 'mongoose'
 import { Type } from 'typescript';
 export interface Iuser{
@@ -63,7 +64,7 @@ export enum Source{
 }
 export interface Iregistration{
 
-    fullName: string;
+    fullname: string;
     gender: gender ; 
     age:number;
     maritalStatus: MaritalStatus , 
@@ -88,7 +89,7 @@ export interface Iregistration{
     amountApproved:number ;
     defaulted: response; 
     NoMonthsDefaulted:number ;
-
+     user:Types.ObjectId
 
 }
 
@@ -100,6 +101,68 @@ export interface Iguarantor{
     phoneNumber:String ; 
      
 
+
+
+}
+
+
+export  enum Role{
+    Admin ="Admin" , 
+    Client = "Client", 
+    Agent = "Agent"
+} 
+
+export interface  IAdmin{
+
+ 
+    FullName:string ;
+    email:string; 
+    password:string ; 
+    role:Role.Admin
+    Phonenumber:String
+
+}
+
+
+export enum loanStatus{
+
+    pending = "pending",
+    approved= "approved",
+    accepted ="accepted" ,
+    paid = "paid" , 
+    defaulted= "defaulted"
+} 
+
+
+export interface ILoan{
+
+principal:number ;
+interestrate:number; 
+charges:number ;
+LoanTerm:Date ; 
+loanStatus:  loanStatus;
+AmountToBePaid:number ; 
+AmountPaid:number ; 
+AmountRemained:number ; 
+client:Types.ObjectId ; 
+Guarantors:Types.DocumentArray<Types.ObjectId>
+DateApproved:Date ;
+DateAccepted:Date ; 
+DatePaid:Date;
+
+
+
+}
+
+export interface IAPR{
+
+    interestRate:number ; 
+    charges:number ; 
+}
+
+
+export interface IAprMethods{
+calcApr(value:number):number ; 
 
 
 }

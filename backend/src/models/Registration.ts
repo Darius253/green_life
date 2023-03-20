@@ -4,7 +4,7 @@ import {response , EducationLevel, employmentStatus, gender, Iregistration, Mari
 
 //creating the registration schema 
 const registrationSchema = new Schema<Iregistration>({
-  fullName: { type: String, required: true },
+  fullname: { type: String, required: true },
   gender: { type: String, enum: Object.values(gender), required: true },
   age: { type: Number, required: true },
   maritalStatus: {
@@ -32,7 +32,7 @@ const registrationSchema = new Schema<Iregistration>({
     required: true,
     enum: Object.values(employmentStatus),
   },
-  Occupation: { type: String },
+  Occupation: { type: String ,default:null },
   Employer: { type: String, default: null },
   Income: { type: Number, default: null },
   Savings: { type: Number, default: null },
@@ -52,6 +52,7 @@ const registrationSchema = new Schema<Iregistration>({
   loanApproved: { type: String, enum: Object.values(response) },
   defaulted: { type: String, enum: Object.values(response) },
   NoMonthsDefaulted: { type: Number, default: null },
+  user:{type:Schema.Types.ObjectId , ref:"USER" , required:true}
 });
 
 
