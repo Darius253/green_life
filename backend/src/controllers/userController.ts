@@ -1,6 +1,8 @@
 import  {Request , Response} from 'express'
-import  {User} from  '@models/User'  ; 
-import { BadAuthError } from '@utils/BadAuthError';
+import  {User} from  '../models/User'  ; 
+// import  {User} from  '@models/User'  ; 
+import { BadAuthError } from  '../utils/BadAuthError';
+// import { BadAuthError } from '@utils/BadAuthError';
 import  {compare} from 'bcrypt' ;
 import  jwt from 'jsonwebtoken' ; 
 import { Payload } from 'app.interface';
@@ -84,7 +86,7 @@ export async function signup(req:Request , res:Response){
 
 
           
-    res.status(200).send({
+    res.status(201).send({
          
         success:true 
     })  
@@ -191,8 +193,9 @@ res.status(200).send({
 export const requestAccessTokenMobile =  async (req:Request , res:Response)=>{
       console.log("f")
 const refreshToken =  req.headers["x-refresh-token"] as string ; 
-     
+     console.log(req.headers['accept'])
 //check if header exist with the request;
+console.log(refreshToken)
 if(!refreshToken){
   throw new BadAuthError("Authorization failed" , 401); 
 } 

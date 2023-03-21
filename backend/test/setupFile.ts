@@ -3,7 +3,8 @@ import request from 'supertest';
 import mongoose  from "mongoose";
 let mongo:any ;
 beforeAll(async () => {
-  process.env.JWt_KEY = "1212";
+  process.env.JWt_SECRET = "1212";
+  process.env.JWT_refresh = "1111"
   mongo = await MongoMemoryServer.create();
   const mongoUri = await mongo.getUri();
 

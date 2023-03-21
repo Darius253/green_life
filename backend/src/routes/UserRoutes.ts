@@ -1,7 +1,12 @@
 import  express from 'express';
+<<<<<<< HEAD
 import  {login,mobileLogin,requestAccessToken,requestAccessTokenMobile,signup} from '@controllers/userController';
 import {body} from 'express-validator' ; 
 import  {validate} from '@middlewares/validate'
+=======
+// import  {login,mobileLogin,requestAccessToken,requestAccessTokenMobile,signup} from '@controllers/userController';
+import  {login,mobileLogin,requestAccessToken,requestAccessTokenMobile,signup} from '../controllers/userController';
+>>>>>>> d5bb21f4e05748c8e56ee8fe0c8760baf535a6b4
 const Router = express.Router();
 
 
