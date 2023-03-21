@@ -3,9 +3,13 @@
 export class BadAuthError extends Error{
 
 
-       constructor(public message:string , public code:number ){
+       constructor(public message:string , public statusCode:number ){
 
-             super(message)
+
+            super(message) ;
+
+
+            Object.setPrototypeOf(this , BadAuthError.prototype)
        }
 
 
@@ -15,8 +19,10 @@ export class BadAuthError extends Error{
           
         return  {
 
-            mesage:this.message ,
-            statusCode:this.code
+            msg:this.message ,
+            param:"" ,
+             value:''
+            
         }
 
 

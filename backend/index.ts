@@ -1,6 +1,6 @@
 import { app } from "./src/app";
 import  mongoose from 'mongoose';
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 import "dotenv/config"
 
 (
@@ -21,15 +21,9 @@ async () => {
 
 const conn =  await mongoose.connect(process.env.MONGO_URI) ; 
    console.log(conn.connection.host);
-    
- process.on("SIGTERM" , async ()=>{
-        
-  await conn.connection.close()
- }) 
 
-  process.on("SIGINT", async () => {
-    await conn.connection.close();
-  }); 
+
+   
 
 app.listen(PORT, () => {
   console.log("Sever opened");

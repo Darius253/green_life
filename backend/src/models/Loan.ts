@@ -13,7 +13,7 @@ const loanSchema = new mongoose.Schema<ILoan>({
     enum: Object.values(loanStatus),
     default: loanStatus.pending,
   },
-  AmountPaid: { type: Number, required: true, default: 0.0 },
+  AmountPaid: { type: Number, required: true, default: 0.00 },
   AmountToBePaid: { type: Number, required: true },
   AmountRemained: { type: Number, required: true },
   client: { type: Schema.Types.ObjectId, required: true, ref: "USER" },
@@ -40,11 +40,12 @@ loanSchema.pre("save" , function(next){
 const self =  this ; 
 
  if(self.isModified("principal")){
-     
-    let rate =  (self.interestrate /100) * this.principal ; 
-    console.log(rate) ; 
 
-    const Amount =  (rate + self.charges)  + this.principal ; 
+
+    const Amount: number =
+      self.principal +
+      self.principal * (self.interestrate / 100) * 1 +
+      self.principal * (self.charges / 100);
     this.set("AmountToBePaid" , Amount) ;  
     this.set("AmountRemained" ,Amount );
 

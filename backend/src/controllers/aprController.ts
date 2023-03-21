@@ -59,7 +59,7 @@ export const loanSummary = async (req:Request  ,res:Response) => {
     success:true ,data:{
          interestRate:apr.interestRate , 
          charges:apr.charges , 
-          amount
+          amount: +amount
     }
   })
 
