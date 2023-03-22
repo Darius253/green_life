@@ -6,6 +6,7 @@ import { BadAuthError } from  '../utils/BadAuthError';
 import  {compare} from 'bcrypt' ;
 import  jwt from 'jsonwebtoken' ; 
 import { Payload } from 'app.interface';
+import moment from 'moment';
   
 /* @ web app login controller for login in user returns 
 returns user details after checking if user exists.
@@ -22,18 +23,44 @@ export async function  login(req:Request , res:Response) {
         throw new  BadAuthError("Email or password is incorrect" , 401); 
      }
 
+   
     
-  //compare password  , with user's hashpassword.. send error if password is incorrect 
+  //  console.log(user.userLocked());//compare password  , with user's hashpassword.. send error if password is incorrect 
+
+   if(user.userLocked()){
+  
+ throw new BadAuthError("Account is locked.Try again "+moment().to(user.lock.expiresAt) , 401); 
+   }
         
   const isValid =  await compare(password , user.password) ;
 
   if(!isValid){
+  
+     user.lock.tries++ ;   
+     user.lock.expiresAt = user.lock.expiresAt
+       ? Math.round(
+           moment
+             .duration(moment(user.lock.expiresAt).diff(moment()))
+             .asMinutes()
+         ) <= 0
+         ? moment().add(process.env.lock_expiry!, "minutes").toDate()
+         : moment(user.lock.expiresAt)
+             .add(process.env.lock_expiry!, "minutes")
+             .toDate()
+       : moment().add(process.env.lock_expiry!, "minutes").toDate();
+
+  await user.save()
+
     throw new BadAuthError("Email or password is incorrect", 401); 
       
   }
     
        //creat two jwt one as a refreshToken  and one as an accessToken
   //create a jwt for user   
+  user.lock.tries = 0 ; 
+  user.lock.expiresAt= null; 
+
+  await user.save() ;
    const accessToken =  jwt.sign({id:user._id, email:user.email} , process.env.JWT_SECRET! , {expiresIn:"15m"}) ; 
  const refreshToken = jwt.sign({id:user._id , email:user.email} , process.env.JWT_refresh! , {expiresIn:"1hr"}) ;
   //if its from the web app set an http only cookie  
@@ -78,7 +105,10 @@ export async function signup(req:Request , res:Response){
 
  //create and save user
      const user =  new User({
-        name , email , phoneNumber  , password
+        name , email , phoneNumber  , password , lock:{
+          tries:0 ,
+            
+        }
       }) 
 
 

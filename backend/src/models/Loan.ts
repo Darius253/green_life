@@ -6,7 +6,9 @@ const loanSchema = new mongoose.Schema<ILoan>({
   principal: { type: Number, required: true, min: 0 },
   interestrate: { type: Number, required: true, min: 0 },
   charges: { type: Number, required: true, min: 0 },
-  LoanTerm: { type: Date, required: true, defaul: null },
+  loanType:{type:String ,required:true} ,
+  repaymentDate: { type: Date, required: true, defaul: null },
+  repaymentPeriod:{type:Number ,required:true} ,
   loanStatus: {
     type: String,
     required: true,
@@ -14,8 +16,8 @@ const loanSchema = new mongoose.Schema<ILoan>({
     default: loanStatus.pending,
   },
   AmountPaid: { type: Number, required: true, default: 0.00 },
-  AmountToBePaid: { type: Number, required: true },
-  AmountRemained: { type: Number, required: true },
+  repaymentAmount: { type: Number, required: true },
+  AmountOwed: { type: Number, required: true },
   client: { type: Schema.Types.ObjectId, required: true, ref: "USER" },
   Guarantors: [
     { type: Schema.Types.ObjectId, required: true, ref: "Guarantor" },
@@ -46,8 +48,8 @@ const self =  this ;
       self.principal +
       self.principal * (self.interestrate / 100) * 1 +
       self.principal * (self.charges / 100);
-    this.set("AmountToBePaid" , Amount) ;  
-    this.set("AmountRemained" ,Amount );
+    this.set("repaymentAmount" , Amount) ;  
+    this.set("AmountOwed" ,Amount );
 
  }
  

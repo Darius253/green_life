@@ -1,17 +1,29 @@
-import  {Schema , model} from 'mongoose' ; 
-import  {Iuser} from './models.interface'; 
-import  {hash  ,genSalt} from 'bcrypt'
+import  {Schema , model ,Model, VirtualType} from 'mongoose' ; 
+import  {Iuser, userlock ,Userclass} from './models.interface'; 
+import  {hash  ,genSalt} from 'bcrypt' ;
+import  moment from 'moment';
+
+const lock = new Schema<userlock>({
+   
+  tries:{type:Number, required:true , default:0} , 
+  expiresAt:{type:Date , default:null}
+  
+   
+})
 
 
 
-const userSchema = new Schema<Iuser>({
+type userModel =  Model<  Iuser, {}, Userclass>  ; 
+
+const userSchema = new Schema<Iuser , Userclass , userModel>({
   
      
 name:{type:String , required:true} , 
 phoneNumber:{type:String , required:true  ,unique:true} , 
 email:{type:String, required:true , unique:true},
 registered:{type:Boolean , default:false , required:true} , 
-
+verified:{type:Boolean , default:false , required:true} , 
+lock:lock , 
 password:{type:String , required:true }
 
 } , {
@@ -21,8 +33,40 @@ password:{type:String , required:true }
              delete ret.password ;
              delete ret._id ;
          },
-    }
+       
+    } ,
+  
+      
+    
+ 
 })
+
+
+
+userSchema.method("userLocked" , function(this:Iuser){
+//fetch the expired time
+ let x =  moment(this.lock.expiresAt ) 
+ //fetch the present
+ let  y=  moment() ; 
+
+//  console.log(x.diff(y))
+//  console.log("dere", Math.round(moment.duration(x.diff(y)).asMinutes()));
+
+//find the duration between the expiry time and the present time..
+//if the lock has expired return true
+ if (Math.round(moment.duration(x.diff(y)).asMinutes())<=0){
+  // console.log("de")
+  return false ; 
+ }
+
+//  console.log(moment().to(this.lock.expiresAt))
+// console.log(this.lock.tries, parseInt(process.env.locked_tries!));
+   return this.lock.tries > parseInt(process.env.locked_tries!);
+
+
+
+})
+
 
      
 
@@ -37,5 +81,11 @@ userSchema.pre("save" ,  async function(next){
 
 }) ; 
 
+// userSchema.virtual("userLocked").get(function(){
+//   return false ;
+// })
 
-export const User =  model("USER" , userSchema);
+export const User =  model<Iuser , userModel>("USER" , userSchema);
+
+
+

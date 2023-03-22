@@ -7,7 +7,7 @@ export function errorHandler(err:any , req:Request , res:Response , next:NextFun
   
 if(err instanceof ValidationErrors  || err instanceof BadAuthError){
 
-    res.status(err.statusCode).send({
+   return res.status(err.statusCode).send({
         success:false ,
         message:err.serialize()
     })
