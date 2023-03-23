@@ -37,17 +37,16 @@ export async function  login(req:Request , res:Response) {
   if(!isValid){
   
      user.lock.tries++ ;   
-     user.lock.expiresAt = user.lock.expiresAt
-       ? Math.round(
-           moment
-             .duration(moment(user.lock.expiresAt).diff(moment()))
-             .asMinutes()
-         ) <= 0
-         ? moment().add(process.env.lock_expiry!, "minutes").toDate()
-         : moment(user.lock.expiresAt)
-             .add(process.env.lock_expiry!, "minutes")
-             .toDate()
-       : moment().add(process.env.lock_expiry!, "minutes").toDate();
+
+     if (user.lock.tries > parseInt(process.env.locked_tries!)+1){
+      user.lock.expiresAt = moment()
+        .add(process.env.lock_expiry_tries!, "minutes")
+        .toDate();
+     }
+      else  user.lock.expiresAt = moment()
+         .add(process.env.lock_expiry!, "minutes")
+         .toDate();
+     
 
   await user.save()
 
@@ -60,7 +59,154 @@ export async function  login(req:Request , res:Response) {
   user.lock.tries = 0 ; 
   user.lock.expiresAt= null; 
 
+
+
+ 
+
+  //check if otp  max has been reached and throw error
+    if(user.otpLocked()) {
+
+      await user.save() ;
+      throw new BadAuthError(
+        "otp limit reached. Try again " + moment().to(user.otpLock.expiresAt),
+        401
+      );
+    }
+
+  //generate otp 
+ const otp  = Math.floor(100000 + Math.random() *  900000) ; 
+
+ 
+  //set otp to user  
+  user.otp =  otp ; 
+  
+
+
+   
+
+   await user.save() ; 
+  
+
+//    const accessToken =  jwt.sign({id:user._id, email:user.email} , process.env.JWT_SECRET! , {expiresIn:"15m"}) ; 
+//  const refreshToken = jwt.sign({id:user._id , email:user.email} , process.env.JWT_refresh! , {expiresIn:"1hr"}) ;
+//   //if its from the web app set an http only cookie  
+      
+
+//             //create an http only cookie containing the refreshToken
+//     res.cookie("refreshToken" , refreshToken , {httpOnly:true , signed:true}) ; 
+//       return res.status(200).send({
+//        success: true,
+//        data: {
+//          user,
+//          accessToken
+//        }
+//      });
+    
+//send otp to user for verification  
+
+
+res.send({
+  success:true ,  data:{
+    otp , userId:user._id 
+  }
+})
+
+
+
+}
+
+
+export async function resendOtp(req:Request , res:Response){
+
+
+  const  {userId}  = req.body ; 
+
+  const user=  await User.findById(userId) ; 
+
+  if(!user){
+    throw new BadAuthError("user not found ", 400) ;
+
+
+  }
+
+
+  //check if max otp tries have been reached and throw an error ;
+   if (user.otpLocked()) {
+     
+     throw new BadAuthError("otp limit reached. Try again in "+moment().to(user.otpLock.expiresAt), 401);
+   }
+  //generate new otp  ; 
+
+  const otp  = Math.floor(100000 + Math.random() * 900000) ;  
+
+  user.otp =  otp ; 
+user.otpLock.otpTries ++ ;
+ user.otpLock.expiresAt =  moment().add(process.env.otp_expiry , "minutes").toDate()
+ 
   await user.save() ;
+
+
+  res.send({
+    success:true , data:{
+      otp , userId:user._id
+    }
+  })
+
+}
+
+
+export async function verifyOtp(req:Request , res:Response) {
+  
+
+  const {otp , userId} =  req.body ; 
+   
+
+
+  const user =  await User.findById(userId) ; 
+
+ //check if user exists;
+   if(!user){
+   
+    throw new BadAuthError("User not found" , 400) ; 
+   }
+
+
+   //check if otp is correct
+  if(user.otp !== otp){
+
+    throw new BadAuthError("Wrong otp" , 401) ;
+  }
+
+  //set otptries  to zero 
+
+
+  user.otpLock.otpTries = 0 ; 
+  user.otpLock.expiresAt =  null; 
+user.otp = null;
+  
+
+  //if user is not verified verify user 
+   if(!user.verified){
+        
+   user.verified=  true ; 
+     
+   await user.save()
+   return res.send({
+    success:true , data:{
+      message:"user verified"
+    }
+   })
+    
+     
+
+   }
+
+
+   await user.save()
+//if user is already verified just send user
+
+
+
    const accessToken =  jwt.sign({id:user._id, email:user.email} , process.env.JWT_SECRET! , {expiresIn:"15m"}) ; 
  const refreshToken = jwt.sign({id:user._id , email:user.email} , process.env.JWT_refresh! , {expiresIn:"1hr"}) ;
   //if its from the web app set an http only cookie  
@@ -68,19 +214,80 @@ export async function  login(req:Request , res:Response) {
 
             //create an http only cookie containing the refreshToken
     res.cookie("refreshToken" , refreshToken , {httpOnly:true , signed:true}) ; 
-      return res.status(200).send({
-       success: true,
-       data: {
-         user,
-         accessToken
-       }
-     });
-   
+   res.send({
+    success:true , data:{
+      user , accessToken
+    }
+   })
 
-
-
+ 
 }
 
+
+
+
+export async function verifyMobileOtp(req: Request, res: Response) {
+  const { otp, userId } = req.body;
+
+  const user = await User.findById(userId);
+
+  //check if user exists;
+  if (!user) {
+    throw new BadAuthError("User not found", 400);
+  }
+
+  //check if otp is correct
+  if (user.otp !== otp) {
+    throw new BadAuthError("Wrong otp", 401);
+  }
+
+  //set otptries  to zero
+
+  user.otpLock.otpTries = 0;
+  user.otpLock.expiresAt = null;
+  user.otp = null;
+
+  //if user is not verified verify user
+  if (!user.verified) {
+    user.verified = true;
+
+    await user.save();
+    return res.send({
+      success: true,
+      data: {
+        message: "user verified",
+    
+      },
+    });
+  }
+
+  await user.save();
+  //if user is already verified just send user
+
+    const accessToken = jwt.sign(
+     { id: user._id, email: user.email  },
+     process.env.JWT_SECRET!,
+     { expiresIn: "15m" }
+   );
+   const refreshToken = jwt.sign(
+     { id: user._id, email: user.email },
+     process.env.JWT_refresh!,
+     { expiresIn: "1hr" }
+   );
+  //if its from the web app set an http only cookie
+
+  //send the user , accessToken and refreshToken to the user
+  res.status(200).send({
+     success: true,
+     data: {
+       user,
+       accessToken,
+       refreshToken
+     },
+   });
+
+  
+}
 
 /*@ signup controller creates a user and returns success:true message 
 it validates the user information as well  
@@ -108,17 +315,31 @@ export async function signup(req:Request , res:Response){
         name , email , phoneNumber  , password , lock:{
           tries:0 ,
             
+        } ,otpLock:{
+          otpTries:0 ,
         }
-      }) 
+      })  
 
 
-      await user.save() ; 
+       
+ 
+      
+ 
+
+       //generate otp  
+       const otp  =  Math.floor(100000 + Math.random() * 900000) ; 
 
 
-          
+       user.otp = otp ; 
+
+       await user.save() ;
+          //send user otp 
     res.status(201).send({
          
-        success:true 
+        success:true  ,
+        data:{
+          otp , userId:user._id
+        }
     })  
 
 
@@ -126,51 +347,100 @@ export async function signup(req:Request , res:Response){
 
  //@ mobileLogin for users  with mobile apps ,create a refreshToken and accessToken
  //sends both to user .
-export const mobileLogin =async (req:Request , res:Response) => {
-    
-     const { email, password } = req.body;
+// export const mobileLogin =async (req:Request , res:Response) => {
+//   const { email, password } = req.body;
 
-     //check if user exist
-     const user = await User.findOne({ email });
+//   //check if user exist
+//   const user = await User.findOne({ email });
 
-     if (!user) {
-       throw new BadAuthError("Email or password is incorrect", 401);
-     }
+//   if (!user) {
+//     throw new BadAuthError("Email or password is incorrect", 401);
+//   }
 
-     //compare password  , with user's hashpassword.. send error if password is incorrect
+//   //check if user account is locked
 
-     const isValid = await compare(password, user.password);
+//   if (user.userLocked()) {
+//     throw new BadAuthError(
+//       "Account is locked. Try again " + moment().to(user.lock.expiresAt),
+//       401
+//     );
+//   }
 
-     if (!isValid) {
-       throw new BadAuthError("Email or password is incorrect", 401);
-     }
+//   //compare password  , with user's hashpassword.. send error if password is incorrect
 
-     //creat two jwt one as a refreshToken  and one as an accessToken
-     //create a jwt for user
-     const accessToken = jwt.sign(
-       { id: user._id, email: user.email  },
-       process.env.JWT_SECRET!,
-       { expiresIn: "15m" }
-     );
-     const refreshToken = jwt.sign(
-       { id: user._id, email: user.email },
-       process.env.JWT_refresh!,
-       { expiresIn: "1hr" }
-     );
-     //if its from the web app set an http only cookie
+//   const isValid = await compare(password, user.password);
 
-    //send the user , accessToken and refreshToken to the user
-     return res.status(200).send({
-       success: true,
-       data: {
-         user,
-         accessToken,
-         refreshToken
-       },
-     });
-   
+//   if (!isValid) {
+//     user.lock.tries++;
+//     if (user.lock.tries > parseInt(process.env.locked_tries!) + 1) {
+//       user.lock.expiresAt = moment()
+//         .add(process.env.lock_expiry_tries!, "minutes")
+//         .toDate();
+//     } else
+//       user.lock.expiresAt = moment()
+//         .add(process.env.lock_expiry!, "minutes")
+//         .toDate();
 
-}
+//     await user.save();
+//     throw new BadAuthError("Email or password is incorrect", 401);
+//   }
+
+//   user.lock.tries = 0;
+//   user.lock.expiresAt = null;
+
+//   //check if otp max has been reached and throw error
+
+//   if (user.otpLocked()) {
+//     await user.save();
+
+//     throw new BadAuthError(
+//       "otp limit reached. Try again " + moment().to(user.otpLock.expiresAt),
+//       401
+//     );
+//   }
+
+//   //generate otp
+//   const otp = Math.floor(100000 + Math.random() * 900000);
+
+//   //set otp to user
+//   user.otp = otp;
+
+//   await user.save();
+//   //creat two jwt one as a refreshToken  and one as an accessToken
+//   //create a jwt for user
+//   //  const accessToken = jwt.sign(
+//   //    { id: user._id, email: user.email  },
+//   //    process.env.JWT_SECRET!,
+//   //    { expiresIn: "15m" }
+//   //  );
+//   //  const refreshToken = jwt.sign(
+//   //    { id: user._id, email: user.email },
+//   //    process.env.JWT_refresh!,
+//   //    { expiresIn: "1hr" }
+//   //  );
+//   //if its from the web app set an http only cookie
+
+//   //send the user , accessToken and refreshToken to the user
+//   //  return res.status(200).send({
+//   //    success: true,
+//   //    data: {
+//   //      user,
+//   //      accessToken,
+//   //      refreshToken
+//   //    },
+//   //  });
+
+
+//   res.send({
+//     success: true,
+//     data: {
+//       otp,
+//       userId: user._id,
+//     },
+//   });
+
+
+// }
 
 
  //request for accessToken with the refresh token cookie
@@ -221,7 +491,7 @@ res.status(200).send({
  //request for accessToken with the refresh token header
  //return error if refresh token has expired 
 export const requestAccessTokenMobile =  async (req:Request , res:Response)=>{
-      console.log("f")
+      
 const refreshToken =  req.headers["x-refresh-token"] as string ; 
      console.log(req.headers['accept'])
 //check if header exist with the request;

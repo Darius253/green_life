@@ -1,5 +1,5 @@
-import  {Schema , model ,Model, VirtualType} from 'mongoose' ; 
-import  {Iuser, userlock ,Userclass} from './models.interface'; 
+import  mongoose, {Schema , model ,Model, VirtualType} from 'mongoose' ; 
+import  {Iuser, userlock ,Userclass, otpLock} from './models.interface'; 
 import  {hash  ,genSalt} from 'bcrypt' ;
 import  moment from 'moment';
 
@@ -10,7 +10,14 @@ const lock = new Schema<userlock>({
   
    
 })
+//todo
+//update password controller . forgot password and change number
 
+const otplock =  new Schema<otpLock>({
+
+   otpTries:{type:Number, required:true   ,default:0}  , 
+   expiresAt:{type:Date, default:null}
+})
 
 
 type userModel =  Model<  Iuser, {}, Userclass>  ; 
@@ -24,6 +31,8 @@ email:{type:String, required:true , unique:true},
 registered:{type:Boolean , default:false , required:true} , 
 verified:{type:Boolean , default:false , required:true} , 
 lock:lock , 
+otp: {type:Number , default:null} ,
+otpLock:otplock,
 password:{type:String , required:true }
 
 } , {
@@ -67,6 +76,30 @@ userSchema.method("userLocked" , function(this:Iuser){
 
 })
 
+
+userSchema.method("otpLocked" , function(){
+    // console.log(this)
+  
+  let x = moment(this.otpLock.expiresAt);
+  let y = moment()
+
+  //check if the otp lock has expired and return false;
+  if (Math.round(moment.duration(x.diff(y)).asMinutes()) <= 0 ){
+          
+    // this.set("otplock.otpTries" , 0) ;
+    // this.set("otplock.expiresAt" ,  null) ;
+        
+return false;
+  };
+
+
+
+  //check if the opt tries is greater than the approved otp tries
+  return this.otpLock.otpTries > parseInt(process.env.otp_tries!); 
+
+
+
+})
 
      
 

@@ -1,5 +1,5 @@
 import  {Schema , model} from  'mongoose'
-import { IAdmin, Role } from './models.interface' ; 
+import { IAdmin, userRole } from './models.interface' ; 
 import {hash ,genSalt} from 'bcrypt'
 
 
@@ -11,7 +11,7 @@ const AdminSchema =  new Schema<IAdmin>({
     email:{type:String , required:true , unique:true}, 
     password:{type:String , required:true}  , 
     Phonenumber:{type:String , required:true, unique:true} ,
-    role:{type:String , enum:Object.values(Role)  , default:Role.Admin}
+    role:{type:String , enum:Object.values(userRole)  , default:userRole.Admin}
 
      
 

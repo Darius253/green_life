@@ -1,5 +1,5 @@
 import  express from 'express';
-import  {login,mobileLogin,requestAccessToken,requestAccessTokenMobile,signup} from '@controllers/userController';
+import  {login,requestAccessToken,requestAccessTokenMobile,resendOtp,signup, verifyMobileOtp, verifyOtp} from '@controllers/userController';
 import {body} from 'express-validator' ; 
 import  {validate} from '@middlewares/validate'
 const Router = express.Router();
@@ -45,9 +45,8 @@ Router.route("/api/auth/signup").post(
 );
 
 
-Router.route("/api/auth/mobileLogin").post(
-  [body("email").isEmail().normalizeEmail(), body("password").notEmpty().isLength({min:8 ,max:100})],
- validate , mobileLogin
+Router.route("/api/auth/verifymobileotp").post(
+  verifyMobileOtp
 );
 
 
@@ -56,4 +55,7 @@ Router.route("/api/auth/requestMobile")
 
 Router.route("/api/auth/request").get(requestAccessToken); 
 
+
+Router.route("/api/auth/verifyOtp").post(verifyOtp)
+Router.route("/api/auth/resendOtp").post(resendOtp); 
 export  {Router  as UserRouter};

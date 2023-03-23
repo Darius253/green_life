@@ -8,18 +8,30 @@ export interface Iuser {
   registered: boolean;
   registration: Types.ObjectId;
   verified:boolean ;
-  lock:userlock
+  lock:userlock ; 
+  otpLock:otpLock ;
+  otp : number | null
 }
+
+
+
 
 export interface  Userclass {
  
-  userLocked():boolean
+  userLocked():boolean ;
+  otpLocked():boolean;
 }
 export interface userlock{
 
   tries:number ; 
   expiresAt:Date |null
 
+}
+
+
+export interface otpLock{
+  otpTries:number;
+  expiresAt:Date |null
 }
 
 export enum gender {
@@ -107,9 +119,9 @@ export interface Iguarantor {
   phoneNumber: String;
 }
 
-export enum Role {
+export enum userRole {
   Admin = "Admin",
-  Client = "Client",
+  regionalAgent = "regionalAgent",
   Agent = "Agent",
 }
 
@@ -117,7 +129,7 @@ export interface IAdmin {
   FullName: string;
   email: string;
   password: string;
-  role: Role.Admin;
+  role: userRole;
   Phonenumber: String;
 }
 
