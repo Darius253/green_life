@@ -1,11 +1,12 @@
 import express from "express";
 import "express-async-errors";
 import logger from 'morgan';
-import  {UserRouter} from './routes/UserRoutes';
+import  {clientRouter} from './routes/clientRoutes';
 // import  {UserRouter} from '@routes/UserRoutes';
 import "dotenv/config"
 import { errorHandler } from "./middlewares/errorHandler";
 import cookieParser from "cookie-parser";
+import { userRouter } from "@routes/userRoutes";
 // import { registrationRouter } from "./routes/registrationRoutes";
 const app = express();
 
@@ -18,7 +19,8 @@ if(process.env.NODE_ENV === "test"){
 app.use(cookieParser("121121212"))
 
 
-app.use(UserRouter);
+app.use(clientRouter);
+app.use(userRouter)
 // app.use(registrationRouter) ; 
 
 app.use(errorHandler);

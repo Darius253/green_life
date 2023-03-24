@@ -1,5 +1,5 @@
 import  express from 'express';
-import  {login,requestAccessToken,requestAccessTokenMobile,resendOtp,signup, verifyMobileOtp, verifyOtp} from '@controllers/userController';
+import  {login,requestAccessToken,requestAccessTokenMobile,resendOtp,signup, verifyMobileOtp, verifyOtp} from '@controllers/clientController';
 import {body} from 'express-validator' ; 
 import  {validate} from '@middlewares/validate'
 const Router = express.Router();
@@ -58,4 +58,4 @@ Router.route("/api/auth/request").get(requestAccessToken);
 
 Router.route("/api/auth/verifyOtp").post(verifyOtp)
 Router.route("/api/auth/resendOtp").post(resendOtp); 
-export  {Router  as UserRouter};
+export  {Router  as clientRouter};

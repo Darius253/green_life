@@ -2,29 +2,33 @@ import { Document, Types } from "mongoose";
 import { Type } from "typescript";
 
 
-export interface Iauth{
-  name?:string ; 
-  email:string ;
-  phoneNumber:string ; 
-  lock:userlock ;
-  otpLock:otpLock ; 
-  password:string
-  otp:number |null;
+export interface Iauth {
+  name?: string;
+  email: string;
+  phoneNumber: string;
+  lock: userlock;
+  otpLock: otpLock;
+  password: string;
+  otp: number | null;
+  verified: boolean;
+  role: userRole;
 }
 export interface Iclient  extends Iauth{
   name: string;
-  email: string;
-  phoneNumber: string;
-  password: string;
+  
+
+
   registered: boolean;
   registration: Types.ObjectId;
-  verified:boolean ;
-  lock:userlock ; 
-  otpLock:otpLock ;
-  otp : number | null
+ 
 }
 
 
+export interface Iuser  extends Iauth{
+  FullName: string;
+
+  
+}
 
 
 export interface  Authclass {
@@ -131,18 +135,11 @@ export interface Iguarantor {
 }
 
 export enum userRole {
-  Admin = "Admin",
-  regionalAgent = "regionalAgent",
-  Agent = "Agent",
+  ADMIN= "ADMIN",
+  REGIONALAGENT = "REGIONALAGENT",
+  AGENT = "AGENT",
 }
 
-export interface IAdmin {
-  FullName: string;
-  email: string;
-  password: string;
-  role: userRole;
-  Phonenumber: String;
-}
 
 export enum loanStatus {
   pending = "pending",
