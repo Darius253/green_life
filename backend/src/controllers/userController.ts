@@ -1,5 +1,7 @@
+import { Iuser } from '@models/models.interface';
 import  {Request , Response} from 'express'
 import  {User} from  '../models/User'  ; 
+import  {Auth} from './authController'
 // import  {User} from  '@models/User'  ; 
 import { BadAuthError } from  '../utils/BadAuthError';
 // import { BadAuthError } from '@utils/BadAuthError';
@@ -11,105 +13,109 @@ import moment from 'moment';
 /* @ web app login controller for login in user returns 
 returns user details after checking if user exists.
 */
-
+const customerAuth =  new Auth<Iuser>() ; 
 export async function  login(req:Request , res:Response) {
 
-    const  {email ,password} = req.body ; 
 
-     //check if user exist 
-   const user  = await User.findOne({email}) ; 
 
-     if(!user){
-        throw new  BadAuthError("Email or password is incorrect" , 401); 
-     }
+
+  return customerAuth.login(req , res, User) ; 
+//     const  {email ,password} = req.body ; 
+
+//      //check if user exist 
+//    const user  = await User.findOne({email}) ; 
+
+//      if(!user){
+//         throw new  BadAuthError("Email or password is incorrect" , 401); 
+//      }
 
    
     
-  //  console.log(user.userLocked());//compare password  , with user's hashpassword.. send error if password is incorrect 
+//   //  console.log(user.userLocked());//compare password  , with user's hashpassword.. send error if password is incorrect 
 
-   if(user.userLocked()){
+//    if(user.userLocked()){
   
- throw new BadAuthError("Account is locked.Try again "+moment().to(user.lock.expiresAt) , 401); 
-   }
+//  throw new BadAuthError("Account is locked.Try again "+moment().to(user.lock.expiresAt) , 401); 
+//    }
         
-  const isValid =  await compare(password , user.password) ;
+//   const isValid =  await compare(password , user.password) ;
 
-  if(!isValid){
+//   if(!isValid){
   
-     user.lock.tries++ ;   
+//      user.lock.tries++ ;   
 
-     if (user.lock.tries > parseInt(process.env.locked_tries!)+1){
-      user.lock.expiresAt = moment()
-        .add(process.env.lock_expiry_tries!, "minutes")
-        .toDate();
-     }
-      else  user.lock.expiresAt = moment()
-         .add(process.env.lock_expiry!, "minutes")
-         .toDate();
+//      if (user.lock.tries > parseInt(process.env.locked_tries!)+1){
+//       user.lock.expiresAt = moment()
+//         .add(process.env.lock_expiry_tries!, "minutes")
+//         .toDate();
+//      }
+//       else  user.lock.expiresAt = moment()
+//          .add(process.env.lock_expiry!, "minutes")
+//          .toDate();
      
 
-  await user.save()
+//   await user.save()
 
-    throw new BadAuthError("Email or password is incorrect", 401); 
+//     throw new BadAuthError("Email or password is incorrect", 401); 
       
-  }
+//   }
     
-       //creat two jwt one as a refreshToken  and one as an accessToken
-  //create a jwt for user   
-  user.lock.tries = 0 ; 
-  user.lock.expiresAt= null; 
-
+//        //creat two jwt one as a refreshToken  and one as an accessToken
+//   //create a jwt for user   
+//   user.lock.tries = 0 ; 
+//   user.lock.expiresAt= null; 
+  
 
 
  
 
-  //check if otp  max has been reached and throw error
-    if(user.otpLocked()) {
+//   //check if otp  max has been reached and throw error
+//     if(user.otpLocked()) {
 
-      await user.save() ;
-      throw new BadAuthError(
-        "otp limit reached. Try again " + moment().to(user.otpLock.expiresAt),
-        401
-      );
-    }
+//       await user.save() ;
+//       throw new BadAuthError(
+//         "otp limit reached. Try again " + moment().to(user.otpLock.expiresAt),
+//         401
+//       );
+//     }
 
-  //generate otp 
- const otp  = Math.floor(100000 + Math.random() *  900000) ; 
+//   //generate otp 
+//  const otp  = Math.floor(100000 + Math.random() *  900000) ; 
 
  
-  //set otp to user  
-  user.otp =  otp ; 
+//   //set otp to user  
+//   user.otp =  otp ; 
   
 
 
    
 
-   await user.save() ; 
+//    await user.save() ; 
   
 
-//    const accessToken =  jwt.sign({id:user._id, email:user.email} , process.env.JWT_SECRET! , {expiresIn:"15m"}) ; 
-//  const refreshToken = jwt.sign({id:user._id , email:user.email} , process.env.JWT_refresh! , {expiresIn:"1hr"}) ;
-//   //if its from the web app set an http only cookie  
+// //    const accessToken =  jwt.sign({id:user._id, email:user.email} , process.env.JWT_SECRET! , {expiresIn:"15m"}) ; 
+// //  const refreshToken = jwt.sign({id:user._id , email:user.email} , process.env.JWT_refresh! , {expiresIn:"1hr"}) ;
+// //   //if its from the web app set an http only cookie  
       
 
-//             //create an http only cookie containing the refreshToken
-//     res.cookie("refreshToken" , refreshToken , {httpOnly:true , signed:true}) ; 
-//       return res.status(200).send({
-//        success: true,
-//        data: {
-//          user,
-//          accessToken
-//        }
-//      });
+// //             //create an http only cookie containing the refreshToken
+// //     res.cookie("refreshToken" , refreshToken , {httpOnly:true , signed:true}) ; 
+// //       return res.status(200).send({
+// //        success: true,
+// //        data: {
+// //          user,
+// //          accessToken
+// //        }
+// //      });
     
-//send otp to user for verification  
+// //send otp to user for verification  
 
 
-res.send({
-  success:true ,  data:{
-    otp , userId:user._id 
-  }
-})
+// res.send({
+//   success:true ,  data:{
+//     otp , userId:user._id 
+//   }
+// })
 
 
 
@@ -129,10 +135,12 @@ export async function resendOtp(req:Request , res:Response){
 
   }
 
-
+      user.otp = null; 
   //check if max otp tries have been reached and throw an error ;
    if (user.otpLocked()) {
-     
+      
+    await user.save() ; 
+  
      throw new BadAuthError("otp limit reached. Try again in "+moment().to(user.otpLock.expiresAt), 401);
    }
   //generate new otp  ; 

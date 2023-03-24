@@ -1,5 +1,5 @@
 import  mongoose, {Schema , model ,Model, VirtualType} from 'mongoose' ; 
-import  {Iuser, userlock ,Userclass, otpLock} from './models.interface'; 
+import  {Iclient, userlock ,Authclass, otpLock} from './models.interface'; 
 import  {hash  ,genSalt} from 'bcrypt' ;
 import  moment from 'moment';
 
@@ -20,9 +20,9 @@ const otplock =  new Schema<otpLock>({
 })
 
 
-type userModel =  Model<  Iuser, {}, Userclass>  ; 
+type clientModel =  Model<  Iclient, {}, Authclass>  ; 
 
-const userSchema = new Schema<Iuser , Userclass , userModel>({
+const clientSchema = new Schema<Iclient , Authclass , clientModel>({
   
      
 name:{type:String , required:true} , 
@@ -52,7 +52,7 @@ password:{type:String , required:true }
 
 
 
-userSchema.method("userLocked" , function(this:Iuser){
+clientSchema.method("userLocked" , function(this:Iclient){
 //fetch the expired time
  let x =  moment(this.lock.expiresAt ) 
  //fetch the present
@@ -77,7 +77,7 @@ userSchema.method("userLocked" , function(this:Iuser){
 })
 
 
-userSchema.method("otpLocked" , function(){
+clientSchema.method("otpLocked" , function(){
     // console.log(this)
   
   let x = moment(this.otpLock.expiresAt);
@@ -103,7 +103,7 @@ return false;
 
      
 
-userSchema.pre("save" ,  async function(next){
+clientSchema.pre("save" ,  async function(next){
      
    if(this.isModified("password")){
      const salt = await genSalt(12) ;
@@ -118,7 +118,7 @@ userSchema.pre("save" ,  async function(next){
 //   return false ;
 // })
 
-export const User =  model<Iuser , userModel>("USER" , userSchema);
+export const Client=  model<Iclient , clientModel>("USER" , clientSchema);
 
 
 

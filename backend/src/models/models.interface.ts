@@ -1,6 +1,17 @@
 import { Document, Types } from "mongoose";
 import { Type } from "typescript";
-export interface Iuser {
+
+
+export interface Iauth{
+  name?:string ; 
+  email:string ;
+  phoneNumber:string ; 
+  lock:userlock ;
+  otpLock:otpLock ; 
+  password:string
+  otp:number |null;
+}
+export interface Iclient  extends Iauth{
   name: string;
   email: string;
   phoneNumber: string;
@@ -16,7 +27,7 @@ export interface Iuser {
 
 
 
-export interface  Userclass {
+export interface  Authclass {
  
   userLocked():boolean ;
   otpLocked():boolean;
