@@ -168,11 +168,13 @@ export interface ILoan {
   DatePaid: Date;
 }
 
-export interface IAPR {
+export interface Ipolicy {
   interestRate: number;
-  charges: number;
+  noRegisterationAmountCap:number ;
+  noGurantorAmountCap:number ; 
+  personalloanAmountCap:number ; 
+  personalloanterm:number;
+
+
 }
 
-export interface IAprMethods {
-  calcApr(value: number): number;
-}

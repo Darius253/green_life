@@ -1,7 +1,7 @@
 import { Iclient } from "@models/models.interface";
 import { Request, Response } from "express";
 import { Client } from "../models/Client";
-import { Auth } from "./authController";
+import { Auth } from "../services/authService";
 // import  {User} from  '@models/User'  ;
 import { BadAuthError } from "../utils/BadAuthError";
 // import { BadAuthError } from '@utils/BadAuthError';
@@ -100,9 +100,7 @@ export async function login(req: Request, res: Response) {
 }
 
 export async function resendOtp(req: Request, res: Response) {
-
-
-  return customerAuth.resendOtp(req, res, Client); 
+  return customerAuth.resendOtp(req, res, Client);
   // const { userId } = req.body;
 
   // const user = await User.findById(userId);
@@ -143,9 +141,7 @@ export async function resendOtp(req: Request, res: Response) {
 }
 
 export async function verifyOtp(req: Request, res: Response) {
-
-
-  return  customerAuth.verifyOtp(req , res, Client) ;
+  return customerAuth.verifyOtp(req, res, Client);
   // const { otp, userId } = req.body;
 
   // const user = await User.findById(userId);
@@ -206,9 +202,7 @@ export async function verifyOtp(req: Request, res: Response) {
 }
 
 export async function verifyMobileOtp(req: Request, res: Response) {
-
-
-  return customerAuth.verifyMobileOtp(req , res, Client) ; 
+  return customerAuth.verifyMobileOtp(req, res, Client);
   // const { otp, userId } = req.body;
 
   // const user = await User.findById(userId);
@@ -272,9 +266,7 @@ export async function verifyMobileOtp(req: Request, res: Response) {
 it validates the user information as well  
 */
 export async function signup(req: Request, res: Response) {
-
-
-return customerAuth.signup(req,res , Client) ;
+  return customerAuth.signup(req, res, Client);
   // const { name, email, phoneNumber, password } = req.body;
   // //check if email is  available
   // const EmailExist = await User.findOne({ email });
@@ -417,8 +409,7 @@ return customerAuth.signup(req,res , Client) ;
 //request for accessToken with the refresh token cookie
 //return error if refresh token has expired
 export const requestAccessToken = async (req: Request, res: Response) => {
-
-  return customerAuth.requestAcceessToken(req,res,Client);
+  return customerAuth.requestAcceessToken(req, res, Client);
   // const { refreshToken } = req.signedCookies;
 
   // if (!refreshToken) {
@@ -458,8 +449,7 @@ export const requestAccessToken = async (req: Request, res: Response) => {
 //request for accessToken with the refresh token header
 //return error if refresh token has expired
 export const requestAccessTokenMobile = async (req: Request, res: Response) => {
-  
-  return customerAuth.requestMobileAccessToken(req , res, Client) ;
+  return customerAuth.requestMobileAccessToken(req, res, Client);
   // const refreshToken = req.headers["x-refresh-token"] as string;
   // console.log(req.headers["accept"]);
   // //check if header exist with the request;
