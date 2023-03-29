@@ -9,7 +9,7 @@ class MyListView extends StatefulWidget {
 
 class _MyListViewState extends State<MyListView> {
   int _selectedIndex = -1;
-  final List<String> _items = List.generate(10, (index) => 'Item $index');
+  final List<String> _items = List.generate(5, (index) => 'Item $index');
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +26,11 @@ class _MyListViewState extends State<MyListView> {
           child: Padding(
             padding: const EdgeInsets.all(5.0),
             child: Container(
-              height: 180,
-              width: 250,
+              height: MediaQuery.of(context).size.height *0.025,
+              width: MediaQuery.of(context).size.width *0.7,
               decoration: BoxDecoration(
-                 color: _selectedIndex == index ? Colors.green : Colors.grey,
-                 shape: BoxShape.rectangle,
-                 borderRadius: const BorderRadius.all(Radius.circular(12))
+                color: _selectedIndex == index ? Colors.green : Colors.grey,
+                borderRadius: BorderRadius.circular(20),
               ),
             ),
           ),

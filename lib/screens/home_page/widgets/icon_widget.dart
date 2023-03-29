@@ -14,12 +14,11 @@ class IconWidget extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: width * 0.12,
-            height: height * 0.060,
-            decoration: const BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.all(Radius.circular(15)),
-              color: Color.fromARGB(255, 139, 138, 138),
+            width: width * 0.2,
+            height: height * 0.08,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: const Color.fromARGB(255, 139, 138, 138),
             ),
             child: Padding(
               padding: const EdgeInsets.all(3.0),
@@ -40,7 +39,7 @@ class IconWidget extends StatelessWidget {
             child: Text(
               idatas.wname,
               textAlign: TextAlign.center,
-              style: const TextStyle(color: Color(0xfff898686), fontSize: 12),
+              style: const TextStyle(color: Colors.grey, fontSize: 12),
             ),
           )
         ],

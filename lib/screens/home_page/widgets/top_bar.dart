@@ -11,19 +11,11 @@ class TopBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.height;
     return Row(
-      
-      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          width: width * 0.02,
-        ),
         const CircleAvatar(
-          backgroundColor: Colors.white24,
-          radius: 20,
-          child: CircleAvatar(
-            backgroundImage: AssetImage('assets/images/avatar.png'),
-            radius: 16,
-          ),
+          backgroundImage: AssetImage('assets/images/avatar.png'),
+          radius: 16,
         ),
         SizedBox(
           width: width * 0.015,
@@ -35,7 +27,7 @@ class TopBar extends StatelessWidget {
               'Welcome',
               style: TextStyle(
                 fontSize: 14,
-                color: Color(0xFFFB2B2B2),
+                color: Color.fromARGB(211, 178, 178, 178),
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -47,22 +39,23 @@ class TopBar extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 15,
                 color: Colors.black,
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ],
         ),
-        SizedBox(
-          width: width * 0.12,
+        const Expanded(
+          child: SizedBox(),
         ),
         IconButton(
-          icon:  const Icon(
+          icon: const Icon(
             Icons.menu,
             color: Colors.black,
             size: 25,
-          ), onPressed: () { 
+          ),
+          onPressed: () {
             Scaffold.of(context).openDrawer();
-           },
+          },
         )
       ],
     );
