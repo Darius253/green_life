@@ -70,7 +70,9 @@ class HomeClient extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return HistoryCard(
                             hdatas: hdata[index],
-                            onTap: () {},
+                            onTap: () {
+                              Get.to(const NotificationPage());
+                            },
                           );
                         },
                       ),
