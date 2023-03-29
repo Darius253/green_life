@@ -7,6 +7,7 @@ import "dotenv/config"
 import { errorHandler } from "./middlewares/errorHandler";
 import cookieParser from "cookie-parser";
 import { userRouter } from "@routes/userRoutes";
+import { policyRouter } from "@routes/aprRoutes";
 // import { registrationRouter } from "./routes/registrationRoutes";
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(cookieParser("121121212"))
 
 app.use(clientRouter);
 app.use(userRouter)
+app.use(policyRouter)
 // app.use(registrationRouter) ; 
 
 app.use(errorHandler);

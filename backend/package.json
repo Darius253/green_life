@@ -35,7 +35,8 @@
     "@roots": ".",
     "@models/*": "models/*",
     "@routes/*": "routes/*",
-    "@controllers/*": "controllers/*"
+    "@controllers/*": "controllers/*" ,
+    "@services/*":"services/*"
   },
   "_moduleDirectories": [
     "node_modules_custom"
