@@ -14,8 +14,8 @@ class IconWidget extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: width * 0.2,
-            height: height * 0.08,
+            width: width * 0.15,
+            height: height * 0.078,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               color: const Color.fromARGB(255, 139, 138, 138),

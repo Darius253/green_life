@@ -22,6 +22,9 @@ export 'package:green_life/screens/notification/notification_page.dart';
 export 'package:green_life/screens/splash_screen.dart';
 
 
+export 'package:green_life/screens/home_page/clients_manager/clients_manager.dart';
+export 'package:green_life/screens/home_page/client/home_client.dart';
+
 //Widgets
 
 //pub.dev

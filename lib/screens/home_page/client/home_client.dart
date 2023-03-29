@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:green_life/screens/home_page/widgets/drawer_widget.dart';
 import 'package:green_life/shared/exports.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomeClient extends StatelessWidget {
+  const HomeClient({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +19,20 @@ class HomePage extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                 const TopBar(position: 'Gen. Manager’s Name',),
-                  SizedBox(
-                    height: height * 0.20,
-                    child: const MyListView()
+                  const TopBar(
+                    position: 'Client’s Name',
                   ),
-                  const SizedBox(height: 8,),
+                  SizedBox(height: height * 0.20, child: const MyListView()),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Current Loan Details',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
                   Align(
                     alignment: Alignment.center,
                     child: SizedBox(
@@ -35,7 +43,8 @@ class HomePage extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return IconWidget(
-                            onTap: () {}, idatas: idata[index],
+                            onTap: () {},
+                            idatas: idata[index],
                           );
                         },
                       ),
@@ -44,7 +53,7 @@ class HomePage extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      'Clients',
+                      'Loan History',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
@@ -58,9 +67,12 @@ class HomePage extends StatelessWidget {
                       width: width * 0.85,
                       child: ListView.builder(
                         itemCount: hdata.length,
-                        itemBuilder: (context, index){
-                         return HistoryCard(hdatas: hdata[index], onTap: () {  },);
-                      },
+                        itemBuilder: (context, index) {
+                          return HistoryCard(
+                            hdatas: hdata[index],
+                            onTap: () {},
+                          );
+                        },
                       ),
                     ),
                   ),

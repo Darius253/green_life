@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:green_life/shared/exports.dart';
 
+
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 
@@ -18,7 +19,7 @@ class App extends StatelessWidget {
         DefaultWidgetsLocalizations.delegate,
       ],
 
-      home: OnboardingScreen(),
+      home: ClientsManager(),
 
     );
   }
