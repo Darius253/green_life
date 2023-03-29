@@ -547,3 +547,22 @@ module.exports = mongoose.model('RegistrationForm', RegistrationFormSchema);
 
 
 */
+export const  resetPassword=  async (req:Request ,res:Response)=>{
+
+  
+  return customerAuth.resetPassword(req , res, Client) ;
+
+} 
+
+export const forgotPassword =async(req:Request , res:Response)=>{
+
+  return  customerAuth.forgotPassword(req ,res, Client) ; 
+}
+
+export const verifyforgotPasswordOtp = async (req: Request, res: Response) => {
+  return customerAuth.verifyforgotPasswordOtp(req, res, Client);
+};
+
+export const changePassword = async (req: Request, res: Response) => {
+  return customerAuth.changePassword(req, res, Client);
+};

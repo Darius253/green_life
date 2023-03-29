@@ -1,7 +1,8 @@
 import  express from 'express';
-import  {login,requestAccessToken,requestAccessTokenMobile,resendOtp,signup, verifyMobileOtp, verifyOtp} from '@controllers/clientController';
+import  {login,requestAccessToken,requestAccessTokenMobile,resendOtp,resetPassword,signup, verifyMobileOtp, verifyOtp,forgotPassword ,changePassword, verifyforgotPasswordOtp} from '@controllers/clientController';
 import {body} from 'express-validator' ; 
 import  {validate} from '@middlewares/validate'
+import { Auth } from '@middlewares/Auth';
 const Router = express.Router();
 
 
@@ -46,7 +47,10 @@ Router.route("/api/auth/signup").post(
 
 
 Router.route("/api/auth/verifymobileotp").post(
-  verifyMobileOtp
+ [
+body("otp").notEmpty().isNumeric().isLength({min:6,max:6}) , 
+body("phoneNumber").isMobilePhone("en-GH").notEmpty()  
+ ] , validate   ,verifyMobileOtp
 );
 
 
@@ -56,6 +60,78 @@ Router.route("/api/auth/requestMobile")
 Router.route("/api/auth/request").get(requestAccessToken); 
 
 
-Router.route("/api/auth/verifyOtp").post(verifyOtp)
-Router.route("/api/auth/resendOtp").post(resendOtp); 
+Router.route("/api/auth/verifyOtp").post(
+  [
+    body("otp").notEmpty().isNumeric().isLength({ min: 6, max: 6 }),
+    body("phoneNumber").isMobilePhone("en-GH").notEmpty(),
+  ],validate ,
+  verifyOtp
+);
+Router.route("/api/auth/resendOtp").post( 
+   [  body("phoneNumber").isMobilePhone("en-GH").notEmpty(),
+  ],validate ,
+   resendOtp); 
+
+//reset current password
+Router.route("/api/client/resetPassword").post([
+ 
+  body("password").notEmpty()
+      .trim()
+      .isStrongPassword({
+        minLength: 8,
+        minUppercase: 1,
+        minSymbols: 1,
+        minNumbers: 1,
+      })
+      .isLength({ min: 8, max: 100 }) ,
+  
+      body("oldPassword").trim()
+      .isStrongPassword({
+        minLength: 8,
+        minUppercase: 1,
+        minSymbols: 1,
+        minNumbers: 1,
+      })
+      .isLength({ min: 8, max: 100 })
+      
+] ,validate , Auth,  resetPassword) ;
+
+
+//forgot password
+Router.post(
+  "/api/auth/forgotPassword",
+  [body("phoneNumber").isMobilePhone("en-GH").notEmpty()],
+  validate,
+  forgotPassword
+); 
+Router.post("/api/auth/verifypasswordotp" , [
+    body("otp").notEmpty().isNumeric().isLength({ min: 6, max: 6 }),
+    body("phoneNumber").isMobilePhone("en-GH").notEmpty(),
+  ],validate , verifyforgotPasswordOtp) ; 
+
+
+Router.post(
+  "/api/auth/changePassword",
+  [body("phoneNumber").isMobilePhone("en-GH").notEmpty(),
+body("password").trim()
+      .isStrongPassword({
+        minLength: 8,
+        minUppercase: 1,
+        minSymbols: 1,
+        minNumbers: 1,
+      })
+      .isLength({ min: 8, max: 100 }) , 
+    body("confirmPassword").isLength({max:8}).custom((value:string , {req})=>{
+       
+      if(value !== req.body.password){
+        throw new Error("passwords do not match") ; 
+      }
+
+      return true ; 
+    })
+],validate ,
+  changePassword
+);
 export  {Router  as clientRouter};
+
+//Todo: validate input and protect the route ; 

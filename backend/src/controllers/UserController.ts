@@ -56,3 +56,24 @@ export const requestAcceessToken = (req: Request, res: Response) => {
 export const requestMobileAccessToken = (req: Request, res: Response) => {
   return Usercontroller.requestAcceessToken(req, res, User);
 };
+
+export const resetPassword = (req:Request , res:Response)=>{
+
+return Usercontroller.resetPassword(req ,res, User);
+}
+
+export const forgotPassword  = (req:Request , res:Response)=>{
+
+  return Usercontroller.forgotPassword(req ,res ,User) ;
+}
+
+export const verifyforgotPasswordOtp = (req: Request, res: Response) => {
+  return Usercontroller.verifyforgotPasswordOtp(req ,res, User);
+};
+
+
+export const changePassword = (req:Request , res:Response)=>{
+
+  return Usercontroller.changePassword(req ,res ,User) ;
+}
+   

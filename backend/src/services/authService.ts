@@ -12,10 +12,10 @@ export class Auth<T extends Iauth> {
   constructor() {}
 
   async login(req: Request, res: Response, doc: Model<T, {}, Authclass>) {
-    const { email, password } = req.body;
+    const { phoneNumber, password } = req.body;
 
     //check if user exist
-    const user = await doc.findOne({ email });
+    const user = await doc.findOne({ phoneNumber });
 
     if (!user) {
       throw new BadAuthError("Email or password is incorrect", 401);
@@ -91,7 +91,7 @@ export class Auth<T extends Iauth> {
       success: true,
       data: {
         otp,
-        userId: user._id,
+        email: user.phoneNumber,
       },
     });
   }
@@ -136,19 +136,19 @@ export class Auth<T extends Iauth> {
       success: true,
       data: {
         otp,
-        userId: user._id,
+        email: user.phoneNumber,
       },
     });
   }
 
   async verifyOtp(req: Request, res: Response, doc: Model<T, {}, Authclass>) {
-    const { otp, userId } = req.body;
+    const { otp, phoneNumber} = req.body;
 
-    const user = await doc.findById(userId);
+    const user = await doc.findOne({phoneNumber});
 
     //check if user exists;
     if (!user) {
-      throw new BadAuthError("User not found", 400);
+      throw new BadAuthError("incorrect phoneNumber", 401);
     }
 
     //check if otp is correct
@@ -206,9 +206,9 @@ export class Auth<T extends Iauth> {
     res: Response,
     doc: Model<T, {}, Authclass>
   ) {
-    const { otp, userId } = req.body;
+    const { otp, phoneNumber } = req.body;
 
-    const user = await doc.findById(userId);
+    const user = await doc.findOne({phoneNumber});
 
     //check if user exists;
     if (!user) {
@@ -266,9 +266,9 @@ export class Auth<T extends Iauth> {
   }
 
   async resendOtp(req: Request, res: Response, doc: Model<T, {}, Authclass>) {
-    const { userId } = req.body;
+    const {phoneNumber} = req.body;
 
-    const user = await doc.findById(userId);
+    const user = await doc.findOne({phoneNumber});
 
     if (!user) {
       throw new BadAuthError("user not found ", 400);
@@ -301,7 +301,7 @@ export class Auth<T extends Iauth> {
       success: true,
       data: {
         otp,
-        userId: user._id,
+        email:user.phoneNumber,
       },
     });
   }
@@ -461,9 +461,9 @@ export class Auth<T extends Iauth> {
     res: Response,
     doc: Model<T, {}, Authclass>
   ) {
-    const { email } = req.body;
+    const { phoneNumber} = req.body;
 
-    const user = await doc.findOne({ email: email });
+    const user = await doc.findOne({  phoneNumber});
 
     if (!user) {
       throw new BadAuthError("user not found", 403);
@@ -480,7 +480,7 @@ export class Auth<T extends Iauth> {
     res.send({
       success: true,
       data: {
-        otp,
+        otp,email:user.phoneNumber
       },
     });
   }
@@ -490,8 +490,8 @@ export class Auth<T extends Iauth> {
     res: Response,
     doc: Model<T, {}, Authclass>
   ) {
-    const { email, otp } = req.body;
-    const user = await doc.findOne({ email });
+    const { phoneNumber, otp } = req.body;
+    const user = await doc.findOne({ phoneNumber });
 
     if (!user) {
       throw new BadAuthError("user not found", 401);
@@ -504,7 +504,7 @@ export class Auth<T extends Iauth> {
     user.otp = null;
     await user.save();
     res.send({
-      success: true,
+      success: true, email:user.phoneNumber
     });
   }
 
@@ -513,6 +513,23 @@ export class Auth<T extends Iauth> {
     res: Response,
     doc: Model<T, {}, Authclass>
   ) {
+const {password ,phoneNumber} = req.body.password ; 
+  
+const user =  await doc.findOne({phoneNumber}) ; 
+
+if(!user){
+  throw new BadAuthError("incorrect phoneNumber" ,403) ; 
+}
+
+ 
+   user.password =    password ; 
+
+   await user.save()  ; 
+  
+
+   res.send({
+    success:true 
+   })
 
     
   }
