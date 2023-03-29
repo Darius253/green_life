@@ -88,13 +88,13 @@ class _VerifyEmailState extends State<VerifyEmail> {
                               TextSpan(
                                   text: widget.email,
                                   style: const TextStyle(
-                                      color: Colors.black,
+                                      color: Color.fromARGB(255, 0, 0, 0),
                                       fontWeight: FontWeight.w500,
                                       fontSize: 17)),
                             ],
                             style: const TextStyle(
-                              color: Colors.black,
                               fontSize: 17,
+                              color: Color.fromARGB(255, 0, 0, 0),
                               fontWeight: FontWeight.w500,
                             )),
                         textAlign: TextAlign.center,
@@ -151,8 +151,16 @@ class _VerifyEmailState extends State<VerifyEmail> {
                       appContext: context,
                     ),
                     SizedBox(
-                      height: height * 0.05,
+                      height: height * 0.025,
                     ),
+                    TextButton(
+                        onPressed: () {},
+                        child: const Text(
+                          'Resend Code',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 52, 168, 83),
+                              decoration: TextDecoration.underline),
+                        )),
                     button(height * 0.07, width * 0.7, () {
                       if (formKey.currentState!.validate()) {
                         Get.off(const CreateNewPassword());
