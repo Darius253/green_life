@@ -1,7 +1,6 @@
 import { Document, Types } from "mongoose";
 import { Type } from "typescript";
 
-
 export interface Iauth {
   name?: string;
   email: string;
@@ -13,40 +12,29 @@ export interface Iauth {
   verified: boolean;
   role: userRole;
 }
-export interface Iclient  extends Iauth{
+export interface Iclient extends Iauth {
   name: string;
-  
-
 
   registered: boolean;
   registration: Types.ObjectId;
- 
 }
 
-
-export interface Iuser  extends Iauth{
+export interface Iuser extends Iauth {
   FullName: string;
-
-  
 }
 
-
-export interface  Authclass {
- 
-  userLocked():boolean ;
-  otpLocked():boolean;
+export interface Authclass {
+  userLocked(): boolean;
+  otpLocked(): boolean;
 }
-export interface userlock{
-
-  tries:number ; 
-  expiresAt:Date |null
-
+export interface userlock {
+  tries: number;
+  expiresAt: Date | null;
 }
 
-
-export interface otpLock{
-  otpTries:number;
-  expiresAt:Date |null
+export interface otpLock {
+  otpTries: number;
+  expiresAt: Date | null;
 }
 
 export enum gender {
@@ -135,33 +123,55 @@ export interface Iguarantor {
 }
 
 export enum userRole {
-  ADMIN= "ADMIN",
+  ADMIN = "ADMIN",
   REGIONALAGENT = "REGIONALAGENT",
   AGENT = "AGENT",
 }
 
-
 export enum loanStatus {
-  pending = "pending",
-  approved = "approved",
-  accepted = "accepted",
-  denied= "denied",
-  paid = "paid",
-  defaulted = "defaulted",
+  PENDING = "pending",
+  APPROVED = "approved",
+  ACCEPTED = "accepted",
+  DENIED = "denied",
+  PAID = "paid",
+  DEFAULTED = "defaulted",
+}
+export enum LOANTYPE{
+  PERSONALLOAN = "Personal loan" ,
+  SMELOAN =  "Sme's loan"
 }
 
+export enum loanInstallmentStatus{
+
+  PAID="paid" ,
+  DEFAULTED ="defaulted" ,
+    UNPAID= "unpaid"
+}
+
+export interface IloanInstallment{
+ 
+  amount:number ; 
+  dueDate:Date ; 
+  remainingBalance:number ;
+  status: loanInstallmentStatus
+  latePayment:boolean
+  lastPaymentDate:Date
+
+
+}
 export interface ILoan {
   principal: number;
   interestrate: number;
   charges: number;
-  repaymentDate: Date;
+  lastPaymentDate: Date;
   loanStatus: loanStatus;
   repaymentAmount: number;
-  loanType:string
-  repaymentPeriod:number ;
+  loanType: LOANTYPE;
+  loanterm: number;
   AmountPaid: number;
-  AmountOwed: number;
+  remainingBalance: number;
   client: Types.ObjectId;
+  installment:IloanInstallment[]
   Guarantors: Types.DocumentArray<Types.ObjectId>;
   DateApproved: Date;
   DateAccepted: Date;
@@ -170,11 +180,8 @@ export interface ILoan {
 
 export interface Ipolicy {
   interestRate: number;
-  noRegisterationAmountCap:number ;
-  noGurantorAmountCap:number ; 
-  personalloanAmountCap:number ; 
-  personalloanterm:number;
-
-
+  noRegisterationAmountCap: number;
+  noGurantorAmountCap: number;
+  personalloanAmountCap: number;
+  personalloanterm: number;
 }
-

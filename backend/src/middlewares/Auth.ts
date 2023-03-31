@@ -29,6 +29,7 @@ export const Auth = (req:Request ,res:Response ,next:NextFunction)=>{
     
         const payload =  jwt.verify(token , process.env.JWT_SECRET!)  as Payload ;
              console.log(payload)
+             
         req.user=  payload ; 
       
         

@@ -6,6 +6,12 @@ import {policyRepo} from '../redisClient'
 
  class Policyservice {
   async createPolicy(req: Request, res: Response) {
+ 
+ const policyexist = await  policyRepo.search().returnFirst() ; 
+
+ if(policyexist){
+    throw new BadAuthError("A policy already exist" , 403) ;
+ }
 
 let policy = await  policyRepo.createEntity() ; 
 
@@ -37,7 +43,7 @@ console.log(await policyRepo.search().return)
 
   }
 
- async editPolicy(req: Request, res: Response , policyId:string) {
+ async editPolicy(req: Request, res: Response) {
 
 
 const {

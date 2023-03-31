@@ -7,6 +7,8 @@ import { Auth } from "@middlewares/Auth";
 
 const Router =  express.Router()  ;
 
+
+Router.route("/api/user/auth/create").post(Usercontroller.createUser)
 Router.route("/api/user/auth/userlogin").post(
   [
     body("phoneNumber").isMobilePhone("en-GH").notEmpty(),
@@ -53,7 +55,7 @@ Router.route("/api/user/auth/requestmobileaceess")
 Router.route("/api/user/auth/resetpassword").post(
   [
     body("password")
-      .notEmpty()
+      .notEmpty().bail()
       .trim()
       .isStrongPassword({
         minLength: 8,

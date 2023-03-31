@@ -91,7 +91,7 @@ export class Auth<T extends Iauth> {
       success: true,
       data: {
         otp,
-        email: user.phoneNumber,
+        phoneNumber: user.phoneNumber,
       },
     });
   }
@@ -136,7 +136,7 @@ export class Auth<T extends Iauth> {
       success: true,
       data: {
         otp,
-        email: user.phoneNumber,
+        phoneNumber: user.phoneNumber,
       },
     });
   }
@@ -301,7 +301,7 @@ export class Auth<T extends Iauth> {
       success: true,
       data: {
         otp,
-        email:user.phoneNumber,
+        phoneNumber:user.phoneNumber,
       },
     });
   }
@@ -480,7 +480,7 @@ export class Auth<T extends Iauth> {
     res.send({
       success: true,
       data: {
-        otp,email:user.phoneNumber
+        otp, phoneNumber:user.phoneNumber
       },
     });
   }
@@ -504,7 +504,7 @@ export class Auth<T extends Iauth> {
     user.otp = null;
     await user.save();
     res.send({
-      success: true, email:user.phoneNumber
+      success: true, phoneNumber:user.phoneNumber
     });
   }
 

@@ -12,7 +12,7 @@ export const create =async(req:Request , res:Response)=>{
 }
 
 export const edit = async (req: Request, res: Response) => {
-  return Policy.createPolicy(req, res);
+  return Policy.editPolicy(req, res);
 };
 
 
