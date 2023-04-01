@@ -4,32 +4,32 @@ import {response , EducationLevel, employmentStatus, gender, Iregistration, Mari
 
 //creating the registration schema 
 const registrationSchema = new Schema<Iregistration>({
-  fullname: { type: String, required: true },
-  gender: { type: String, enum: Object.values(gender), required: true },
-  age: { type: Number, required: true },
+  fullname: { type: String},
+  gender: { type: String, enum: Object.values(gender)},
+  age: { type: Number},
   maritalStatus: {
     type: String,
     enum: Object.values(MaritalStatus),
-    required: true,
+    
   },
   educationLevel: {
     type: String,
     enum: Object.values(EducationLevel),
-    required: true,
+   
   },
   residentialStatus: {
     type: String,
     enum: Object.values(residentialStatus),
-    required: true,
+
   },
-  residentialAddress: { type: String, required: true },
-  NoYearsAtResidence: { type: Number, required: true },
-  face: { type: String, required: true },
-  ghanaCardBack: { type: String, required: true },
-  ghanaCardFront: { type: String, required: true },
+  residentialAddress: { type: String},
+  NoYearsAtResidence: { type: Number},
+  face: { type: String , required:true},
+  ghanaCardBack: { type: String , required:true},
+  ghanaCardFront: { type: String , required:true},
   employmentStatus: {
     type: String,
-    required: true,
+  
     enum: Object.values(employmentStatus),
   },
   Occupation: { type: String ,default:null },
@@ -41,10 +41,10 @@ const registrationSchema = new Schema<Iregistration>({
     default: Surplus.None,
     enum: Object.values(Surplus),
   },
-  NoOfDependants: { type: Number, required: true, default: 0 },
+  NoOfDependants: { type: Number,  default: 0 },
   CurrentlyServingaLoan: {
     type: String,
-    required: true,
+   
     enum: Object.values(response),
   },
   SourceOfLoan: { type: String, enum: Object.values(Source) },

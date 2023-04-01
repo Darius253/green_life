@@ -6,12 +6,14 @@ import { Auth } from '@middlewares/Auth';
 const Router = express.Router();
 
 
-Router.route("/api/auth/login")
-.post([
- body("email").notEmpty().normalizeEmail() , 
- body("password").notEmpty().isLength({min:8 , max:100})
-
-] ,validate , login)
+Router.route("/api/auth/login").post(
+  [
+    body("phoneNumber").isMobilePhone("en-GH").notEmpty(),
+    body("password").notEmpty().isLength({ min: 8, max: 100 }),
+  ],
+  validate,
+  login
+);
 
 
 Router.route("/api/auth/signup").post(

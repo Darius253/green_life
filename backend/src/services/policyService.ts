@@ -34,7 +34,7 @@ console.log(await policyRepo.search().return)
  let newPolicy =  await policyRepo.fetch(id) ; 
 
 
- res.status(200).send({
+ return res.status(200).send({
     success:true , data:{
         newPolicy
     }
@@ -71,7 +71,7 @@ console.log(policy);
 console.log(await policyRepo.search().return);
 let newPolicy = await policyRepo.fetch(id);
 
-res.status(200).send({
+return res.status(200).send({
   success: true,
   data: {
     newPolicy,
@@ -89,7 +89,7 @@ let policy=  await policyRepo.search().returnFirst()
   }
 
   
-  res.send({
+ return  res.send({
     success:true , data:{
         policy
     }

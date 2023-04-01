@@ -13,6 +13,7 @@ export class Policy extends redis.Entity {
 }
 
 
+
 export const policySchema = new redis.Schema(Policy, {
   interestRate: { type: "number" },
   noRegisterationAmountCap: { type: "number" },
