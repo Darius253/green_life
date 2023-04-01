@@ -18,13 +18,15 @@ export 'package:green_life/screens/home_page/widgets/icon_widget.dart';
 export 'package:green_life/screens/home_page/widgets/list_view.dart';
 export 'package:green_life/screens/home_page/widgets/top_bar.dart';
 export 'package:green_life/screens/home_page/general/general_manager.dart';
-export 'package:green_life/screens/notification/notification_page.dart';
+export 'package:green_life/screens/home_page/notification/notification_page.dart';
 export 'package:green_life/screens/splash_screen.dart';
 
 
 export 'package:green_life/screens/home_page/clients_manager/clients_manager.dart';
 export 'package:green_life/screens/home_page/client/home_client.dart';
 
+export 'package:green_life/screens/home_page/notification/widgets/confirm_card.dart';
+export 'package:green_life/screens/home_page/widgets/drawer_widget.dart';
 //Widgets
 
 //pub.dev

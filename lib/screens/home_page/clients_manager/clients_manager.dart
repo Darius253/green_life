@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:green_life/screens/home_page/widgets/drawer_widget.dart';
 import 'package:green_life/shared/exports.dart';
 
 class ClientsManager extends StatelessWidget {

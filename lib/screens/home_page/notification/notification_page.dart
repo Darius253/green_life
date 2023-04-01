@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:green_life/screens/notification/widgets/confirm_card.dart';
+import 'package:green_life/screens/home_page/notification/widgets/confirm_card.dart';
 
 class NotificationPage extends StatelessWidget {
   const NotificationPage({super.key});
