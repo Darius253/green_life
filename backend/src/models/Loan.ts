@@ -38,8 +38,8 @@ const loanSchema = new mongoose.Schema<ILoan>(
     AmountPaid: { type: Number, required: true, default: 0.0 },
     repaymentAmount: { type: Number, required: true ,default:0.0 },
     remainingBalance: { type: Number, required: true , default:0.0 },
-    client: { type: Schema.Types.ObjectId, required: true, ref: "USER" },
-    Guarantors: [{ type: Schema.Types.ObjectId, ref: "Guarantor" }],
+    client: { type: Schema.Types.ObjectId, required: true, ref: "Client" },
+   
     DateApproved: { type: Date },
     DateAccepted: { type: Date},
     DatePaid: { type: Date },

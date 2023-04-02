@@ -78,13 +78,15 @@ export enum Surplus {
 
 export enum response {
   YES = "Yes",
-  No = "No",
+  No = "NO",
+  NULL ="null"
 }
 
 export enum Source {
   Bank = "Bank",
   FriendAndFamily = "Friend and family",
   SavingAndLoans = "Savings and Loans",
+  NULL = "null"
 }
 export interface Iregistration {
   fullname: string;
@@ -135,6 +137,7 @@ export enum loanStatus {
   DENIED = "denied",
   PAID = "paid",
   DEFAULTED = "defaulted",
+  REJECTED= "rejected"
 }
 export enum LOANTYPE{
   PERSONALLOAN = "Personal loan" ,
@@ -172,7 +175,7 @@ export interface ILoan {
   remainingBalance: number;
   client: Types.ObjectId;
   installment:IloanInstallment[]
-  Guarantors: Types.DocumentArray<Types.ObjectId>;
+ 
   DateApproved: Date;
   DateAccepted: Date;
   DatePaid: Date;

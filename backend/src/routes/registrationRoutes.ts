@@ -129,8 +129,8 @@ Router.route("/api/users/register").post(
       .isNumeric()
       .trim()
       .escape()
-      .custom((value: number, { req }) => {
-        if (req.body.CurrentlyServingaLoan === response.YES && isNaN(value)) {
+      .custom((value, { req }) => {
+        if (req.body.CurrentlyServingaLoan === response.YES && !Object.values(response).includes(value)) {
           throw new Error("Cannot be empty");
         }
         return true;
@@ -147,7 +147,7 @@ Router.route("/api/users/register").post(
         }
         return true;
       }),
-    body(" NoMonthsDefaulted")
+    body("NoMonthsDefaulted")
       .isNumeric()
       .custom((value: number, { req }) => {
         if (
