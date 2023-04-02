@@ -20,9 +20,7 @@ class ClientData extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(
-          width: width * 0.015,
-        ),
+        const Spacer(),
         SizedBox(
       width: width * 0.2,
       child: Text(

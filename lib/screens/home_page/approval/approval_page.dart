@@ -55,7 +55,7 @@ class ApprovalPage extends StatelessWidget {
                       height: height * 0.035,
                     ),
                     Material(
-                      elevation: 3,
+                      elevation: 5,
                       color: const Color(0xFFF7F7F7),
                       borderRadius: BorderRadius.circular(12),
                       child: SizedBox(
@@ -86,7 +86,7 @@ class ApprovalPage extends StatelessWidget {
                                 "Hello, Client Manager’s Name",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 12.5,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -100,7 +100,7 @@ class ApprovalPage extends StatelessWidget {
                                 "Thank you for choosing us and doing business with us, Here is the Summary of your Loan Application",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontSize: 10,
+                                  fontSize: 11,
                                 ),
                               ),
                             ),
