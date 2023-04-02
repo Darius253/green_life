@@ -39,7 +39,7 @@ class IconWidget extends StatelessWidget {
             child: Text(
               idatas.wname,
               textAlign: TextAlign.center,
-              style: const TextStyle(color: Color(0xfff898686), fontSize: 12),
+              style: const TextStyle(color: Colors.grey, fontSize: 12),
             ),
           )
         ],
