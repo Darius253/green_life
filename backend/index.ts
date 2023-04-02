@@ -1,6 +1,7 @@
 import { app } from "./src/app";
 import  mongoose from 'mongoose';
-const PORT = process.env.PORT || 3001;
+
+const PORT = process.env.PORT || 3000;
 import "dotenv/config"
 
 (
@@ -21,15 +22,9 @@ async () => {
 
 const conn =  await mongoose.connect(process.env.MONGO_URI) ; 
    console.log(conn.connection.host);
-    
- process.on("SIGTERM" , async ()=>{
-        
-  await conn.connection.close()
- }) 
 
-  process.on("SIGINT", async () => {
-    await conn.connection.close();
-  }); 
+
+   
 
 app.listen(PORT, () => {
   console.log("Sever opened");
@@ -39,3 +34,14 @@ app.listen(PORT, () => {
 }
 )()
 
+
+
+/*
+
+To get a personal loan, you need to apply to a lender. Again, this can be a bank, credit union, or online personal loan lender. 
+
+Generally, you would first complete an application. The lender reviews it and decides whether to approve or deny it. If approved, you’ll be given the loan terms, which you can accept or reject. If you agree to them, the next step is finalizing your loan paperwork. 
+
+When that’s done, the lender will fund the loan, which means paying you the proceeds. Depending on the lender, these may arrive through a direct deposit into your bank account or a check. After the loan is funded, you can use the money as you see fit. You then have to begin repaying the loan according to the terms established in your loan agreement. 
+
+*/

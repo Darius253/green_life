@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:green_life/screens/forgot_password/forgot_password.dart';
+import 'package:green_life/screens/sign_in/sign_in_verification.dart';
 import '../../shared/exports.dart';
 
 class SignIn extends StatefulWidget {
@@ -14,6 +16,8 @@ class _SignInState extends State<SignIn> {
   final TextEditingController _mobileNumberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String phoneNumber = "";
+  String password = "";
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -21,18 +25,22 @@ class _SignInState extends State<SignIn> {
 
     return Scaffold(
       body: SafeArea(
-          child: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: width * 0.02, vertical: height * 0.03),
-        child: SingleChildScrollView(
           child: Stack(
-            children: [
-              Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: height * 0.73),
+            child: Image.asset('assets/images/vector.png'),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: width * 0.07, vertical: height * 0.03),
+            child: SingleChildScrollView(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   backButton(Colors.black),
                   SizedBox(
-                    height: height * 0.034,
+                    height: height * 0.05,
                   ),
                   const Center(
                       child: Text(
@@ -56,7 +64,11 @@ class _SignInState extends State<SignIn> {
                             width,
                             TextInputType.number,
                             _mobileNumberController,
-                            (value) {},
+                            (value) {
+                              setState(() {
+                                phoneNumber = value!;
+                              });
+                            },
                           ),
                           SizedBox(
                             height: height * 0.02,
@@ -72,7 +84,9 @@ class _SignInState extends State<SignIn> {
                               }
                               return null;
                             },
-                            onChanged: (value) {},
+                            onChanged: (value) {
+                              password = value;
+                            },
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             decoration: InputDecoration(
@@ -132,7 +146,8 @@ class _SignInState extends State<SignIn> {
                             children: [
                               const Expanded(child: SizedBox()),
                               TextButton(
-                                  onPressed: () {},
+                                  onPressed: () =>
+                                      Get.to(const ForgotPassword()),
                                   child: const Text(
                                     'Forgotten password?',
                                     style: TextStyle(
@@ -146,9 +161,10 @@ class _SignInState extends State<SignIn> {
                             height: height * 0.033,
                           ),
                           button(height * 0.08, width, () {
-                            Get.to(() => const HomePage());
-                            // if (_formKey.currentState!.validate()) {}
-                          }, 'Log in', Colors.green, Colors.white),
+                            if (_formKey.currentState!.validate()) {
+                              Get.to(() => const LoginVerification());
+                            }
+                          }, 'Log in', Colors.green, 24, Colors.white),
                           SizedBox(
                             height: height * 0.054,
                           ),
@@ -163,13 +179,9 @@ class _SignInState extends State<SignIn> {
                   )
                 ],
               ),
-              Padding(
-                padding: EdgeInsets.only(top: height * 0.73),
-                child: Image.asset('assets/images/vector.png'),
-              )
-            ],
+            ),
           ),
-        ),
+        ],
       )),
     );
   }

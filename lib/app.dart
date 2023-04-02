@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get_navigation/src/root/get_cupertino_app.dart';
 import 'package:green_life/shared/exports.dart';
 
 class App extends StatelessWidget {

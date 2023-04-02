@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { BadAuthError } from '@utils/BadAuthError'; 
+import { BadAuthError } from '../utils/BadAuthError'; 
 import { Payload } from 'app.interface';
 import {NextFunction, Request , Response} from 'express'
 
@@ -29,6 +29,7 @@ export const Auth = (req:Request ,res:Response ,next:NextFunction)=>{
     
         const payload =  jwt.verify(token , process.env.JWT_SECRET!)  as Payload ;
              console.log(payload)
+             
         req.user=  payload ; 
       
         
