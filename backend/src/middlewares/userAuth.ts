@@ -6,7 +6,7 @@ import { BadAuthError } from '../utils/BadAuthError';
 
 
 
-export const isAdmin =  (req:Request , res:Response,next:NextFunction)=>{
+export const isAdmin =  (req:any, res:any,next:NextFunction)=>{
 
   if(req.user.role !== userRole.ADMIN){
     throw new BadAuthError("You are not authorized" , 401) ;
@@ -18,8 +18,8 @@ export const isAdmin =  (req:Request , res:Response,next:NextFunction)=>{
 }
 
 export const isRegionalAgent = (
-  req: Request,
-  res: Response,
+  req: any,
+  res: any,
   next: NextFunction
 ) => {
   if (!(req.user.role === userRole.ADMIN || req.user.role== userRole.REGIONALAGENT)) {
@@ -30,7 +30,7 @@ export const isRegionalAgent = (
 
 };
 
-export const userAuth = (req: Request, res: Response, next: NextFunction) => {
+export const userAuth = (req: any, res: any, next: NextFunction) => {
   if (
      !(Object.values(userRole).includes(req.user.role!))
   ) {

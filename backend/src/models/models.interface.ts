@@ -77,7 +77,7 @@ export enum Surplus {
 }
 
 export enum response {
-  YES = "Yes",
+  YES = "YES",
   No = "NO",
   NULL ="null"
 }

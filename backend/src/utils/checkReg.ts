@@ -1,14 +1,14 @@
-import { register } from '@controllers/registrationController';
-import { Auth } from '@middlewares/Auth';
+// import { register } from '@controllers/registrationController';
+// import { Auth } from '@middlewares/Auth';
 import {body} from 'express-validator'
 import express, { Request } from 'express' ; 
-import {validate} from '@middlewares/validate'
+// import {validate} from '@middlewares/validate'
 import {validationResult , ValidationError} from 'express-validator'
-import { EducationLevel, employmentStatus, gender, MaritalStatus, residentialStatus, response, Source } from '@models/models.interface';
+import { EducationLevel, employmentStatus, gender, MaritalStatus, residentialStatus, response, Source, Surplus } from '../models/models.interface';
 import { ValidationErrors } from './validationError';
 
 
-export async  function checkReg(req:Request){
+export async  function checkReg(req:any){
 await body("fullname")
   .notEmpty()
   .bail()
@@ -26,7 +26,7 @@ await body("fullname")
     .escape()
     .isLength({
       min: 4,
-      max: 5,
+      max: 10,
     })
     .bail()
     .custom((value, { req }) => {
@@ -60,7 +60,7 @@ await body("fullname")
     .custom((value, {}) => {
       if (!Object.values(MaritalStatus).includes(value)) {
         throw new Error(
-          "marital status must be divorced, single . married , widow or widower only"
+          "marital status must be Divorced, Single . Married , Widow or Widower only"
         );
       }
       return true;
@@ -95,7 +95,7 @@ await body("fullname")
     .custom((value, {}) => {
       if (!Object.values(residentialStatus).includes(value)) {
         throw new Error(
-          "residential status  must be residential or non-residential"
+          "residential status  must be Residential or Non-residential"
         );
       }
 
@@ -113,7 +113,7 @@ await body("fullname")
     .bail()
     .run(req),
   await body("NoYearsAtResidence")
-    .isNumeric()
+    .isNumeric({no_symbols:true})
     .bail()
     .notEmpty()
     .bail()
@@ -127,19 +127,31 @@ await body("fullname")
     .escape()
     .custom((value, {}) => {
       if (!Object.values(employmentStatus).includes(value)) {
-        throw new Error("Employmentstatus must only be employed or unemployed");
+        throw new Error("Employmentstatus must only be Employed or Unemployed or Self employed");
       }
 
       return true;
     })
     .bail()
-    .run(req),
-  await body("Occupation").optional()
+    .run(req),await body("Employer")
     .custom((value: string, { req }) => {
-      if (
-        (req.body.employmentStatus === employmentStatus.Employed ||
-          req.body.employmentStatus === employmentStatus.SelfEmployed) &&
-        (value.length == 0 || !value.match(/^[A-Za-z\s]*$/))
+       console.log(req.body.employmentStatus)
+       if(req.body.employmentStatus !==  employmentStatus.Employed && !value){
+        return true
+       }
+      else if(req.body.employmentStatus !== employmentStatus.Employed && value){
+         throw new Error("value not needed")
+       }
+    else if(   
+        req.body.employmentStatus === employmentStatus.Employed && !value){
+
+          throw new Error("occupation is undefined") 
+
+      }
+     else if (
+        req.body.employmentStatus === employmentStatus.Employed   
+        &&
+        (value.length == 0 || !/^[A-Za-z\s]*$/.test(value) || value.length > 140)
       ) {
         throw new Error("Cannot be empty");
       }
@@ -149,17 +161,56 @@ await body("fullname")
     .bail()
     .trim()
     .escape()
-    .isLength({ min: 4, max: 200 })
-    .bail()
+  
     .run(req),
-  await body("Income").optional()
-    .isNumeric()
+  await body("Occupation")
+    .custom((value: string, { req }) => {
+       console.log(req.body.employmentStatus)
+       if(req.body.employmentStatus ===  employmentStatus.Unemployed && !value){
+        return true
+       }
+      else if(req.body.employmentStatus === employmentStatus.Unemployed && value){
+         throw new Error("value not needed")
+       }
+    else if(   
+        req.body.employmentStatus !== employmentStatus.Unemployed && !value){
+
+          throw new Error("occupation is undefined") 
+
+      }
+     else if (
+        req.body.employmentStatus !== employmentStatus.Unemployed   &&
+        (value.length == 0 || !/^[A-Za-z\s]*$/.test(value) || value.length > 140)
+      ) {
+        throw new Error("Cannot be empty");
+      }
+
+      return true;
+    })
     .bail()
+    .trim()
+    .escape()
+  
+    .run(req),
+  await body("Income")
     .custom((value) => {
-        if (
-          (req.body.employmentStatus === employmentStatus.Employed ||
-            req.body.employmentStatus === employmentStatus.SelfEmployed) &&
-          (value.length < 0 || isNaN(value))
+      if(req.body.employmentStatus ===  employmentStatus.Unemployed && !value){
+        return true
+       }
+      else if(req.body.employmentStatus === employmentStatus.Unemployed && value){
+         throw new Error("value not needed")
+       }
+      else if(   
+        req.body.employmentStatus !== employmentStatus.Unemployed && !value){
+
+          throw new Error("value is undefined") 
+
+      } 
+
+       else if (
+          
+            req.body.employmentStatus !== employmentStatus.Unemployed &&
+          (value < 0 || isNaN(value))
         ) {
           throw new Error("Cannot be empty");
         }
@@ -167,14 +218,27 @@ await body("fullname")
     })
     .bail()
     .run(req),
-  await body("Savings").optional()
-    .isNumeric()
-    .bail()
+  await body("Savings")
+
+ 
     .custom((value) => {
-        if (
-          (req.body.employmentStatus === employmentStatus.Employed ||
-            req.body.employmentStatus === employmentStatus.SelfEmployed) &&
-          (value.length < 0 || isNaN(value))
+
+      if(req.body.employmentStatus ===  employmentStatus.Unemployed && !value){
+        return true
+       }
+      else if(req.body.employmentStatus === employmentStatus.Unemployed && value){
+         throw new Error("value not needed")
+       }
+     else  if(   
+        req.body.employmentStatus !== employmentStatus.Unemployed && !value){
+
+          throw new Error("value is undefined") 
+
+      } 
+     else   if (
+        
+            req.body.employmentStatus !== employmentStatus.Unemployed &&
+          (value < 0 || isNaN(value))
         ) {
           throw new Error("Cannot be empty");
         }
@@ -182,14 +246,25 @@ await body("fullname")
     })
     .bail()
     .run(req),
-  await body("Surplus").optional()
-    .trim()
+  await body("Surplus")
     .escape()
     .custom((value, { req }) => {
-      if (
-        (req.body.employmentStatus === employmentStatus.Employed ||
-          req.body.employmentStatus === employmentStatus.SelfEmployed) &&
-        !Object.values(employmentStatus).includes(value)
+      if(req.body.employmentStatus ===  employmentStatus.Unemployed && !value){
+        return true
+       }
+      else if(req.body.employmentStatus === employmentStatus.Unemployed && value){
+         throw new Error("value not needed")
+       }
+      else if(   
+        req.body.employmentStatus !== employmentStatus.Unemployed && !value){
+
+          throw new Error("value is undefined") 
+
+      } 
+      else if (
+        
+          req.body.employmentStatus !== employmentStatus.Unemployed &&
+        !Object.values(Surplus).includes(value)
       ) {
         throw new Error("surplus can only be save , invest, spend ,none");
       }
@@ -198,7 +273,8 @@ await body("fullname")
     })
     .bail()
     .run(req),
-  await body("NoOfDependants").isNumeric().bail().notEmpty().bail().run(req),
+  await body("NoOfDependants").isNumeric({no_symbols:true}).bail().notEmpty().bail().
+run(req),
   await body("CurrentlyServingaLoan")
     .notEmpty()
     .bail()
@@ -215,11 +291,24 @@ await body("fullname")
     })
     .bail()
     .run(req),
-  await body("SourceOfLoan").optional()
+  await body("SourceOfLoan")
     .trim()
     .escape()
     .custom((value, { req }) => {
-      if (
+      if(req.body.CurrentlyServingaLoan === response.No  && !value){
+        return true ; 
+      }
+      else  if(req.body.CurrentlyServingaLoan  ===  response.No && value){
+        throw new Error("value not needed")
+      }
+      
+      else if   
+        (req.body.CurrentlyServingaLoan ===  response.YES && !value){
+
+          throw new Error("value is undefined") 
+
+      } 
+     else if (
         req.body.CurrentlyServingaLoan === response.YES &&
         (value.length === 0 || !Object.values(Source).includes(value))
       ) {
@@ -229,26 +318,50 @@ await body("fullname")
     })
     .bail()
     .run(req),
-  await body("loanAmount").optional()
-    .isNumeric()
-    .bail()
+  await body("loanAmount")
+   
+  
     .trim()
     .escape()
     .custom((value: number, { req }) => {
-      if (req.body.CurrentlyServingaLoan === response.YES && isNaN(value)) {
+      if(req.body.CurrentlyServingaLoan === response.No  && !value){
+        return true ; 
+      }
+      else  if(req.body.CurrentlyServingaLoan  ===  response.No && value){
+        throw new Error("value not needed")
+      }
+      else if   
+        (req.body.CurrentlyServingaLoan ===  response.YES && !value){
+
+          throw new Error("value is undefined") 
+
+      } 
+      else if (req.body.CurrentlyServingaLoan === response.YES && (
+        value <0  || isNaN(value)
+      )) {
         throw new Error("Cannot be empty");
       }
       return true;
     })
     .bail()
     .run(req),
-  await body("loanApproved").optional()
-    .isNumeric()
-    .bail()
+  await body("loanApproved")
     .trim()
     .escape()
     .custom((value, { req }) => {
-      if (
+      if(req.body.CurrentlyServingaLoan === response.No  && !value){
+        return true ; 
+      }
+      else  if(req.body.CurrentlyServingaLoan  ===  response.No && value){
+        throw new Error("value not needed")
+      }
+      else if   
+        (req.body.CurrentlyServingaLoan ===  response.YES && !value){
+
+          throw new Error("value is undefined") 
+
+      } 
+    else  if (
         req.body.CurrentlyServingaLoan === response.YES &&
         !Object.values(response).includes(value)
       ) {
@@ -258,11 +371,23 @@ await body("fullname")
     })
     .bail()
     .run(req),
-  await body("defaulted").optional()
+  await body("defaulted")
     .trim()
     .escape()
     .custom((value, { req }) => {
-      if (
+       if(req.body.CurrentlyServingaLoan === response.No  && !value){
+        return true ; 
+      }
+      else  if(req.body.CurrentlyServingaLoan  ===  response.No && value){
+        throw new Error("value not needed")
+      }
+     else  if   
+        (req.body.CurrentlyServingaLoan ===  response.YES && !value){
+
+          throw new Error("value is undefined") 
+
+      } 
+    else  if (
         req.body.CurrentlyServingaLoan === response.YES &&
         (value.length === 0 || !Object.values(response).includes(value))
       ) {
@@ -272,11 +397,23 @@ await body("fullname")
     })
     .bail()
     .run(req),
-  await body("NoMonthsDefaulted").optional()
-    .isNumeric()
+  await body("NoMonthsDefaulted")
+    
     .bail()
     .custom((value: number, { req }) => {
-      if (req.body.CurrentlyServingaLoan === response.YES && isNaN(value)) {
+      if(req.body.CurrentlyServingaLoan === response.No  && !value){
+        return true ; 
+      }
+      else  if(req.body.CurrentlyServingaLoan  ===  response.No && value){
+        throw new Error("value not needed")
+      }
+   else    if   
+        (req.body.CurrentlyServingaLoan ===  response.YES && !value){
+
+          throw new Error("value is undefined") 
+
+      } 
+    else  if (req.body.CurrentlyServingaLoan === response.YES && (value < 0  || isNaN(value))) {
         throw new Error("Cannot be empty");
       }
       return true;
@@ -286,23 +423,23 @@ await body("fullname")
 
 
       const errors = validationResult(req);
+      console.log(errors)
       if (!errors.isEmpty()) {
         throw new ValidationErrors(errors.array());
       }
 }
 
 
-export async function checkguarantors(req:Request){
+export async function checkguarantors(req:any){
 
 
-    await body("guarantor1fullname").notEmpty()
+    await body("guarantor1fullname")
   .bail()
   .matches(/^[A-Za-z\s]*$/)
   .bail()
   .trim()
-  .isLength({ min: 5, max: 100 })
-  .escape()
-  .bail()
+  .isLength({min:5 , max:100})
+  .escape().notEmpty()
   .run(req) ,
     await body("guarantor1phoneNumber").isMobilePhone("en-GH").bail().notEmpty().bail().run(req) ,
 
@@ -318,9 +455,12 @@ export async function checkguarantors(req:Request){
  await body("guarantor2phoneNumber").isMobilePhone("en-GH").bail().notEmpty().bail().run(req) 
 
    const errors = validationResult(req);
+  //  console.log(errors.array())
    if (!errors.isEmpty()) {
      throw new ValidationErrors(errors.array());
    }
+
+   return false
 }
 
 
