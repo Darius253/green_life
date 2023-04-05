@@ -5,7 +5,7 @@ import { BadAuthError } from "../utils/BadAuthError";
 import { policyRepo } from "redisClient";
 import { Registration } from "../models/Registration";
 import { LOANTYPE, loanStatus } from "../models/models.interface";
-import { User } from "@models/User";
+// import { User } from "@models/User";
 import moment from "moment";
 import { Client } from "../models/Client";
 import { Guarantor } from "../models/Guarantor";

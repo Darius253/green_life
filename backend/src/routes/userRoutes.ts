@@ -11,8 +11,8 @@ const Router =  express.Router()  ;
 Router.route("/api/user/auth/create").post(Usercontroller.createUser)
 Router.route("/api/user/auth/userlogin").post(
   [
-    body("phoneNumber").isMobilePhone("en-GH").notEmpty(),
-    body("password").notEmpty().isLength({ min: 8, max: 100 }),
+    body("phoneNumber").isMobilePhone("en-GH").bail().notEmpty(),
+    body("password").notEmpty().bail().isLength({ min: 8, max: 100 }),
   ],validate ,
   Usercontroller.login
 ); 

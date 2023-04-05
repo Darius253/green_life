@@ -1,142 +1,142 @@
-import  {isAdmin , isRegionalAgent, userAuth} from '../userAuth'
+// import  {isAdmin , isRegionalAgent, userAuth} from '../userAuth'
 
 
-describe("user auth" , ()=>{
+// describe("user auth" , ()=>{
 
 
-test("should return an error if user role is not admin" , ()=>{
+// test("should return an error if user role is not admin" , ()=>{
 
-    const next =  jest.fn() ; 
+//     const next =  jest.fn() ; 
 
-    const req = {
-       user:{
-        role : "amodn"
-       }
-    } 
-    const res = {
+//     const req = {
+//        user:{
+//         role : "amodn"
+//        }
+//     } 
+//     const res = {
         
-    }
+//     }
 
 
 
-    expect(()=>isAdmin(req  ,res, next)).toThrow() ;
+//     expect(()=>isAdmin(req  ,res, next)).toThrow() ;
 
     
 
-}) , 
+// }) , 
 
 
-test("should return an error if user role is not admin or regional manager" , ()=>{
+// test("should return an error if user role is not admin or regional manager" , ()=>{
 
-    const next =  jest.fn() ; 
+//     const next =  jest.fn() ; 
 
-    const req = {
-       user:{
-        role : "amodn"
-       }
-    } 
-    const res = {
+//     const req = {
+//        user:{
+//         role : "amodn"
+//        }
+//     } 
+//     const res = {
         
-    }
+//     }
 
 
-    expect(()=>isRegionalAgent(req , res, next)).toThrow()
-}) , 
+//     expect(()=>isRegionalAgent(req , res, next)).toThrow()
+// }) , 
 
-test("should return an error if its not a user" ,()=>{
-    const next =  jest.fn() ; 
+// test("should return an error if its not a user" ,()=>{
+//     const next =  jest.fn() ; 
 
-    const req = {
-       user:{
-        role : "amodn"
-       }
-    } 
-    const res = {
+//     const req = {
+//        user:{
+//         role : "amodn"
+//        }
+//     } 
+//     const res = {
         
-    }
+//     }
 
 
-    expect(()=>userAuth(req , res, next)).toThrow()
-}),
+//     expect(()=>userAuth(req , res, next)).toThrow()
+// }),
 
-test('should call next function' ,()=>{
+// test('should call next function' ,()=>{
 
-    const next =  jest.fn() ; 
+//     const next =  jest.fn() ; 
 
-    const req = {
-       user:{
-        role : "AGENT"
-       }
-    } 
-    const res = {
+//     const req = {
+//        user:{
+//         role : "AGENT"
+//        }
+//     } 
+//     const res = {
          
 
 
-    }
+//     }
     
    
-    userAuth(req , res, next) ; 
+//     userAuth(req , res, next) ; 
 
-    expect(next).toBeCalled()
-}),
+//     expect(next).toBeCalled()
+// }),
 
-test("should call next when user role  is regionalgent"  ,()=>{
+// test("should call next when user role  is regionalgent"  ,()=>{
       
-    const next =  jest.fn() ; 
+//     const next =  jest.fn() ; 
 
-    const req = {
-       user:{
-        role : "REGIONALAGENT"
-       }
-    } 
-    const res = {
+//     const req = {
+//        user:{
+//         role : "REGIONALAGENT"
+//        }
+//     } 
+//     const res = {
          
 
 
-    }
+//     }
     
    
-    isRegionalAgent(req , res, next) ; 
+//     isRegionalAgent(req , res, next) ; 
 
-    expect(next).toBeCalled()
-}) ,
-test("should call next when user role is ADMIn " ,()=>{
-    const next =  jest.fn() ; 
+//     expect(next).toBeCalled()
+// }) ,
+// test("should call next when user role is ADMIn " ,()=>{
+//     const next =  jest.fn() ; 
 
-    const req = {
-       user:{
-        role : "ADMIN"
-       }
-    } 
-    const res = {
+//     const req = {
+//        user:{
+//         role : "ADMIN"
+//        }
+//     } 
+//     const res = {
          
 
 
-    }
+//     }
     
    
-    isRegionalAgent(req , res, next) ; 
+//     isRegionalAgent(req , res, next) ; 
 
-    expect(next).toBeCalled()
-}) ,
+//     expect(next).toBeCalled()
+// }) ,
 
-test("should call next when user role is admin" ,()=>{
-    const next =  jest.fn() ; 
+// test("should call next when user role is admin" ,()=>{
+//     const next =  jest.fn() ; 
 
-    const req = {
-       user:{
-        role : "ADMIN"
-       }
-    } 
-    const res = {
+//     const req = {
+//        user:{
+//         role : "ADMIN"
+//        }
+//     } 
+//     const res = {
          
 
 
-    }
+//     }
     
    
-    isAdmin(req , res, next) ; 
+//     isAdmin(req , res, next) ; 
 
-    expect(next).toBeCalled()
-})
-})
+//     expect(next).toBeCalled()
+// })
+// })

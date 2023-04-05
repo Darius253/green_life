@@ -4,7 +4,9 @@ import mongoose  from "mongoose";
 let mongo:any ;
 beforeAll(async () => {
   process.env.JWt_SECRET = "1212";
-  process.env.JWT_refresh = "1111"
+  process.env.JWT_refresh = "1111";
+  process.env.otp_expiry= '5'
+process.env.locked_tries= '3'
   mongo = await MongoMemoryServer.create();
   const mongoUri = await mongo.getUri();
 

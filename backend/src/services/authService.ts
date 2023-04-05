@@ -6,7 +6,7 @@ import { compare } from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Payload } from "app.interface";
 import moment from "moment";
-import { Client } from "@models/Client";
+// import { Client } from "@models/Client";
 import { Authclass, Iauth } from "../models/models.interface";
 export class Auth<T extends Iauth> {
   constructor() {}
@@ -167,9 +167,22 @@ export class Auth<T extends Iauth> {
       user.verified = true;
 
       await user.save();
+      const accessToken = jwt.sign(
+        { id: user._id, email: user.email },
+        process.env.JWT_SECRET!,
+        { expiresIn: "15m" }
+      );
+      const refreshToken = jwt.sign(
+        { id: user._id, email: user.email },
+        process.env.JWT_refresh!,
+        { expiresIn: "1hr" }
+      );
+      res.cookie("refreshToken", refreshToken, { httpOnly: true, signed: true });
       return res.send({
         success: true,
         data: {
+          accessToken,
+          user,
           message: "user verified",
         },
       });
@@ -212,7 +225,7 @@ export class Auth<T extends Iauth> {
 
     //check if user exists;
     if (!user) {
-      throw new BadAuthError("User not found", 400);
+      throw new BadAuthError("phoneNumber incorrect", 401);
     }
 
     //check if otp is correct
@@ -231,10 +244,23 @@ export class Auth<T extends Iauth> {
       user.verified = true;
 
       await user.save();
+      const accessToken = jwt.sign(
+        { id: user._id, email: user.email },
+        process.env.JWT_SECRET!,
+        { expiresIn: "15m" }
+      );
+      const refreshToken = jwt.sign(
+        { id: user._id, email: user.email },
+        process.env.JWT_refresh!,
+        { expiresIn: "1hr" }
+      );
       return res.send({
         success: true,
         data: {
           message: "user verified",
+          user,
+          accessToken,
+          refreshToken,
         },
       });
     }
@@ -291,11 +317,12 @@ export class Auth<T extends Iauth> {
 
     user.otp = otp;
     user.otpLock.otpTries++;
+   
     user.otpLock.expiresAt = moment()
       .add(process.env.otp_expiry, "minutes")
       .toDate();
 
-    await user.save();
+ await user.save();
 
     return res.send({
       success: true,
@@ -342,7 +369,7 @@ export class Auth<T extends Iauth> {
         },
       });
     } catch (error) {
-      console.log(error);
+  
       throw new BadAuthError("Authorization failed", 401);
     }
   }
@@ -391,7 +418,7 @@ export class Auth<T extends Iauth> {
         },
       });
     } catch (error) {
-      console.log(error);
+      
       throw new BadAuthError("Authorization failed", 401);
     }
   }
@@ -402,9 +429,10 @@ export class Auth<T extends Iauth> {
     doc: Model<T, {}, Authclass>
   ) {
     const { password, oldPassword } = req.body;
-
+console.warn(password)
     const user = await doc.findById(req.user?.id);
 
+    console.log(user)
     if (!user) {
       throw new BadAuthError("user not authorized", 401);
     }
@@ -417,6 +445,12 @@ export class Auth<T extends Iauth> {
     }
 
     //compare password
+     //if newpassword is equal to old password throw an error 
+
+     const isEqual =  await compare(password , user.password) ; 
+     if(isEqual){
+      throw new BadAuthError('new password cannot be the same as old password' , 401);
+     }
     const isValid = await compare(oldPassword, user.password);
 
     if (!isValid) {
@@ -450,12 +484,14 @@ export class Auth<T extends Iauth> {
     });
   }
 
+
   async resetPhoneNumber(
     req: Request,
     res: Response,
     doc: Model<T, {}, Authclass>
   ) {}
 
+  //continue from here
   async forgotPassword(
     req: Request,
     res: Response,
@@ -494,7 +530,7 @@ export class Auth<T extends Iauth> {
     const user = await doc.findOne({ phoneNumber });
 
     if (!user) {
-      throw new BadAuthError("user not found", 401);
+      throw new BadAuthError("wrong or incorrect phoneNumber", 401);
     }
 
     if (user.otp !== otp) {
@@ -504,7 +540,9 @@ export class Auth<T extends Iauth> {
     user.otp = null;
     await user.save();
     res.send({
-      success: true, phoneNumber:user.phoneNumber
+      success: true, data:{
+        phoneNumber:user.phoneNumber
+      }
     });
   }
 
@@ -516,12 +554,16 @@ export class Auth<T extends Iauth> {
 const {password ,phoneNumber} = req.body.password ; 
   
 const user =  await doc.findOne({phoneNumber}) ; 
-
+// console.log(user)
 if(!user){
   throw new BadAuthError("incorrect phoneNumber" ,403) ; 
-}
+} 
 
  
+const isEqual =  await compare(password , user.password) ; 
+if(isEqual){
+ throw new BadAuthError('new password cannot be the same as old password' , 401);
+}
    user.password =    password ; 
 
    await user.save()  ; 

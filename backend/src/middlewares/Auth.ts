@@ -28,14 +28,13 @@ export const Auth = (req:Request ,res:Response ,next:NextFunction)=>{
     try { 
     
         const payload =  jwt.verify(token , process.env.JWT_SECRET!)  as Payload ;
-             console.log(payload)
-             
+            
         req.user=  payload ; 
       
-        
+        console.log(payload)
     } catch (error) {
         
-        console.log(error); 
+       
          throw new BadAuthError("Authorization failed", 401); 
     }
 

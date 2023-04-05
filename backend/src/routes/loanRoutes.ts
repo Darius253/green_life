@@ -1,5 +1,5 @@
 import  express  , {NextFunction, Request , Response}from 'express' ; 
-import {requestPersonalLoan ,createPersonalLoanRequest} from '@controllers/loanController'
+import {requestPersonalLoan ,createPersonalLoanRequest} from '../controllers/loanController'
 import {upload} from '../middlewares/uploads'
 import { Auth } from '../middlewares/Auth';
 import  {body, validationResult} from 'express-validator'

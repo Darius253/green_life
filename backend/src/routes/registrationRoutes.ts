@@ -3,7 +3,7 @@ import { Auth } from '../middlewares/Auth';
 import {body} from 'express-validator'
 import express from 'express' ; 
 import {validate} from '../middlewares/validate'
-import { EducationLevel, employmentStatus, gender, MaritalStatus, residentialStatus, response, Source } from '@models/models.interface';
+import { EducationLevel, employmentStatus, gender, MaritalStatus, residentialStatus, response, Source } from '../models/models.interface';
 const Router =  express.Router(); 
 
 

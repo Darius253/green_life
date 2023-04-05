@@ -7,8 +7,8 @@ import "dotenv/config"
 import { errorHandler } from "./middlewares/errorHandler";
 import cookieParser from "cookie-parser";
 import { userRouter } from "./routes/userRoutes";
-import { policyRouter } from "./routes/aprRoutes";
-import { loanRouter } from "./routes/loanRoutes";
+// import { policyRouter } from "./routes/aprRoutes";
+// import { loanRouter } from "./routes/loanRoutes";
 
 // import { registrationRouter } from "./routes/registrationRoutes";
 
@@ -26,8 +26,8 @@ app.use(cookieParser("121121212"))
 
 app.use(clientRouter);
 app.use(userRouter)
-app.use(policyRouter)
-app.use(loanRouter)
+// app.use(policyRouter)
+// app.use(loanRouter)
 // app.use(registrationRouter) ; 
 
 app.use(errorHandler);
