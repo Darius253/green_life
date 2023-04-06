@@ -1,6 +1,7 @@
 import  {Request , Response} from  'express' ;
 import { policyRepo } from 'redisClient';
-import  {personalLoanService} from '@services/personalLoanService'
+// import  {personalLoanService} from '@services/personalLoanService'
+import  {personalLoanService} from '../services/personalLoanService'
 export const requestPersonalLoan =async (req:Request , res:Response)=>{
 //@ts-ignore
 

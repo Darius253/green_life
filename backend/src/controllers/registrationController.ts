@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { Registration } from "@models/Registration";
-import { Client } from "@models/Client";
-import { BadAuthError } from "@utils/BadAuthError";
+import { Registration } from "../models/Registration";
+import { Client } from "../models/Client";
+import { BadAuthError } from "../utils/BadAuthError";
 
 export const register = async (req: Request, res: Response) => {
   //register user

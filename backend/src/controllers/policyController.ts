@@ -1,5 +1,5 @@
 import  {Request , Response} from 'express' ;
-import  {Pol as Policy}from '@services/policyService' ; 
+import  {Pol as Policy}from '../services/policyService' ; 
 
 
 

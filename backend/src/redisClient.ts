@@ -1,5 +1,5 @@
 import * as redis from 'redis-om' ; 
-import { Policy, policySchema ,} from '@models/Policy';
+import { Policy, policySchema ,} from './models/Policy';
 
 export let  policyRepo:redis.Repository<Policy>; 
 

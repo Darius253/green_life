@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { User } from "@models/User";
+import { User } from "../models/User";
 import jwt from "jsonwebtoken";
-import { BadAuthError } from "@utils/BadAuthError";
+import { BadAuthError } from "../utils/BadAuthError";
 import { compare } from "bcrypt";
 import { Auth } from "../services/authService";
-import { Iuser } from "@models/models.interface";
+import { Iuser } from "../models/models.interface";
 
 const Usercontroller = new Auth<Iuser>();
 //controller for admin login
@@ -12,11 +12,12 @@ const Usercontroller = new Auth<Iuser>();
 export const createUser = async (req: Request, res: Response) => {
   const { FullName, email, password, phoneNumber } = req.body;
 
-  const user = await new User({
+  const user =new User({
     FullName,
     email,
     password,
     phoneNumber,
+    otp:123456,
     otpLock: {
       otpTries: 0,
     },
@@ -28,7 +29,10 @@ export const createUser = async (req: Request, res: Response) => {
   await user.save();
 
   res.send({
-    user,
+   data:{
+    otp:user.otp ,
+    phoneNumber: user.phoneNumber
+   }
   });
 };
 export const login = async (req: Request, res: Response) => {

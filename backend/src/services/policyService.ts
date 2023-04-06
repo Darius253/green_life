@@ -1,4 +1,4 @@
-import { BadAuthError } from '@utils/BadAuthError';
+import { BadAuthError } from '../utils/BadAuthError';
 import {Request , Response} from 'express' ; 
 import {policyRepo} from '../redisClient'
 

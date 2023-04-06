@@ -1,17 +1,17 @@
-import { Loan } from "@models/Loan";
+import { Loan } from "../models/Loan";
 import { Request, Response } from "express";
 import { LoanService } from "./loanService";
-import { BadAuthError } from "@utils/BadAuthError";
+import { BadAuthError } from "../utils/BadAuthError";
 import { policyRepo } from "redisClient";
-import { Registration } from "@models/Registration";
-import { LOANTYPE, loanStatus } from "@models/models.interface";
-import { User } from "@models/User";
+import { Registration } from "../models/Registration";
+import { LOANTYPE, loanStatus } from "../models/models.interface";
+// import { User } from "@models/User";
 import moment from "moment";
-import { Client } from "@models/Client";
-import { Guarantor } from "@models/Guarantor";
+import { Client } from "../models/Client";
+import { Guarantor } from "../models/Guarantor";
 import { body, validationResult } from "express-validator";
-import { checkReg, checkguarantors } from "@utils/checkReg";
-import { ValidationErrors } from "@utils/validationError";
+import { checkReg, checkguarantors } from "../utils/checkReg";
+import { ValidationErrors } from "../utils/validationError";
 class PersonalLoanService extends LoanService {
   async createRequest(req: Request, res: Response) {
     console.log(req.files);

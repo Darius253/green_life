@@ -1,12 +1,12 @@
 import  express  , {NextFunction, Request , Response}from 'express' ; 
-import {requestPersonalLoan ,createPersonalLoanRequest} from '@controllers/loanController'
-import {upload} from '@middlewares/uploads'
-import { Auth } from '@middlewares/Auth';
+import {requestPersonalLoan ,createPersonalLoanRequest} from '../controllers/loanController'
+import {upload} from '../middlewares/uploads'
+import { Auth } from '../middlewares/Auth';
 import  {body, validationResult} from 'express-validator'
-import { validate } from '@middlewares/validate';
-import { ValidationErrors } from '@utils/validationError';
-import { personalLoanService } from '@services/personalLoanService';
-import { isRegionalAgent } from '@middlewares/userAuth';
+import { validate } from '../middlewares/validate';
+import { ValidationErrors } from '../utils/validationError';
+import { personalLoanService } from '../services/personalLoanService';
+import { isRegionalAgent } from '../middlewares/userAuth';
 
 const Router=  express.Router() ;
 

@@ -1,8 +1,8 @@
 import  express from 'express';
-import  {login,requestAccessToken,requestAccessTokenMobile,resendOtp,resetPassword,signup, verifyMobileOtp, verifyOtp,forgotPassword ,changePassword, verifyforgotPasswordOtp} from '@controllers/clientController';
+import  {login,requestAccessToken,requestAccessTokenMobile,resendOtp,resetPassword,signup, verifyMobileOtp, verifyOtp,forgotPassword ,changePassword, verifyforgotPasswordOtp} from '../controllers/clientController';
 import {body} from 'express-validator' ; 
-import  {validate} from '@middlewares/validate'
-import { Auth } from '@middlewares/Auth';
+import  {validate} from '../middlewares/validate'
+import { Auth } from '../middlewares/Auth';
 const Router = express.Router();
 
 
@@ -18,23 +18,23 @@ Router.route("/api/auth/login").post(
 
 Router.route("/api/auth/signup").post(
   [
-    body("name").notEmpty().isLength({ min: 4, max: 100}).trim().escape(),
-    body("email").isEmail().normalizeEmail(),
-    body("phoneNumber").isMobilePhone("en-GH").notEmpty(),
+    body("name").notEmpty().bail().isLength({ min: 4, max: 100}).bail().trim().escape(),
+    body("email").isEmail().bail().normalizeEmail(),
+    body("phoneNumber").isMobilePhone("en-GH").bail().notEmpty(),
     body("password")
-      .notEmpty()
+      .notEmpty().bail()
       .trim()
       .isStrongPassword({
         minLength: 8,
         minUppercase: 1,
         minSymbols: 1,
         minNumbers: 1,
-      })
+      }).bail()
       .isLength({ min: 8, max: 100 }),
     body("confirmpassword")
-      .notEmpty()
+      .notEmpty().bail()
       .trim()
-      .isLength({ min: 8, max: 100 }).custom((value:string , {req})=>{
+      .isLength({ min: 8, max: 100 }).bail().custom((value:string , {req})=>{
 
         if(req.body.password !== value){
           throw new Error("passwords do not match") ; 
@@ -50,8 +50,8 @@ Router.route("/api/auth/signup").post(
 
 Router.route("/api/auth/verifymobileotp").post(
  [
-body("otp").notEmpty().isNumeric().isLength({min:6,max:6}) , 
-body("phoneNumber").isMobilePhone("en-GH").notEmpty()  
+body("otp").notEmpty().bail().isNumeric().bail().isLength({min:6,max:6}) , 
+body("phoneNumber").isMobilePhone("en-GH").bail().notEmpty()  
  ] , validate   ,verifyMobileOtp
 );
 
@@ -64,13 +64,13 @@ Router.route("/api/auth/request").get(requestAccessToken);
 
 Router.route("/api/auth/verifyOtp").post(
   [
-    body("otp").notEmpty().isNumeric().isLength({ min: 6, max: 6 }),
-    body("phoneNumber").isMobilePhone("en-GH").notEmpty(),
+    body("otp").notEmpty().bail().isNumeric().isLength({ min: 6, max: 6 }),
+    body("phoneNumber").isMobilePhone("en-GH").bail().notEmpty(),
   ],validate ,
   verifyOtp
 );
 Router.route("/api/auth/resendOtp").post( 
-   [  body("phoneNumber").isMobilePhone("en-GH").notEmpty(),
+   [  body("phoneNumber").isMobilePhone("en-GH").bail().notEmpty(),
   ],validate ,
    resendOtp); 
 
@@ -123,7 +123,7 @@ body("password").trim()
         minNumbers: 1,
       })
       .isLength({ min: 8, max: 100 }) , 
-    body("confirmPassword").isLength({max:8}).custom((value:string , {req})=>{
+    body("confirmPassword").isLength({min:8 ,max:100}).custom((value:string , {req})=>{
        
       if(value !== req.body.password){
         throw new Error("passwords do not match") ; 

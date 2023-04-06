@@ -1,4 +1,4 @@
-import { userRole } from "@models/models.interface";
+import { userRole } from "./models/models.interface";
 
 
 export interface  Payload{

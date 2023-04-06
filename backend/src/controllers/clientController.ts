@@ -1,4 +1,5 @@
-import { Iclient } from "@models/models.interface";
+// import { Iclient } from "@models/models.interface";
+import { Iclient } from "../models/models.interface";
 import { Request, Response } from "express";
 import { Client } from "../models/Client";
 import { Auth } from "../services/authService";

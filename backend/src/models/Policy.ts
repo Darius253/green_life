@@ -1,4 +1,4 @@
-import { BadAuthError } from "@utils/BadAuthError";
+import { BadAuthError } from "../utils/BadAuthError";
 import mongoose from "mongoose";
 import  * as redis from 'redis-om' ; 
 import { Ipolicy } from "./models.interface";

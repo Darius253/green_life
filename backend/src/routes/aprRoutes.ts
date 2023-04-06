@@ -1,9 +1,9 @@
 import express from 'express' ; 
 import  {body} from 'express-validator' ;
-import * as policyContoller from '@controllers/policyController' ;
-import { validate } from '@middlewares/validate';
-import { Auth } from '@middlewares/Auth';
-import { isAdmin } from '@middlewares/userAuth';
+import * as policyContoller from '../controllers/policyController' ;
+import { validate } from '../middlewares/validate';
+import { Auth } from '../middlewares/Auth';
+import { isAdmin } from '../middlewares/userAuth';
 const Router = express.Router() ; 
 
 

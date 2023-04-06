@@ -64,10 +64,9 @@ clientSchema.method("userLocked" , function(this:Iclient){
 //find the duration between the expiry time and the present time..
 //if the lock has expired return true
  if (Math.round(moment.duration(x.diff(y)).asMinutes())<=0){
-  // console.log("de")
+  
   return false ; 
  }
-
 //  console.log(moment().to(this.lock.expiresAt))
 // console.log(this.lock.tries, parseInt(process.env.locked_tries!));
    return this.lock.tries > parseInt(process.env.locked_tries!);

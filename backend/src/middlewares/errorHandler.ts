@@ -1,5 +1,5 @@
-import { BadAuthError } from "@utils/BadAuthError";
-import { ValidationErrors } from "@utils/validationError";
+import { BadAuthError } from "../utils/BadAuthError";
+import { ValidationErrors } from "../utils/validationError";
 import { NextFunction , Request , Response } from "express";
 import multer from "multer";
 
