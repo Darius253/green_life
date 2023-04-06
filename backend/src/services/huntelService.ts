@@ -2,11 +2,11 @@ import { isJSDocThisTag } from "typescript";
 import { moneyParams, sendOtpparams, verifyotpparams } from "./hubtel.interface";
 import axios from 'axios' ;
 
-class hubtelService{
+export class hubtelService{
 
  
     
-static async  axiosRequest(url:string , data:any ){
+ static async  axiosRequest(url:string , data:any ){
 
   const res =  await  axios({
       method: "POST",
@@ -45,11 +45,18 @@ static async  axiosRequest(url:string , data:any ){
     }
 
     static async verifyotp(params:verifyotpparams){
-         const url ="";
+         const url = "https://api-otp.hubtel.com/otp/verify";
        
         return  await this.axiosRequest(url , params) ;
 
       
+
+    }
+
+    static async resendOtp(params:string){
+
+        const url ="" ;
+ return await this.axiosRequest(url, params);
 
     }
 

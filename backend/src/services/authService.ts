@@ -8,6 +8,7 @@ import { Payload } from "app.interface";
 import moment from "moment";
 import { Client } from "@models/Client";
 import { Authclass, Iauth } from "@models/models.interface";
+
 export class Auth<T extends Iauth> {
   constructor() {}
 
