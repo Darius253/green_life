@@ -24,9 +24,9 @@ const loanSchema = new mongoose.Schema<ILoan>(
   {
     principal: { type: Number, required: true, min: 0 },
     interestrate: { type: Number, required: true, min: 0 },
-
+    monthlyinterestRate:{type:Number , required:true ,min:0},
     loanType: { type: String, required: true ,enum:Object.values(LOANTYPE)},
-    lastPaymentDate: { type: Date},
+    lastRepaymentDate: { type: Date},
     loanterm: { type: Number, required: true },
     loanStatus: {
       type: String,
@@ -35,12 +35,13 @@ const loanSchema = new mongoose.Schema<ILoan>(
       default: loanStatus.PENDING,
     },
     installment:[installmentSchema] , 
-    AmountPaid: { type: Number, required: true, default: 0.0 },
+    monthlyPayment:{type:Number , required:true },
+    
     repaymentAmount: { type: Number, required: true ,default:0.0 },
     remainingBalance: { type: Number, required: true , default:0.0 },
     client: { type: Schema.Types.ObjectId, required: true, ref: "Client" },
    
-    DateApproved: { type: Date },
+    DateApproved: { type: Date  },
     DateAccepted: { type: Date},
     DatePaid: { type: Date },
   },
@@ -70,5 +71,28 @@ const loanSchema = new mongoose.Schema<ILoan>(
 
 //   next();
 // });
+
+
+loanSchema.pre("save" , function(next){
+const self =  this ;
+
+    if(self.isModified("principal") || self.isModified("interestrate") || self.isModified("loanterm")){
+      
+      let monthlyinterestRate =  this.interestrate / 12 ; 
+       let monthlyPayment = this.principal * 
+         (monthlyinterestRate * (1 + monthlyinterestRate) ** this.loanterm) / ((1 + monthlyinterestRate) ** this.loanterm - 1);
+     
+      let repaymentAmount = monthlyPayment *  this.loanterm ; 
+
+      this.set("monthlyinterestRate" , monthlyinterestRate) ; 
+      this.set("monthlyPayment" , monthlyPayment) ; 
+      this.set("repaymentAmount" , repaymentAmount) ; 
+      this.set("remainingBalance" , repaymentAmount);
+
+    }
+
+    next()
+
+})
 
 export const Loan = mongoose.model("Loan", loanSchema);

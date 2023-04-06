@@ -165,8 +165,9 @@ export interface IloanInstallment{
 export interface ILoan {
   principal: number;
   interestrate: number;
+  monthlyinterestRate:number;
   charges: number;
-  lastPaymentDate: Date;
+  lastRepaymentDate: Date;
   loanStatus: loanStatus;
   repaymentAmount: number;
   loanType: LOANTYPE;
@@ -175,7 +176,7 @@ export interface ILoan {
   remainingBalance: number;
   client: Types.ObjectId;
   installment:IloanInstallment[]
- 
+  monthlyPayment:number
   DateApproved: Date;
   DateAccepted: Date;
   DatePaid: Date;

@@ -25,16 +25,16 @@ class PersonalLoanService extends LoanService {
     if (!policy) {
       throw new Error("");
     }
-    let face  ,ghanaCardBack , ghanaCardFront;
-console.log(req.files?.keys)
-//@ts-ignore
+    let face, ghanaCardBack, ghanaCardFront;
+    console.log(req.files?.keys);
+    //@ts-ignore
     if (
       //@ts-ignore
       req.files["face"] &&
       //@ts-ignore
       req.files["ghanaCardBack"] &&
-        //@ts-ignore&
-        req.files["ghanaCardFront"]
+      //@ts-ignore&
+      req.files["ghanaCardFront"]
     ) {
       //@ts-ignore
       face = req.files["face"][0]["path"];
@@ -43,24 +43,21 @@ console.log(req.files?.keys)
       //@ts-ignore
       ghanaCardFront = req.files["ghanaCardFront"][0]["path"];
     }
-    
-   
+
     let { principal, interestrate, loanterm } = req.body;
     console.log(req.body);
-    principal = parseFloat(principal).toFixed(2);
+
     if (req.body.principal <= policy.noRegisterationAmountCap!) {
       //  console.log(ghanaCardBack[0].path)
       // principal = principal.slice(principal.indexOf(".")).length > 3 ? principal : principal+".00"
-    if(!user.registered){
-
+      if (!user.registered) {
         const userRegistration = await Registration.findOne({
           user: req.user?.id,
         });
         console.log(userRegistration);
         if (!userRegistration) {
-            
-          if(!face && !ghanaCardBack && !ghanaCardFront){
-            throw new BadAuthError("Bad request error" , 401);
+          if (!face && !ghanaCardBack && !ghanaCardFront) {
+            throw new BadAuthError("Bad request error", 401);
           }
 
           const newRegistration = new Registration({
@@ -73,53 +70,50 @@ console.log(req.files?.keys)
 
           await newRegistration.save();
         }
-    }
+      }
       console.log(req.body);
 
-      const loanRequest = new Loan({
-        principal: +principal,
-        interestrate: +interestrate,
-        loanType: LOANTYPE.PERSONALLOAN,
-        loanterm: +loanterm,
-        client: req.user?.id,
-      });
+      // const loanRequest = new Loan({
+      //   principal: +principal,
+      //   interestrate: +interestrate,
+      //   loanType: LOANTYPE.PERSONALLOAN,
+      //   loanterm: +loanterm,
+      //   client: req.user?.id,
+      // });
 
-      await loanRequest.save();
+      // await loanRequest.save();
 
-      //send user a message
+      // //send user a message
 
-      return res.send({
-        success: true,
-        data: {
-          loanRequest,
-        },
-      });
+      // return res.send({
+      //   success: true,
+      //   data: {
+      //     loanRequest,
+      //   },
+      // });
     } else if (
       req.body.principal > policy.noRegisterationAmountCap! &&
       req.body.principal <= policy.noGurantorAmountCap!
     ) {
       //take all the registration details but no guarantors
       //find user
-       
-
 
       if (!user.registered) {
-          //validate user input
-          
-         await checkReg(req);
+        //validate user input
 
-         const errors = validationResult(req);
-         if (!errors.isEmpty()) {
-           throw new ValidationErrors(errors.array());
-         }
+        await checkReg(req);
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+          throw new ValidationErrors(errors.array());
+        }
         const registration = await Registration.findOne({ user: req.user?.id });
         //check if user is registered
         if (!registration) {
-            if (!face && !ghanaCardBack && !ghanaCardFront) {
-              throw new BadAuthError("Bad request error", 401);
-            }
+          if (!face && !ghanaCardBack && !ghanaCardFront) {
+            throw new BadAuthError("Bad request error", 401);
+          }
           //register user if not registered
-                   
 
           const register = await new Registration({
             ...req.body,
@@ -130,15 +124,15 @@ console.log(req.files?.keys)
           }).save();
         } else {
           // if user is not registered but registeration exist then update registration details;
-          await Registration.findByIdAndUpdate(
-            registration._id,
-            { $set: { ...req.body }, new: true } 
-          );
+          await Registration.findByIdAndUpdate(registration._id, {
+            $set: { ...req.body },
+            new: true,
+          });
         }
 
         //set user to registered
-        user.registered =true ;
-         await user.save();
+        user.registered = true;
+        await user.save();
       }
       //find users registration
       //if registration edit if necessary
@@ -146,41 +140,38 @@ console.log(req.files?.keys)
       //if no registration create new
 
       //create loan request and send to user
-      const loanRequest = new Loan({
-        principal: +principal,
-        interestrate: +interestrate,
-        loanType: LOANTYPE.PERSONALLOAN,
-        loanterm: +loanterm,
-        client: req.user?.id,
-      });
+      // const loanRequest = new Loan({
+      //   principal: +principal,
+      //   interestrate: +interestrate,
+      //   loanType: LOANTYPE.PERSONALLOAN,
+      //   loanterm: +loanterm,
+      //   client: req.user?.id,
+      // });
 
-      await loanRequest.save();
+      // await loanRequest.save();
 
-      return res.send({
-        success: true,
-        data: {
-          loanRequest,
-        },
-      });
+      // return res.send({
+      //   success: true,
+      //   data: {
+      //     loanRequest,
+      //   },
+      // });
     } else {
-    
-          await checkguarantors(req) ; 
-              // throwError(req) ;
-     
+      await checkguarantors(req);
+      // throwError(req) ;
+
       if (!user.registered) {
-        
-         await checkReg(req);
+        await checkReg(req);
 
         // throwError(req)
         const registration = await Registration.findOne({ user: req.user?.id });
         //check if user is registered
-        console.log("rnrifnonorern")
+        console.log("rnrifnonorern");
         if (!registration) {
-
-            if (!face && !ghanaCardBack && !ghanaCardFront) {
-              console.log("ere")
-              throw new BadAuthError("Bad request error", 401);
-            }
+          if (!face && !ghanaCardBack && !ghanaCardFront) {
+            console.log("ere");
+            throw new BadAuthError("Bad request error", 401);
+          }
           //register user if not registered
           const register = await new Registration({
             ...req.body,
@@ -191,12 +182,11 @@ console.log(req.files?.keys)
           }).save();
         } else {
           // if user is not registered but registeration exist then update registration details;
-             await Registration.findByIdAndUpdate(registration._id, {
-               $set: { ...req.body },
-               new: true,
-             });
+          await Registration.findByIdAndUpdate(registration._id, {
+            $set: { ...req.body },
+            new: true,
+          });
         }
-
 
         //set user to registered
         // user.set("registered", true);
@@ -204,20 +194,19 @@ console.log(req.files?.keys)
         await user.save();
       }
 
+     
+    }
+     const loanRequest = new Loan({
+       principal: +principal,
+       interestrate: +interestrate,
+       loanType: LOANTYPE.PERSONALLOAN,
+       loanterm: +loanterm,
+       client: req.user?.id,
+     });
 
+     await loanRequest.save();
 
-
-        
-        const loanRequest = new Loan({
-        principal: +principal,
-        interestrate: +interestrate,
-        loanType: LOANTYPE.PERSONALLOAN,
-        loanterm: +loanterm,
-        client: req.user?.id,
-      });
-
-      await loanRequest.save();
-
+     if(req.body.quarantor1fullname && req.body.guarantor2fullname){
       const guarantors = [
         {
           FullName: req.body.guarantor1fullname,
@@ -231,74 +220,62 @@ console.log(req.files?.keys)
           Loan: loanRequest,
         },
       ];
+     }
 
-    
-        // await Guarantor.create(guarantors); ; 
-      await    Guarantor.create(guarantors ) ;
-       
+     // await Guarantor.create(guarantors); ;
+ 
 
-
-      return res.send({
-        success: true,
-        data: {
-          loanRequest,
-        }})
-
-      
-    }
-
-  
+     return res.send({
+       success: true,
+       data: {
+         loanRequest,
+       },
+     });
   }
 
   async rejectRequest(req: Request, res: Response) {
-       
-    const loan =  await Loan.findById(req.params.id) ; 
-        if (!loan) {
-          throw new BadAuthError("Loan does not exist or deleted", 400);
-        } 
-
-
-    if(loan?.client.toString() !== req.user.id){
-      throw new BadAuthError("user is not authorized", 400); 
+    const loan = await Loan.findById(req.params.id);
+    if (!loan) {
+      throw new BadAuthError("Loan does not exist or deleted", 400);
     }
 
- 
-    if(loan.loanStatus !== loanStatus.APPROVED){
- 
-       throw new BadAuthError("loan is no more pending" ,400)
-    } 
- 
-     
-    loan.loanStatus =  loanStatus.REJECTED ; 
+    if (loan?.client.toString() !== req.user.id) {
+      throw new BadAuthError("user is not authorized", 400);
+    }
 
-    await loan.save(); 
+    if (loan.loanStatus !== loanStatus.APPROVED) {
+      throw new BadAuthError("loan is no more pending", 400);
+    }
 
-   //send message to  client ; 
+    loan.loanStatus = loanStatus.REJECTED;
 
- 
-     res.send({
-      success:true ,  data:{
-        loan
-      }
-     })
-      
+    await loan.save();
 
+    //send message to  client ;
 
-
-
+    res.send({
+      success: true,
+      data: {
+        loan,
+      },
+    });
   } //reject request if loan status is pending
 
   async acceptloan(req: Request, res: Response) {
-    
+    //fetch loan
+    //change loan status
+    //create the first installment
+    //change the dateAccepted
+    //Date paid
+    //amount paid
+    //repaymetAmount
+    //remainingBalace
+    //send api reques to send money
+    //create first installment sent
+    //send res
+  } // only accept if loan is approved think through
 
-
-
-
-
-  }// only accept if loan is approved think through
-
-  async approveRequest(req: Request, res: Response) { 
-
+  async approveRequest(req: Request, res: Response) {
     const loan = await Loan.findById(req.params.id);
 
     if (!loan) {
@@ -310,7 +287,7 @@ console.log(req.files?.keys)
     }
 
     loan.loanStatus = loanStatus.APPROVED;
-     loan.DateApproved = moment().toDate() ;
+    loan.DateApproved = moment().toDate();
     await loan.save();
 
     //send message to  client ;
@@ -321,33 +298,31 @@ console.log(req.files?.keys)
         loan,
       },
     });
-      
   } // approve request if loan status is pending
 
   async denyloan(req: Request, res: Response) {
+    const loan = await Loan.findById(req.params.id);
 
-     const loan = await Loan.findById(req.params.id);
+    if (!loan) {
+      throw new BadAuthError("Loan does not exist or deleted", 400);
+    }
 
-     if (!loan) {
-       throw new BadAuthError("Loan does not exist or deleted", 400);
-     }
+    if (loan.loanStatus !== loanStatus.PENDING) {
+      throw new BadAuthError("loan is no more pending", 400);
+    }
 
-     if (loan.loanStatus !== loanStatus.PENDING) {
-       throw new BadAuthError("loan is no more pending", 400);
-     }
+    loan.loanStatus = loanStatus.DENIED;
 
-     loan.loanStatus = loanStatus.DENIED;
+    await loan.save();
 
-     await loan.save();
+    //send message to  client ;
 
-     //send message to  client ;
-
-     res.send({
-       success: true,
-       data: {
-         loan,
-       },
-     });
+    res.send({
+      success: true,
+      data: {
+        loan,
+      },
+    });
   } //deny request if loan approved
 }
 
