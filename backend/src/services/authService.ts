@@ -8,6 +8,7 @@ import { Payload } from "app.interface";
 import moment from "moment";
 // import { Client } from "@models/Client";
 import { Authclass, Iauth } from "../models/models.interface";
+import  {hubtelService} from './huntelService'
 export class Auth<T extends Iauth> {
   constructor() {}
 
@@ -63,11 +64,7 @@ export class Auth<T extends Iauth> {
       );
     }
 
-    //generate otp
-    const otp = Math.floor(100000 + Math.random() * 900000);
-
-    //set otp to user
-    user.otp = otp;
+  
 
     await user.save();
 
@@ -87,10 +84,14 @@ export class Auth<T extends Iauth> {
 
     //send otp to user for verification
 
+    const resdata = hubtelService.sendotp(user.phoneNumber);
+       
+
     return res.send({
       success: true,
       data: {
-        otp,
+        message:"otp sent to user" ,
+        resdata ,
         phoneNumber: user.phoneNumber,
       },
     });
@@ -126,23 +127,30 @@ export class Auth<T extends Iauth> {
     });
 
     //generate otp
-    const otp = Math.floor(100000 + Math.random() * 900000);
+    // const otp = Math.floor(100000 + Math.random() * 900000);
 
-    user.otp = otp;
+    // user.otp = otp;
+      
+    
 
     await user.save();
+    const resdata = hubtelService.sendotp(user.phoneNumber);
+       
+
     //send user otp
     return res.status(201).send({
       success: true,
       data: {
-        otp,
+        message:"user successfully created" , 
         phoneNumber: user.phoneNumber,
+        resdata
       },
     });
   }
 
   async verifyOtp(req: Request, res: Response, doc: Model<T, {}, Authclass>) {
-    const { otp, phoneNumber} = req.body;
+    const { otp, phoneNumber , requestId,
+        prefix} = req.body;
 
     const user = await doc.findOne({phoneNumber});
 
@@ -152,15 +160,20 @@ export class Auth<T extends Iauth> {
     }
 
     //check if otp is correct
-    if (user.otp !== otp) {
-      throw new BadAuthError("Wrong otp", 401);
-    }
+    // if (user.otp !== otp) {
+    //   throw new BadAuthError("Wrong otp", 401);
+    // }
 
     //set otptries  to zero
+    const data = await hubtelService.verifyotp({
+      prefix ,
+      code:otp ,
+      requestId
+    })
 
     user.otpLock.otpTries = 0;
     user.otpLock.expiresAt = null;
-    user.otp = null;
+    // user.otp = null;
 
     //if user is not verified verify user
     if (!user.verified) {
@@ -219,25 +232,42 @@ export class Auth<T extends Iauth> {
     res: Response,
     doc: Model<T, {}, Authclass>
   ) {
-    const { otp, phoneNumber } = req.body;
+    const { otp, phoneNumber, requestId, prefix } = req.body;
 
-    const user = await doc.findOne({phoneNumber});
+    const user = await doc.findOne({ phoneNumber });
 
     //check if user exists;
     if (!user) {
-      throw new BadAuthError("phoneNumber incorrect", 401);
+      throw new BadAuthError("incorrect phoneNumber", 401);
     }
 
     //check if otp is correct
-    if (user.otp !== otp) {
-      throw new BadAuthError("Wrong otp", 401);
-    }
+    // if (user.otp !== otp) {
+    //   throw new BadAuthError("Wrong otp", 401);
+    // }
+
+    //set otptries  to zero
+    const data = await hubtelService.verifyotp({
+      prefix,
+      code: otp,
+      requestId,
+    });
+
+  
+
+    //check if user exists;
+  
+
+    //check if otp is correct
+    // if (user.otp !== otp) {
+    //   throw new BadAuthError("Wrong otp", 401);
+    // }
 
     //set otptries  to zero
 
     user.otpLock.otpTries = 0;
     user.otpLock.expiresAt = null;
-    user.otp = null;
+    // user.otp = null;
 
     //if user is not verified verify user
     if (!user.verified) {
@@ -300,7 +330,7 @@ export class Auth<T extends Iauth> {
       throw new BadAuthError("user not found ", 400);
     }
 
-    user.otp = null;
+    // user.otp = null;
     //check if max otp tries have been reached and throw an error ;
     if (user.otpLocked()) {
       await user.save();
@@ -313,9 +343,9 @@ export class Auth<T extends Iauth> {
     }
     //generate new otp  ;
 
-    const otp = Math.floor(100000 + Math.random() * 900000);
+    // const otp = Math.floor(100000 + Math.random() * 900000);
 
-    user.otp = otp;
+    // user.otp = otp;
     user.otpLock.otpTries++;
    
     user.otpLock.expiresAt = moment()
@@ -324,10 +354,14 @@ export class Auth<T extends Iauth> {
 
  await user.save();
 
+//  const resdata = hubtelService.resendOtp(user.phoneNumber);
+       
+
     return res.send({
       success: true,
       data: {
-        otp,
+        
+        message:"otp sent successfully",
         phoneNumber:user.phoneNumber,
       },
     });
@@ -429,7 +463,7 @@ export class Auth<T extends Iauth> {
     doc: Model<T, {}, Authclass>
   ) {
     const { password, oldPassword } = req.body;
-console.warn(password)
+
     const user = await doc.findById(req.user?.id);
 
     console.log(user)
@@ -507,16 +541,17 @@ console.warn(password)
 
     //generate an otp to user
 
-    const otp = Math.floor(1000000 + Math.random() * 9000000);
+    // const otp = Math.floor(1000000 + Math.random() * 9000000);
 
-    user.otp = otp;
-
+    // user.otp = otp;
+ const resdata = await hubtelService.sendotp(user.phoneNumber);
     await user.save();
 
     res.send({
       success: true,
       data: {
-        otp, phoneNumber:user.phoneNumber
+        message:"otp sent successfully" ,
+        resdata, phoneNumber:user.phoneNumber
       },
     });
   }
@@ -526,21 +561,28 @@ console.warn(password)
     res: Response,
     doc: Model<T, {}, Authclass>
   ) {
-    const { phoneNumber, otp } = req.body;
+    const { phoneNumber, otp, requestId, prefix } = req.body;
     const user = await doc.findOne({ phoneNumber });
 
     if (!user) {
       throw new BadAuthError("wrong or incorrect phoneNumber", 401);
     }
 
-    if (user.otp !== otp) {
-      throw new BadAuthError("incorrect otp", 401);
-    }
+    // if (user.otp !== otp) {
+    //   throw new BadAuthError("incorrect otp", 401);
+    // }
 
-    user.otp = null;
-    await user.save();
+    const resdata =  await hubtelService.verifyotp({
+      requestId ,code:otp , prefix
+    })
+
+   
+    
+
+
     res.send({
       success: true, data:{
+        resdata ,
         phoneNumber:user.phoneNumber
       }
     });

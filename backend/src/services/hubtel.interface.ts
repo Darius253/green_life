@@ -7,12 +7,15 @@ export interface verifyotpparams{
     code:string
 }
 
-export interface sendOtpparams{
-
+export interface sendMessageparams{
+       from:string
     to:string ; 
     content:string ;
 }
+export interface  resendOtp{
 
+    requestId:string ;
+}
 export interface moneyParams{
     mobileNumber:string ;
     amount:number ;

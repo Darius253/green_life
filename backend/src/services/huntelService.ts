@@ -1,14 +1,16 @@
 import { isJSDocThisTag } from "typescript";
-import { moneyParams, sendOtpparams, verifyotpparams } from "./hubtel.interface";
-import axios from 'axios' ;
+import { moneyParams, resendOtp, sendMessageparams, verifyotpparams } from "./hubtel.interface";
+import axios, { AxiosError } from 'axios' ;
+import { BadAuthError } from "@utils/BadAuthError";
 
 export class hubtelService{
 
  
     
- static async  axiosRequest(url:string , data:any ){
+ static  axiosRequest(url:string , data:any ){
+        console.log(data)
 
-  const res =  await  axios({
+    return  axios({
       method: "POST",
       url,
       data,
@@ -22,67 +24,98 @@ export class hubtelService{
       },
     });
 
-    return res.data ; 
+
 
     }
 
+    static async makeRequest(url:string , data:any){
+       
+      try{
+
+    const res = await this.axiosRequest(url, data);
+
+    return res.data.data ;
+      }catch(error:any){
+  
+          if(error.response.status === 500){
+            throw new Error("")
+          }
+          
+          throw new BadAuthError(error.response.data.message , 400 )
+
+
+      }
+
+
+    }
 
     static async sendotp(phoneNumber:string){
-            const url = "https://api-otp.hubtel.com/otp/send"; 
-           const data = {
-           
-    From:"buddybuss",
-    phoneNumber: phoneNumber,
-        "countryCode": "GH"
+        
+  
+        const url = "https://api-otp.hubtel.com/otp/send";
+        const data = {
+          From: "buddybuss",
+          phoneNumber: phoneNumber,
+          countryCode: "GH",
+        };
+  
 
-
-           }; 
-     return  await  this.axiosRequest(url  , data)  ;
-
-      
+        return await this.makeRequest(url , data) ;
+     
     
+       
+      
+     
 
     }
 
     static async verifyotp(params:verifyotpparams){
-         const url = "https://api-otp.hubtel.com/otp/verify";
-       
-        return  await this.axiosRequest(url , params) ;
+         
+    
+            const url = "https://api-otp.hubtel.com/otp/verify";
+
+          
+
+            
+     
+            return await this.makeRequest(url, params);
 
       
 
     }
 
-    static async resendOtp(params:string){
+    static async resendOtp(params:resendOtp){
 
-        const url ="" ;
- return await this.axiosRequest(url, params);
+    
+                  const url = "https://api-otp.hubtel.com/otp/resend";
+              
 
+             return await this.makeRequest(url, params);
     }
 
-    static async sendMessage(params:sendOtpparams){
+    static async sendMessage(params:sendMessageparams){
          
-        const url = "https://smsc.hubtel.com/v1/messages/send"; 
+     
+           const url = "https://smsc.hubtel.com/v1/messages/send";
 
-        return await this.axiosRequest(url ,params) ;
+
+         return await this.makeRequest(url , params)
        
     }
 
     static async sendMoney(params:moneyParams){
-        const url = `https://consumer-smrmapi.hubtel.com/send-money/${params.mobileNumber}`;
-
-        return await this.axiosRequest(url , params) ;
-
+   
+          const url = `https://consumer-smrmapi.hubtel.com/send-money/${params.mobileNumber}`;
+ 
+        return await this.makeRequest(url, params);
     }
     
     static async receiveMoney(params:moneyParams){
-        const url = `https://consumer-smrmapi.hubtel.com/request-money/${params.mobileNumber}`; 
+    
+         const url = `https://consumer-smrmapi.hubtel.com/request-money/${params.mobileNumber}`;
 
-        return await  this.axiosRequest(url,params);
+
+         return await this.makeRequest(url, params)
     }
 
-
-
-
-
-}
+  }

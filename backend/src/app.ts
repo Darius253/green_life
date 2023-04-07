@@ -7,6 +7,7 @@ import "dotenv/config"
 import { errorHandler } from "./middlewares/errorHandler";
 import cookieParser from "cookie-parser";
 import { userRouter } from "./routes/userRoutes";
+import { hubtelRoute } from "@routes/hubtel";
 // import { policyRouter } from "./routes/aprRoutes";
 // import { loanRouter } from "./routes/loanRoutes";
 
@@ -25,7 +26,8 @@ app.use(cookieParser("121121212"))
 
 
 app.use(clientRouter);
-app.use(userRouter)
+app.use(userRouter);
+app.use("/hubtel" , hubtelRoute)
 // app.use(policyRouter)
 // app.use(loanRouter)
 // app.use(registrationRouter) ; 
