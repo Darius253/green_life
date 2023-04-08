@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:green_life/screens/home_page/approval/widget/client_data.dart';
+import 'package:green_life/screens/home_page/referral_page/referral_page.dart';
 
 class ApprovalPage extends StatelessWidget {
   const ApprovalPage({
@@ -122,7 +123,7 @@ class ApprovalPage extends StatelessWidget {
                             ),
                               ElevatedButton(
                               onPressed: () {
-                                
+                                Get.to(const ReferralPage());
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.green,
