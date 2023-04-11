@@ -29,12 +29,12 @@ export class hubtelService{
     }
 
     static async makeRequest(url:string , data:any){
-       
+       let resdata:any ; 
       try{
 
     const res = await this.axiosRequest(url, data);
-
-    return res.data.data ;
+          console.log(res.data)
+    resdata = res.data.data ;
       }catch(error:any){
   
           if(error.response.status === 500){
@@ -46,7 +46,7 @@ export class hubtelService{
 
       }
 
-
+    return resdata;
     }
 
     static async sendotp(phoneNumber:string){

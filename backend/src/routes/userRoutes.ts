@@ -1,8 +1,12 @@
 import express from "express";
 import * as Usercontroller  from '../controllers/UserController' ;
-import { body } from "express-validator"; 
+import { body, param, query } from "express-validator"; 
 import { validate } from "../middlewares/validate";
 import { Auth } from "../middlewares/Auth";
+import { sanitizeName  , sanitizeNumber} from "@utils/Sanitize";
+import { userRole } from "@models/models.interface";
+import mongoose from "mongoose";
+import { isRegionalAgent } from "@middlewares/userAuth";
 
 
 const Router =  express.Router()  ;
@@ -22,8 +26,27 @@ Router.route("/api/user/auth/create").post(Usercontroller.createUser)
 
 Router.route("/api/user/auth/verifyotp").post(
   [
-    body("otp").notEmpty().isNumeric().isLength({ min: 6, max: 6 }),
-    body("phoneNumber").isMobilePhone("en-GH").notEmpty(),
+    body("otp")
+      .notEmpty()
+      .bail()
+      .isString()
+      .bail()
+      .isLength({ min: 4, max: 4 }),
+    body("phoneNumber").isMobilePhone("en-GH").bail().notEmpty(),
+    body("requestId")
+      .isAlphanumeric()
+      .bail()
+      .isLength({ min: 32, max: 32 })
+      .bail()
+      .trim()
+      .notEmpty(),
+    body("prefix")
+      .isAlpha()
+      .bail()
+      .isLength({ min: 4, max: 7 })
+      .bail()
+      .trim()
+      .notEmpty(),
   ],
   validate,
   Usercontroller.verifyOtp
@@ -31,8 +54,27 @@ Router.route("/api/user/auth/verifyotp").post(
 
 Router.route("/api/user/auth/mobileverifyotp").post(
   [
-    body("otp").notEmpty().isNumeric().isLength({ min: 6, max: 6 }),
-    body("phoneNumber").isMobilePhone("en-GH").notEmpty(),
+    body("otp")
+      .notEmpty()
+      .bail()
+      .isString()
+      .bail()
+      .isLength({ min: 4, max: 4 }),
+    body("phoneNumber").isMobilePhone("en-GH").bail().notEmpty(),
+    body("requestId")
+      .isAlphanumeric()
+      .bail()
+      .isLength({ min: 32, max: 32 })
+      .bail()
+      .trim()
+      .notEmpty(),
+    body("prefix")
+      .isAlpha()
+      .bail()
+      .isLength({ min: 4, max: 7 })
+      .bail()
+      .trim()
+      .notEmpty(),
   ],
   validate,
   Usercontroller.verifyMobileOtp
@@ -40,7 +82,14 @@ Router.route("/api/user/auth/mobileverifyotp").post(
 
 
 Router.route("/api/user/auth/resendotp").post(
-  [body("phoneNumber").isMobilePhone("en-GH").notEmpty()],
+  body("phoneNumber").isMobilePhone("en-GH").bail().notEmpty(),
+  body("requestId")
+    .isAlphanumeric()
+    .bail()
+    .isLength({ min: 32, max: 32 })
+    .bail()
+    .trim()
+    .notEmpty(),
   validate,
   Usercontroller.resendOtp
 );
@@ -85,8 +134,27 @@ Router.route("/api/user/auth/forgotpassword").post(
 ); 
 Router.route("/api/user/auth/verifypasswordotp").post(
   [
-    body("otp").notEmpty().isNumeric().isLength({ min: 6, max: 6 }),
-    body("phoneNumber").isMobilePhone("en-GH").notEmpty(),
+    body("otp")
+      .notEmpty()
+      .bail()
+      .isString()
+      .bail()
+      .isLength({ min: 4, max: 4 }),
+    body("phoneNumber").isMobilePhone("en-GH").bail().notEmpty(),
+    body("requestId")
+      .isAlphanumeric()
+      .bail()
+      .isLength({ min: 32, max: 32 })
+      .bail()
+      .trim()
+      .notEmpty(),
+    body("prefix")
+      .isAlpha()
+      .bail()
+      .isLength({ min: 4, max: 7 })
+      .bail()
+      .trim()
+      .notEmpty(),
   ],
   validate,
   Usercontroller.verifyforgotPasswordOtp
@@ -119,6 +187,40 @@ Router.route("/api/user/auth/changepassword").post(
 
 
 
+//query all the users=admin 
+Router.route("/api/users/all").get(
+  Auth,
+  isRegionalAgent ,[
+    (query("name")
+      .escape()
+      .trim()
+      .customSanitizer((value: string, { req }) => {
+        return value.slice(0, 101);
+      })
+      .customSanitizer((value: string) => {
+        return sanitizeName(value);
+      }),
+    query("limit").escape().trim(),
+    query("role")
+      .escape()
+      .trim()
+      .customSanitizer((value: string) => {
+        //@ts-ignore
+        if (Object.values(userRole).includes(value)) {
+          return value;
+        } else {
+          return "";
+        }
+      }))
+  ],
+  Usercontroller.getAllusers
+);
+
+//query a single user 
+Router.route("/api/users/user/:id").get(Auth ,isRegionalAgent , Usercontroller.getUser)
+
+//block a user
+Router.route("/api/users/block/:id")
 
 
 export  {Router as userRouter} ; 

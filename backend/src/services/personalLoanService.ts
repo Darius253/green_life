@@ -4,7 +4,7 @@ import { LoanService } from "./loanService";
 import { BadAuthError } from "../utils/BadAuthError";
 import { policyRepo } from "redisClient";
 import { Registration } from "../models/Registration";
-import { LOANTYPE, loanStatus } from "../models/models.interface";
+import { Iclient, LOANTYPE, loanStatus } from "../models/models.interface";
 // import { User } from "@models/User";
 import moment from "moment";
 import { Client } from "../models/Client";
@@ -12,6 +12,9 @@ import { Guarantor } from "../models/Guarantor";
 import { body, validationResult } from "express-validator";
 import { checkReg, checkguarantors } from "../utils/checkReg";
 import { ValidationErrors } from "../utils/validationError";
+import { hubtelService } from "./huntelService";
+import { returnAppMessage , returnMessage } from "@utils/message";
+import { User } from "@models/User";
 class PersonalLoanService extends LoanService {
   async createRequest(req: Request, res: Response) {
     console.log(req.files);
@@ -47,7 +50,7 @@ class PersonalLoanService extends LoanService {
     let { principal, interestrate, loanterm } = req.body;
     console.log(req.body);
 
-    if (req.body.principal <= policy.noRegisterationAmountCap!) {
+    if (principal <= policy.noRegisterationAmountCap!) {
       //  console.log(ghanaCardBack[0].path)
       // principal = principal.slice(principal.indexOf(".")).length > 3 ? principal : principal+".00"
       if (!user.registered) {
@@ -92,8 +95,8 @@ class PersonalLoanService extends LoanService {
       //   },
       // });
     } else if (
-      req.body.principal > policy.noRegisterationAmountCap! &&
-      req.body.principal <= policy.noGurantorAmountCap!
+      principal > policy.noRegisterationAmountCap! &&
+      principal <= policy.noGurantorAmountCap!
     ) {
       //take all the registration details but no guarantors
       //find user
@@ -223,7 +226,12 @@ class PersonalLoanService extends LoanService {
      }
 
      // await Guarantor.create(guarantors); ;
- 
+    
+     await hubtelService.sendMessage({
+      to: user.phoneNumber ,
+      from:"buddybuss",
+      content: returnAppMessage(loanRequest._id.toString() , loanRequest.principal.toFixed(2) ).toUpperCase()
+     })
 
      return res.send({
        success: true,
@@ -234,10 +242,12 @@ class PersonalLoanService extends LoanService {
   }
 
   async rejectRequest(req: Request, res: Response) {
-    const loan = await Loan.findById(req.params.id);
+    const loan = await Loan.findById(req.params.id).populate<{client:Iclient}>("client");
+   
     if (!loan) {
       throw new BadAuthError("Loan does not exist or deleted", 400);
     }
+
 
     if (loan?.client.toString() !== req.user.id) {
       throw new BadAuthError("user is not authorized", 400);
@@ -251,7 +261,12 @@ class PersonalLoanService extends LoanService {
 
     await loan.save();
 
-    //send message to  client ;
+    //send message to  client ; 
+       await hubtelService.sendMessage({
+      to: loan.client.phoneNumber,
+      from:"buddybuss",
+      content: returnMessage(loan._id.toString() , loan.principal.toFixed(2), "rejected"  ).toUpperCase()
+     })
 
     res.send({
       success: true,
@@ -276,7 +291,10 @@ class PersonalLoanService extends LoanService {
   } // only accept if loan is approved think through
 
   async approveRequest(req: Request, res: Response) {
-    const loan = await Loan.findById(req.params.id);
+    const loan = await Loan.findById(req.params.id).populate<{
+      client: Iclient;
+    }>("client");
+
 
     if (!loan) {
       throw new BadAuthError("Loan does not exist or deleted", 400);
@@ -291,7 +309,15 @@ class PersonalLoanService extends LoanService {
     await loan.save();
 
     //send message to  client ;
-
+   await hubtelService.sendMessage({
+     to: loan.client.phoneNumber,
+     from: "buddybuss",
+     content: returnMessage(
+       loan._id.toString(),
+       loan.principal.toFixed(2),
+       "approved"
+     ).toUpperCase(),
+   });
     res.send({
       success: true,
       data: {
@@ -301,12 +327,12 @@ class PersonalLoanService extends LoanService {
   } // approve request if loan status is pending
 
   async denyloan(req: Request, res: Response) {
-    const loan = await Loan.findById(req.params.id);
+    const loan = await Loan.findById(req.params.id).populate<{client:Iclient}>("client");
 
     if (!loan) {
       throw new BadAuthError("Loan does not exist or deleted", 400);
     }
-
+  
     if (loan.loanStatus !== loanStatus.PENDING) {
       throw new BadAuthError("loan is no more pending", 400);
     }
@@ -316,7 +342,15 @@ class PersonalLoanService extends LoanService {
     await loan.save();
 
     //send message to  client ;
-
+ await hubtelService.sendMessage({
+   to: loan.client.phoneNumber,
+   from: "buddybuss",
+   content: returnMessage(
+     loan._id.toString(),
+     loan.principal.toFixed(2),
+     "denied"
+   ).toUpperCase(),
+ });
     res.send({
       success: true,
       data: {

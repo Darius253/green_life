@@ -54,7 +54,7 @@ export class Auth<T extends Iauth> {
     //create a jwt for user
     user.lock.tries = 0;
     user.lock.expiresAt = null;
-    user.otp = null;
+    // user.otp = null;
     //check if otp  max has been reached and throw error
     if (user.otpLocked()) {
       await user.save();
@@ -84,8 +84,9 @@ export class Auth<T extends Iauth> {
 
     //send otp to user for verification
 
-    const resdata = hubtelService.sendotp(user.phoneNumber);
+    const resdata = await hubtelService.sendotp(user.phoneNumber);
        
+    
 
     return res.send({
       success: true,
@@ -134,7 +135,7 @@ export class Auth<T extends Iauth> {
     
 
     await user.save();
-    const resdata = hubtelService.sendotp(user.phoneNumber);
+    const resdata = await hubtelService.sendotp(user.phoneNumber);
        
 
     //send user otp
@@ -181,7 +182,7 @@ export class Auth<T extends Iauth> {
 
       await user.save();
       const accessToken = jwt.sign(
-        { id: user._id, email: user.email },
+        { id: user._id, email: user.email ,role:user.role || ''},
         process.env.JWT_SECRET!,
         { expiresIn: "15m" }
       );
@@ -275,7 +276,7 @@ export class Auth<T extends Iauth> {
 
       await user.save();
       const accessToken = jwt.sign(
-        { id: user._id, email: user.email },
+        { id: user._id, email: user.email, role: user.role || "" },
         process.env.JWT_SECRET!,
         { expiresIn: "15m" }
       );
@@ -299,7 +300,7 @@ export class Auth<T extends Iauth> {
     //if user is already verified just send user
 
     const accessToken = jwt.sign(
-      { id: user._id, email: user.email },
+      { id: user._id, email: user.email, role: user.role || "" },
       process.env.JWT_SECRET!,
       { expiresIn: "15m" }
     );
@@ -322,7 +323,7 @@ export class Auth<T extends Iauth> {
   }
 
   async resendOtp(req: Request, res: Response, doc: Model<T, {}, Authclass>) {
-    const {phoneNumber} = req.body;
+    const {phoneNumber , requestId} = req.body;
 
     const user = await doc.findOne({phoneNumber});
 
@@ -354,13 +355,13 @@ export class Auth<T extends Iauth> {
 
  await user.save();
 
-//  const resdata = hubtelService.resendOtp(user.phoneNumber);
+ const resdata = hubtelService.resendOtp({requestId});
        
 
     return res.send({
       success: true,
       data: {
-        
+        resdata,
         message:"otp sent successfully",
         phoneNumber:user.phoneNumber,
       },
@@ -391,7 +392,7 @@ export class Auth<T extends Iauth> {
       }
 
       const newaccessToken = jwt.sign(
-        { id: user._id, email: user.email },
+        { id: user._id, email: user.email, role: user.role || "" },
         process.env.JWT_SECRET!,
         { expiresIn: "15m" }
       );
@@ -440,7 +441,7 @@ export class Auth<T extends Iauth> {
 
       //create new user
       const newaccessToken = jwt.sign(
-        { id: user._id, email: user.email },
+        { id: user._id, email: user.email, role: user.role || "" },
         process.env.JWT_SECRET!,
         { expiresIn: "15m" }
       );
@@ -593,12 +594,12 @@ export class Auth<T extends Iauth> {
     res: Response,
     doc: Model<T, {}, Authclass>
   ) {
-const {password ,phoneNumber} = req.body.password ; 
+const {password ,phoneNumber} = req.body ; 
   
 const user =  await doc.findOne({phoneNumber}) ; 
-// console.log(user)
+
 if(!user){
-  throw new BadAuthError("incorrect phoneNumber" ,403) ; 
+  throw new BadAuthError("incorrect phoneNumber" ,401) ; 
 } 
 
  
@@ -612,7 +613,9 @@ if(isEqual){
   
 
    res.send({
-    success:true 
+    success:true ,data:{
+      message:"password changed successfully"
+    }
    })
 
     

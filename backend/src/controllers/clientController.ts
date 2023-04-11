@@ -567,3 +567,59 @@ export const verifyforgotPasswordOtp = async (req: Request, res: Response) => {
 export const changePassword = async (req: Request, res: Response) => {
   return customerAuth.changePassword(req, res, Client);
 };
+
+export const getAllClients = async(req:Request , res:Response)=>{
+        const filter: { name?: object ,phoneNumber?:string } = {};
+        const limit = req.query["limit"]
+          ? parseInt(req.query["limit"].toString())
+          : 10;
+         
+     
+        for (let key in req.query) {
+          if (key === "name") {
+            filter[key] = {
+              FullName: {
+                $regex: new RegExp(req.query[key]!.toString() || ""),
+              },
+            };
+          } else {
+            if (key === "phoneNumber") {
+              filter[key] = req.query[key]?.toString();
+            }
+          }
+        }
+        
+ 
+         
+          console.log(filter)
+
+      const users= await Client.find(filter).limit(limit) ;
+
+      res.send({
+        success:true ,data:{
+          clients:users
+        }
+      })
+      
+    
+ 
+
+}
+
+export const getClient = async (req: Request, res: Response) => {
+  const user = await Client.findById(req.params.id);
+
+   if(!user){
+    throw  new  BadAuthError("client doesnt exist" ,404) ;
+   }
+
+
+   res.send({
+    success:true , data:{
+      client:user
+    }
+
+   })
+
+
+};

@@ -1,18 +1,18 @@
 import  express  , {NextFunction, Request , Response}from 'express' ; 
-import {requestPersonalLoan ,createPersonalLoanRequest} from '../controllers/loanController'
+import {acceptPersonalLoanRequest, approvePersonalLoanRequest, denyPersonalLoanRequest, getAllLoans, rejectPersonalLoanRequest, requestPersonalLoan } from '../controllers/loanController'
 import {upload} from '../middlewares/uploads'
 import { Auth } from '../middlewares/Auth';
 import  {body, validationResult} from 'express-validator'
 import { validate } from '../middlewares/validate';
 import { ValidationErrors } from '../utils/validationError';
-import { personalLoanService } from '../services/personalLoanService';
+
 import { isRegionalAgent } from '../middlewares/userAuth';
 
 const Router=  express.Router() ;
 
 
 
-Router.route("/api/loan/request").post(
+Router.route("/personalloan/request").post(
 
   Auth,
   upload.fields([
@@ -67,13 +67,30 @@ Router.route("/api/loan/request").post(
   requestPersonalLoan
 );
 
-Router.route("/api/loan/reject").patch(Auth,personalLoanService.rejectRequest)  ;
-Router.route("/api/loan/accept").patch(Auth ,personalLoanService.acceptloan) 
-Router.route("/api/loan/deny").patch(Auth,isRegionalAgent ,  personalLoanService.denyloan) ; 
-Router.route("api/loan/approve").patch(Auth , isRegionalAgent , personalLoanService.approveRequest);
+Router.route("/personalloan/reject/:id").patch(Auth,rejectPersonalLoanRequest)  ;
+Router.route("/personalloan/accept/:id").patch(Auth ,acceptPersonalLoanRequest) 
+Router.route("/personalloan/deny/:id").patch(Auth,isRegionalAgent, denyPersonalLoanRequest) ; 
+Router.route("/personalloan/approve/:id").patch(Auth , isRegionalAgent, approvePersonalLoanRequest);
+
+//ADMIN orCLientmanager
+//query loans 
+
+//query all loans only admins
+Router.route("/").get(getAllLoans)
+//query a single loan both admin
+
+//query a users loans  // 
 
 
-Router.route("/api/createloan").post(createPersonalLoanRequest); 
+//agent can query loans that belong to him
+//query a users loan if the loan was registered by him
+//query a single loan that was registered by them
+
+//user actions 
+
+//query all their loans
+
+//query a single loan that belongs to them
 
 
 

@@ -5,8 +5,10 @@ import { BadAuthError } from "../utils/BadAuthError";
 import { compare } from "bcrypt";
 import { Auth } from "../services/authService";
 import { Iuser } from "../models/models.interface";
+import { Userservice } from "@services/userService";
 
 const Usercontroller = new Auth<Iuser>();
+const userController =   new Userservice() ;
 //controller for admin login
 
 export const createUser = async (req: Request, res: Response) => {
@@ -17,7 +19,7 @@ export const createUser = async (req: Request, res: Response) => {
     email,
     password,
     phoneNumber,
-    otp:123456,
+   
     otpLock: {
       otpTries: 0,
     },
@@ -81,3 +83,19 @@ export const changePassword = (req:Request , res:Response)=>{
   return Usercontroller.changePassword(req ,res ,User) ;
 }
    
+
+export const getAllusers = (req:Request, res:Response)=>{
+
+
+  return  userController.getAllusers(req , res) ; 
+  
+
+  
+}
+
+
+export const getUser = (req:Request ,res:Response)=>{
+
+
+  return  userController.getUser(req , res);
+}

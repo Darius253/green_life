@@ -24,7 +24,7 @@ const loanSchema = new mongoose.Schema<ILoan>(
   {
     principal: { type: Number, required: true, min: 0 },
     interestrate: { type: Number, required: true, min: 0 },
-    monthlyinterestRate:{type:Number , required:true ,min:0},
+    monthlyinterestRate:{type:Number ,min:0},
     loanType: { type: String, required: true ,enum:Object.values(LOANTYPE)},
     lastRepaymentDate: { type: Date},
     loanterm: { type: Number, required: true },
@@ -35,13 +35,14 @@ const loanSchema = new mongoose.Schema<ILoan>(
       default: loanStatus.PENDING,
     },
     installment:[installmentSchema] , 
-    monthlyPayment:{type:Number , required:true },
+    monthlyPayment:{type:Number },
     
     repaymentAmount: { type: Number, required: true ,default:0.0 },
     remainingBalance: { type: Number, required: true , default:0.0 },
     client: { type: Schema.Types.ObjectId, required: true, ref: "Client" },
    
     DateApproved: { type: Date  },
+    clientAgent:{type:Schema.Types.ObjectId , ref:"User"} ,
     DateAccepted: { type: Date},
     DatePaid: { type: Date },
   },
@@ -50,7 +51,7 @@ const loanSchema = new mongoose.Schema<ILoan>(
     toJSON: {
       transform(doc, ret, option) {
         ret.id = ret._id;
-        ret.principal =  ret.principal.toFixed(2)
+        ret.principal =  parseFloat(ret.principal.toFixed(2))
         delete ret._id;
       },
     },
@@ -84,10 +85,11 @@ const self =  this ;
      
       let repaymentAmount = monthlyPayment *  this.loanterm ; 
 
-      this.set("monthlyinterestRate" , monthlyinterestRate) ; 
-      this.set("monthlyPayment" , monthlyPayment) ; 
-      this.set("repaymentAmount" , repaymentAmount) ; 
-      this.set("remainingBalance" , repaymentAmount);
+      this.set("monthlyinterestRate", parseFloat(monthlyinterestRate.toFixed
+        (2))); 
+      this.set("monthlyPayment", parseFloat(monthlyPayment.toFixed(2))); 
+      this.set("repaymentAmount", parseFloat(repaymentAmount.toFixed(2))); 
+      this.set("remainingBalance", parseFloat(repaymentAmount.toFixed(2)));
 
     }
 

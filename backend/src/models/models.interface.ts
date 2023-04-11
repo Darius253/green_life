@@ -41,6 +41,7 @@ export enum gender {
   Male = "Male",
   Female = "Female",
   Other = "Other",
+  NULL = "null",
 }
 
 export enum MaritalStatus {
@@ -48,6 +49,7 @@ export enum MaritalStatus {
   Married = "Married",
   Divorced = "Divorced",
   Widow = "Widow",
+  NULL= "null",
   Widower = "Widower",
 }
 
@@ -56,15 +58,18 @@ export enum EducationLevel {
   SHS = "SHS",
   Tertiary = "Tertiary",
   None = "None",
+  NULL = "null",
 }
 
 export enum residentialStatus {
   Resident = "Resident",
+  NULL = "null",
   Nonresidents = "Non-resident",
 }
 
 export enum employmentStatus {
   Employed = "Employed",
+  NULL = "null",
   Unemployed = "Unemployed",
   SelfEmployed = "Self employed",
 }
@@ -179,6 +184,7 @@ export interface ILoan {
   monthlyPayment:number
   DateApproved: Date;
   DateAccepted: Date;
+  clientAgent?:Types.ObjectId ; 
   DatePaid: Date;
 }
 

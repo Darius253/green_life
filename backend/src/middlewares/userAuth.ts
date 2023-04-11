@@ -22,11 +22,11 @@ export const isRegionalAgent = (
   res: Response,
   next: NextFunction
 ) => {
-  if (!(req.user.role === userRole.ADMIN || req.user.role== userRole.REGIONALAGENT)) {
-    throw new BadAuthError("You are not authorized", 401);
-  }
-
-  next() ;
+  if (req.user.role === userRole.ADMIN || req.user.role=== userRole.REGIONALAGENT){
+      next();
+   
+  }else
+         throw new BadAuthError("You are not authorized", 401);
 
 };
 

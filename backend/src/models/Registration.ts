@@ -5,22 +5,25 @@ import {response , EducationLevel, employmentStatus, gender, Iregistration, Mari
 //creating the registration schema 
 const registrationSchema = new Schema<Iregistration>({
   fullname: { type: String, default: null },
-  gender: { type: String, enum: Object.values(gender), default: null },
+  gender: { type: String, enum: Object.values(gender),default:gender.NULL  },
   age: { type: Number, default: null },
   maritalStatus: {
     type: String,
     enum: Object.values(MaritalStatus),
-    default: null,
+    default:MaritalStatus.NULL
+   
   },
   educationLevel: {
     type: String,
     enum: Object.values(EducationLevel),
-    default: null,
+    default:EducationLevel.NULL
+  
   },
   residentialStatus: {
     type: String,
     enum: Object.values(residentialStatus),
-    default: null,
+    default:residentialStatus.NULL
+ 
   },
   residentialAddress: { type: String, default: null },
   NoYearsAtResidence: { type: Number, default: null },
@@ -31,7 +34,8 @@ const registrationSchema = new Schema<Iregistration>({
     type: String,
 
     enum: Object.values(employmentStatus),
-    default: null,
+    default:employmentStatus.NULL
+   
   },
   Occupation: { type: String, default: null },
   Employer: { type: String, default: null },
@@ -47,7 +51,8 @@ const registrationSchema = new Schema<Iregistration>({
     type: String,
 
     enum: Object.values(response),
-   required:true
+   required:true ,
+   default: response.NULL
   },
   SourceOfLoan: { type: String, enum: Object.values(Source), default:Source.NULL },
   loanAmount: { type: Number, default: null },
