@@ -189,7 +189,7 @@ Router.route("/api/user/auth/changepassword").post(
 
 //query all the users=admin 
 Router.route("/api/users/").get(
-  [
+  [Auth , isRegionalAgent ,
     query("name")
       .escape()
       .trim()

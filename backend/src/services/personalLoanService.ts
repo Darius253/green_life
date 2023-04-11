@@ -358,6 +358,231 @@ class PersonalLoanService extends LoanService {
       },
     });
   } //deny request if loan approved
+
+
+ async AgentCreateRequest(req:Request ,res:Response){
+  console.log(req.files);
+  const user = await Client.findById(req.params.id);
+  if (!user) {
+    throw new BadAuthError("Not authorized", 401);
+  }
+
+  const policy = await policyRepo.search().returnFirst();
+
+  if (!policy) {
+    throw new Error("");
+  }
+  let face, ghanaCardBack, ghanaCardFront;
+  console.log(req.files?.keys);
+  //@ts-ignore
+  if (
+    //@ts-ignore
+    req.files["face"] &&
+    //@ts-ignore
+    req.files["ghanaCardBack"] &&
+    //@ts-ignore&
+    req.files["ghanaCardFront"]
+  ) {
+    //@ts-ignore
+    face = req.files["face"][0]["path"];
+    //@ts-ignore
+    ghanaCardBack = req.files["ghanaCardBack"][0]["path"];
+    //@ts-ignore
+    ghanaCardFront = req.files["ghanaCardFront"][0]["path"];
+  }
+
+  let { principal, interestrate, loanterm } = req.body;
+  console.log(req.body);
+
+  if (principal <= policy.noRegisterationAmountCap!) {
+    //  console.log(ghanaCardBack[0].path)
+    // principal = principal.slice(principal.indexOf(".")).length > 3 ? principal : principal+".00"
+    if (!user.registered) {
+      const userRegistration = await Registration.findOne({
+        user: user._id,
+      });
+      console.log(userRegistration);
+      if (!userRegistration) {
+        if (!face && !ghanaCardBack && !ghanaCardFront) {
+          throw new BadAuthError("Bad request error", 401);
+        }
+
+        const newRegistration = new Registration({
+          ghanaCardBack: ghanaCardBack,
+          ghanaCardFront: ghanaCardFront,
+
+          face: face,
+          user: user._id,
+        });
+
+        await newRegistration.save();
+      }
+    }
+    console.log(req.body);
+
+    // const loanRequest = new Loan({
+    //   principal: +principal,
+    //   interestrate: +interestrate,
+    //   loanType: LOANTYPE.PERSONALLOAN,
+    //   loanterm: +loanterm,
+    //   client: req.user?.id,
+    // });
+
+    // await loanRequest.save();
+
+    // //send user a message
+
+    // return res.send({
+    //   success: true,
+    //   data: {
+    //     loanRequest,
+    //   },
+    // });
+  } else if (
+    principal > policy.noRegisterationAmountCap! &&
+    principal <= policy.noGurantorAmountCap!
+  ) {
+    //take all the registration details but no guarantors
+    //find user
+
+    if (!user.registered) {
+      //validate user input
+
+      await checkReg(req);
+
+    
+      const registration = await Registration.findOne({ user: user._id });
+      //check if user is registered
+      if (!registration) {
+        if (!face && !ghanaCardBack && !ghanaCardFront) {
+          throw new BadAuthError("Bad request error", 401);
+        }
+        //register user if not registered
+
+        const register = await new Registration({
+          ...req.body,
+          face,
+          ghanaCardBack,
+          ghanaCardFront,
+          user: user._id,
+        }).save();
+      } else {
+        // if user is not registered but registeration exist then update registration details;
+        await Registration.findByIdAndUpdate(registration._id, {
+          $set: { ...req.body },
+          new: true,
+        });
+      }
+
+      //set user to registered
+      user.registered = true;
+      await user.save();
+    }
+    //find users registration
+    //if registration edit if necessary
+
+    //if no registration create new
+
+    //create loan request and send to user
+    // const loanRequest = new Loan({
+    //   principal: +principal,
+    //   interestrate: +interestrate,
+    //   loanType: LOANTYPE.PERSONALLOAN,
+    //   loanterm: +loanterm,
+    //   client: req.user?.id,
+    // });
+
+    // await loanRequest.save();
+
+    // return res.send({
+    //   success: true,1
+    //   data: {
+    //     loanRequest,
+    //   },
+    // });
+  } else {
+    await checkguarantors(req);
+    // throwError(req) ;
+
+    if (!user.registered) {
+      await checkReg(req);
+
+      // throwError(req)
+      const registration = await Registration.findOne({ user: user._id });
+      //check if user is registered
+      console.log("rnrifnonorern");
+      if (!registration) {
+        if (!face && !ghanaCardBack && !ghanaCardFront) {
+          console.log("ere");
+          throw new BadAuthError("Bad request error", 401);
+        }
+        //register user if not registered
+        const register = await new Registration({
+          ...req.body,
+          face,
+          ghanaCardBack,
+          ghanaCardFront,
+          user: user._id,
+        }).save();
+      } else {
+        // if user is not registered but registeration exist then update registration details;
+        await Registration.findByIdAndUpdate(registration._id, {
+          $set: { ...req.body },
+          new: true,
+        });
+      }
+
+      //set user to registered
+      // user.set("registered", true);
+      user.registered = true;
+      await user.save();
+    }
+  }
+  const loanRequest = new Loan({
+    principal: +principal,
+    interestrate: +interestrate,
+    loanType: LOANTYPE.PERSONALLOAN,
+    loanterm: +loanterm,
+    client: user._id , 
+    clientAgent:req.user.id
+  });
+
+  await loanRequest.save();
+
+  if (req.body.quarantor1fullname && req.body.guarantor2fullname) {
+    const guarantors = [
+      {
+        FullName: req.body.guarantor1fullname,
+        phoneNumber: req.body.guarantor1phoneNumber,
+        Loan: loanRequest,
+      },
+
+      {
+        FullName: req.body.guarantor2fullname,
+        phoneNumber: req.body.guarantor2phoneNumber,
+        Loan: loanRequest,
+      },
+    ];
+  }
+
+  // await Guarantor.create(guarantors); ;
+
+  await hubtelService.sendMessage({
+    to: user.phoneNumber,
+    from: "buddybuss",
+    content: returnAppMessage(
+      loanRequest._id.toString(),
+      loanRequest.principal.toFixed(2)
+    ).toUpperCase(),
+  });
+
+  return res.send({
+    success: true,
+    data: {
+      loanRequest,
+    },
+  });
+  }
 }
 
 export const personalLoanService = new PersonalLoanService();

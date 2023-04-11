@@ -9,6 +9,9 @@ export abstract class LoanService {
 
   abstract denyloan(req: Request, res: Response): Promise<any>;
   abstract acceptloan(req: Request, res: Response): Promise<any>;
+   
+  
+  
 }
 
 

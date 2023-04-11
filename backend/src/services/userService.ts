@@ -16,7 +16,7 @@ export class Userservice{
 
 
     async getAllusers(req:Request ,res:Response){
-        console.log(req.query)
+
 
         const filter:{
             FullName?:object , 

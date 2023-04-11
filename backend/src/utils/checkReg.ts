@@ -460,7 +460,7 @@ export async function checkguarantors(req:any){
      throw new ValidationErrors(errors.array());
    }
 
-   return false
+
 }
 
 

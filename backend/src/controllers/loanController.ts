@@ -67,7 +67,7 @@ export const getLoan  = async (req:Request , res:Response)=>{
         throw new BadAuthError("loan not found" , 404) ;
     }
 
-
+ console.log("ewew")
     res.send({
         success:true , data:{
             loan
@@ -93,6 +93,8 @@ const limit = retLimit(req.query);
 retQuery(req.query, filter);
 
 filter["client"] =  req.params.id ; 
+
+console.log(filter)
 
 const loans =  await Loan.find(filter).limit(limit) ; 
 
@@ -125,6 +127,8 @@ retQuery(req.query, filter);
 
 filter["clientAgent"] =  req.params.id ; 
 
+console.log(223)
+
  const loans = await Loan.find(filter).limit(limit).populate("client") ; 
 
  res.send({
@@ -144,7 +148,7 @@ const loan =  await Loan.findOne({_id:req.params.id , clientAgent:req.user.id}).
      throw new BadAuthError("loan not found", 404);
    }
 
-
+console.log(22)
 
    res.send({
     success:true , data:{
@@ -170,7 +174,7 @@ export const getclientLoans = async(req: Request, res: Response) => {
  retQuery(req.query, filter);
 
  filter["client"] = req.user.id;
-
+console.log(filter) ;
  const loans = await Loan.find(filter).limit(limit);
 
  res.send({
@@ -188,7 +192,7 @@ export const getclientLoans = async(req: Request, res: Response) => {
 export const getclientLoan = async(req: Request, res: Response) => {
 
  
-    const loans=  await Loan.findById(req.params.id) ; 
+    const loans=  await Loan.findById(req.params.id).populate("clientAgent") ; 
 
     
     if(!loans){
@@ -199,6 +203,7 @@ export const getclientLoan = async(req: Request, res: Response) => {
 
         throw new BadAuthError("user not authorized" , 401) ;
     }
+    console.log(212)
 
 
 

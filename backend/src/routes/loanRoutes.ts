@@ -68,6 +68,61 @@ Router.route("/personalloan/request").post(
   requestPersonalLoan
 );
 
+Router.route("/personalloan/request/agent/:id").post(
+  Auth,
+  upload.fields([
+    { name: "face", maxCount: 1 },
+    { name: "ghanaCardFront", maxCount: 1 },
+    { name: "ghanaCardBack", maxCount: 1 },
+  ]),
+  [
+    body("principal")
+      .isNumeric()
+      .custom((value) => {
+        if (value < 0) {
+          throw new Error("value cannot be negative");
+        }
+
+        return true;
+      }),
+    body("interestrate")
+      .isNumeric()
+      .custom((value) => {
+        if (value < 0) {
+          throw new Error("value cannot be negative");
+        }
+
+        return true;
+      }),
+    body("loanterm")
+      .isNumeric()
+      .custom((value) => {
+        if (value < 0) {
+          throw new Error("value cannot be negative");
+        }
+
+        return true;
+      }),
+
+    // async function (req: Request, res: Response, next: NextFunction) {
+    //   console.log(req.body);
+
+    //   if (req.body.password) {
+    //     await body("email").notEmpty().run(req);
+    //   }
+    //   // const errors = validationResult(req);
+    //   // if (!errors.isEmpty()) {
+    //   //   throw new ValidationErrors(errors.array());
+    //   // }
+
+    //   next();
+    // },
+  ],
+  validate,
+
+  requestPersonalLoan
+);
+
 Router.route("/personalloan/reject/:id").patch(Auth,rejectPersonalLoanRequest)  ;
 Router.route("/personalloan/accept/:id").patch(Auth ,acceptPersonalLoanRequest) 
 Router.route("/personalloan/deny/:id").patch(Auth,isRegionalAgent, denyPersonalLoanRequest) ; 
@@ -112,16 +167,17 @@ Router.route("/").get(
   getAllLoans
 );
 //query a single loan both admin
-Router.route("/:id").get(getLoan);
+
 //query a users loans  // 
-Router.route("/clientsloans/:id").get( [
-    query("loanType").optional()
+Router.route("/clientsloans/:id").get(
+  [
+    query("loanType")
       .escape()
       .trim()
       .customSanitizer((value: string) => {
         //@ts-ignore
         if (!Object.values(LOANTYPE).includes(value)) {
-          return ;
+          return;
         }
         return value;
       }),
@@ -144,7 +200,9 @@ Router.route("/clientsloans/:id").get( [
         }
         return value;
       }),
-  ] ,getuserLoans)
+  ],
+  getuserLoans
+);
 
 
 
@@ -190,7 +248,7 @@ Router.route("/agentloan/:id").get(getAgentLoan) ;
 
 //query all their loans
 
-Router.route("/clientloans").get( [
+Router.route("/clientsLoan").get(Auth ,  [
     query("loanType")
       .escape()
       .trim()
@@ -223,8 +281,8 @@ Router.route("/clientloans").get( [
   ] ,getclientLoans)
 
 //query a single loan that belongs to them
-Router.route("/clientloans/:id").get(getclientLoan)
+Router.route("/clientsLoan/:id").get(Auth , getclientLoan)
 
-
+Router.route("/:id").get(getLoan);
 
 export {Router as loanRouter} ; 
