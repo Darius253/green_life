@@ -1,12 +1,13 @@
 import  express  , {NextFunction, Request , Response}from 'express' ; 
-import {acceptPersonalLoanRequest, approvePersonalLoanRequest, denyPersonalLoanRequest, getAllLoans, rejectPersonalLoanRequest, requestPersonalLoan } from '../controllers/loanController'
+import {acceptPersonalLoanRequest, approvePersonalLoanRequest, denyPersonalLoanRequest, getAgentLoan, getAgentLoans, getAllLoans, getLoan, getclientLoan, getclientLoans, getuserLoans, rejectPersonalLoanRequest, requestPersonalLoan } from '../controllers/loanController'
 import {upload} from '../middlewares/uploads'
 import { Auth } from '../middlewares/Auth';
-import  {body, validationResult} from 'express-validator'
+import  {body, query, validationResult} from 'express-validator'
 import { validate } from '../middlewares/validate';
 import { ValidationErrors } from '../utils/validationError';
 
 import { isRegionalAgent } from '../middlewares/userAuth';
+import { LOANTYPE } from '@models/models.interface';
 
 const Router=  express.Router() ;
 
@@ -76,22 +77,153 @@ Router.route("/personalloan/approve/:id").patch(Auth , isRegionalAgent, approveP
 //query loans 
 
 //query all loans only admins
-Router.route("/").get(getAllLoans)
-//query a single loan both admin
+Router.route("/").get(
+  [
+    query("loanType")
+      .escape()
+      .trim()
+      .customSanitizer((value: string) => {
+        //@ts-ignore
+        if (!Object.values(LOANTYPE).includes(value)) {
+          return ;
+        }
+        return value;
+      }),
 
+    query("min_principal")
+      .escape()
+      .trim()
+      .customSanitizer((value: string) => {
+        if (parseInt(value) < 0) {
+          return (parseInt(value) * -1).toString();
+        }
+      return value
+      }),
+    query("max_principal")
+      .escape()
+      .trim()
+      .customSanitizer((value: string) => {
+        if (parseInt(value) < 0) {
+          return (parseInt(value) * -1).toString();
+        }
+       return value ;
+      }),
+  ],
+  getAllLoans
+);
+//query a single loan both admin
+Router.route("/:id").get(getLoan);
 //query a users loans  // 
+Router.route("/clientsloans/:id").get( [
+    query("loanType").optional()
+      .escape()
+      .trim()
+      .customSanitizer((value: string) => {
+        //@ts-ignore
+        if (!Object.values(LOANTYPE).includes(value)) {
+          return ;
+        }
+        return value;
+      }),
+
+    query("min_principal")
+      .escape()
+      .trim()
+      .customSanitizer((value: string) => {
+        if (parseInt(value) < 0) {
+          return (parseInt(value) * -1).toString();
+        }
+        return value;
+      }),
+    query("max_principal")
+      .escape()
+      .trim()
+      .customSanitizer((value: string) => {
+        if (parseInt(value) < 0) {
+          return (parseInt(value) * -1).toString();
+        }
+        return value;
+      }),
+  ] ,getuserLoans)
+
+
+
 
 
 //agent can query loans that belong to him
 //query a users loan if the loan was registered by him
+Router.route("/agentloans/:id").get( [
+    query("loanType")
+      .escape()
+      .trim()
+      .customSanitizer((value: string) => {
+        //@ts-ignore
+        if (!Object.values(LOANTYPE).includes(value)) {
+          return "";
+        }
+        return value;
+      }),
+
+    query("min_principal")
+      .escape()
+      .trim()
+      .customSanitizer((value: string) => {
+        if (parseInt(value) < 0) {
+          return (parseInt(value) * -1).toString();
+        }
+        return value;
+      }),
+    query("max_principal")
+      .escape()
+      .trim()
+      .customSanitizer((value: string) => {
+        if (parseInt(value) < 0) {
+          return (parseInt(value) * -1).toString();
+        }
+        return value;
+      }),
+  ] ,getAgentLoans) ;
 //query a single loan that was registered by them
+Router.route("/agentloan/:id").get(getAgentLoan) ;
 
 //user actions 
 
 //query all their loans
 
-//query a single loan that belongs to them
+Router.route("/clientloans").get( [
+    query("loanType")
+      .escape()
+      .trim()
+      .customSanitizer((value: string) => {
+        //@ts-ignore
+        if (!Object.values(LOANTYPE).includes(value)) {
+          return "";
+        }
+        return value;
+      }),
 
+    query("min_principal")
+      .escape()
+      .trim()
+      .customSanitizer((value: string) => {
+        if (parseInt(value) < 0) {
+          return (parseInt(value) * -1).toString();
+        }
+        return value;
+      }),
+    query("max_principal")
+      .escape()
+      .trim()
+      .customSanitizer((value: string) => {
+        if (parseInt(value) < 0) {
+          return (parseInt(value) * -1).toString();
+        }
+        return value;
+      }),
+  ] ,getclientLoans)
+
+//query a single loan that belongs to them
+Router.route("/clientloans/:id").get(getclientLoan)
 
 
 

@@ -569,31 +569,40 @@ export const changePassword = async (req: Request, res: Response) => {
 };
 
 export const getAllClients = async(req:Request , res:Response)=>{
-        const filter: { name?: object ,phoneNumber?:string } = {};
+        const filter: { key?: object } = {};
         const limit = req.query["limit"]
           ? parseInt(req.query["limit"].toString())
           : 10;
          
-     
-        for (let key in req.query) {
-          if (key === "name") {
-            filter[key] = {
-              FullName: {
-                $regex: new RegExp(req.query[key]!.toString() || ""),
-              },
-            };
-          } else {
-            if (key === "phoneNumber") {
-              filter[key] = req.query[key]?.toString();
+ 
+          if(req.query["name"] && !req.query["phoneNumber"]){
+          
+            filter["key"]= {name:{$regex:new RegExp(req.query["name"].toString())}}
+
+          }
+          else if(req.query["phoneNumber"] && !req.query["name"] ){
+
+            filter["key"] = { phoneNumber: req.query["phoneNumber"] } ;
+          }
+
+          else{
+
+            if(req.query["phoneNumber"] && req.query["name"]){
+                  filter["key"] = {
+                    $or: [
+                      {
+                        name: {
+                          $regex: new RegExp(req.query["name"].toString()),
+                        },
+                      },
+                      { phoneNumber: req.query["phoneNumber"] },
+                    ],
+                  };
+              
             }
           }
-        }
-        
- 
-         
-          console.log(filter)
 
-      const users= await Client.find(filter).limit(limit) ;
+      const users= await Client.find(filter["key"] || {}).limit(limit) ;
 
       res.send({
         success:true ,data:{

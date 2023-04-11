@@ -16,10 +16,10 @@ export class Userservice{
 
 
     async getAllusers(req:Request ,res:Response){
-        
+        console.log(req.query)
 
         const filter:{
-            name?:object , 
+            FullName?:object , 
             role?:string
         }={} ;
         const limit = req.query["limit"]? parseInt(req.query["limit"].toString()) : 10
@@ -28,16 +28,16 @@ export class Userservice{
          
         for(let key in req.query){
 
-              if(key === 'name'){
-                filter[key] = {
-                  FullName: {
+              if(key === 'name' && req.query["name"]){
+                filter["FullName"] = {
+                
                     $regex: new RegExp(req.query[key]!.toString()||''),
-                  },
+                  
                 };
               }
               else {
 
-              if(key === 'role'){
+              if(key === 'role' && req.query["role"]){
                 filter[key] =  req.query[key]?.toString()
 
               }

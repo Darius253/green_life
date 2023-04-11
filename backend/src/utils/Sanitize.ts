@@ -28,21 +28,23 @@ export function sanitizeNumber(phoneNumber:string){
 
 
 export const retQuery = (query:any ,filter:any)=>{
+
+    console.log(query)
 for (let keys in query) {
-  if (keys === "loantype") {
+  if (query["loanType"] && keys === "loanType") {
     filter[keys] = query[keys]?.toString();
-  } else if (keys === "max_principal") {
+  } else if (keys === "max_principal" && query["max_principal"]) {
     if (!filter["principal"]) {
-      filter["principal"] = { $gt: query[keys] };
+      filter["principal"] = { $lt: parseInt(query[keys])};
     } else {
-      filter["principal"]["$gt"] = query[keys];
+      filter["principal"]["$lt"] = parseInt(query[keys]);
     }
   } else {
-    if (keys === "min_principal") {
+    if (query["min_principal"] && keys === "min_principal") {
       if (!filter["principal"]) {
-        filter["principal"] = { $lt: query[keys] };
+        filter["principal"] = { $gt: parseInt(query[keys]) };
       } else {
-        filter["principal"]["$lt"] = query[keys];
+        filter["principal"]["$gt"] = parseInt(query[keys]);
       }
     }
   }

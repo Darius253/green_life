@@ -35,7 +35,7 @@ export const approvePersonalLoanRequest= async(req:Request , res:Response)=>{
 export const getAllLoans= async (req:Request ,res:Response)=>{
   
     const filter:{
-        loantype?:string ;
+        loanType?:string ;
         principal?:any
     }= {}
 const limit = retLimit(req.query)
@@ -125,7 +125,7 @@ retQuery(req.query, filter);
 
 filter["clientAgent"] =  req.params.id ; 
 
- const loans = await Loan.find(filter).limit(limit) ; 
+ const loans = await Loan.find(filter).limit(limit).populate("client") ; 
 
  res.send({
     success:true , data:{
@@ -138,7 +138,7 @@ filter["clientAgent"] =  req.params.id ;
 
 export const getAgentLoan = async(req: Request, res: Response) => {
 
-const loan =  await Loan.findOne({_id:req.params.id , clientAgent:req.user.id}) ; 
+const loan =  await Loan.findOne({_id:req.params.id , clientAgent:req.user.id}).populate("client") ; 
 
    if (!loan) {
      throw new BadAuthError("loan not found", 404);
