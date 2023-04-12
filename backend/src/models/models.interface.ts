@@ -93,6 +93,12 @@ export enum Source {
   SavingAndLoans = "Savings and Loans",
   NULL = "null"
 }
+
+export enum registerationRepresentativePostion{
+  OWNER= "Owner",
+  SHAREHOLDER=  "ShareHolder" , 
+  DIRECTOR  = "director"
+}
 export interface Iregistration {
   fullname: string;
   gender: gender;
@@ -111,6 +117,20 @@ export interface Iregistration {
   Income: number;
   Savings: number;
   Surplus: Surplus;
+  businessName:string ;
+  representativeName:string ; 
+  businessRegistrationNumber:string;
+  businessTin:string;
+  representativePosition:registerationRepresentativePostion , 
+  businessCertificate:string ; 
+  form3:string;
+  municipalCertificate:string ;
+  taxReturns:string ;
+  bankStatement:string ;
+  financialStatement:string ;
+  numberofBeneficialOwners:number;
+  numberofShareHolders:number ;
+  numberofDirectors:number;
   NoOfDependants: number;
   CurrentlyServingaLoan: response;
   SourceOfLoan: Source;

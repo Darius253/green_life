@@ -94,10 +94,20 @@ class PersonalLoanService extends LoanService {
       //     loanRequest,
       //   },
       // });
-    } else if (
-      principal > policy.noRegisterationAmountCap! &&
-      principal <= policy.noGurantorAmountCap!
-    ) {
+    } else {
+
+
+      if(principal >= policy.noGurantorAmountCap!){
+
+      await  checkguarantors(req) ;
+      }
+          
+     
+      
+
+    
+    
+      
       //take all the registration details but no guarantors
       //find user
 
@@ -106,10 +116,6 @@ class PersonalLoanService extends LoanService {
 
         await checkReg(req);
 
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-          throw new ValidationErrors(errors.array());
-        }
         const registration = await Registration.findOne({ user: req.user?.id });
         //check if user is registered
         if (!registration) {
@@ -137,6 +143,8 @@ class PersonalLoanService extends LoanService {
         user.registered = true;
         await user.save();
       }
+
+    }
       //find users registration
       //if registration edit if necessary
 
@@ -159,49 +167,49 @@ class PersonalLoanService extends LoanService {
       //     loanRequest,
       //   },
       // });
-    } else {
-      await checkguarantors(req);
-      // throwError(req) ;
+    // } else {
+    //   await checkguarantors(req);
+    //   // throwError(req) ;
 
-      if (!user.registered) {
-        await checkReg(req);
+    //   if (!user.registered) {
+    //     await checkReg(req);
 
-        // throwError(req)
-        const registration = await Registration.findOne({ user: req.user?.id });
-        //check if user is registered
-        console.log("rnrifnonorern");
-        if (!registration) {
-          if (!face && !ghanaCardBack && !ghanaCardFront) {
-            console.log("ere");
-            throw new BadAuthError("Bad request error", 401);
-          }
-          //register user if not registered
-          const register = await new Registration({
-            ...req.body,
-            face,
-            ghanaCardBack,
-            ghanaCardFront,
-            user: req.user?.id,
-          }).save();
-        } else {
-          // if user is not registered but registeration exist then update registration details;
-          await Registration.findByIdAndUpdate(registration._id, {
-            $set: { ...req.body },
-            new: true,
-          });
-        }
+    //     // throwError(req)
+    //     const registration = await Registration.findOne({ user: req.user?.id });
+    //     //check if user is registered
+    //     console.log("rnrifnonorern");
+    //     if (!registration) {
+    //       if (!face && !ghanaCardBack && !ghanaCardFront) {
+    //         console.log("ere");
+    //         throw new BadAuthError("Bad request error", 401);
+    //       }
+    //       //register user if not registered
+    //       const register = await new Registration({
+    //         ...req.body,
+    //         face,
+    //         ghanaCardBack,
+    //         ghanaCardFront,
+    //         user: req.user?.id,
+    //       }).save();
+    //     } else {
+    //       // if user is not registered but registeration exist then update registration details;
+    //       await Registration.findByIdAndUpdate(registration._id, {
+    //         $set: { ...req.body },
+    //         new: true,
+    //       });
+    //     }
 
-        //set user to registered
-        // user.set("registered", true);
-        user.registered = true;
-        await user.save();
-      }
+    //     //set user to registered
+    //     // user.set("registered", true);
+    //     user.registered = true;
+    //     await user.save();
+    //   }
 
      
-    }
+    // }
      const loanRequest = new Loan({
        principal: +principal,
-       interestrate: +interestrate,
+       interestrate: interestrate,
        loanType: LOANTYPE.PERSONALLOAN,
        loanterm: +loanterm,
        client: req.user?.id,
@@ -209,23 +217,25 @@ class PersonalLoanService extends LoanService {
 
      await loanRequest.save();
 
-     if(req.body.quarantor1fullname && req.body.guarantor2fullname){
-      const guarantors = [
-        {
-          FullName: req.body.guarantor1fullname,
-          phoneNumber: req.body.guarantor1phoneNumber,
-          Loan: loanRequest,
-        },
+     if(req.body.guarantor1fullname && req.body.guarantor2fullname){
+       const guarantors = [
+         {
+           FullName: req.body.guarantor1fullname,
+           phoneNumber: req.body.guarantor1phoneNumber,
+           Loan: loanRequest,
+         },
 
-        {
-          FullName: req.body.guarantor2fullname,
-          phoneNumber: req.body.guarantor2phoneNumber,
-          Loan: loanRequest,
-        },
-      ];
+         {
+           FullName: req.body.guarantor2fullname,
+           phoneNumber: req.body.guarantor2phoneNumber,
+           Loan: loanRequest,
+         },
+       ];
+        
+       await Guarantor.create(guarantors); ;
      }
 
-     // await Guarantor.create(guarantors); ;
+     
     
      await hubtelService.sendMessage({
       to: user.phoneNumber ,
@@ -360,7 +370,7 @@ class PersonalLoanService extends LoanService {
   } //deny request if loan approved
 
 
- async AgentCreateRequest(req:Request ,res:Response){
+ async agentCreateRequest(req:Request ,res:Response){
   console.log(req.files);
   const user = await Client.findById(req.params.id);
   if (!user) {
@@ -438,10 +448,12 @@ class PersonalLoanService extends LoanService {
     //     loanRequest,
     //   },
     // });
-  } else if (
-    principal > policy.noRegisterationAmountCap! &&
-    principal <= policy.noGurantorAmountCap!
-  ) {
+  } else{
+    
+   if( principal >= policy.noGurantorAmountCap!){
+    await checkguarantors(req) ; //check for guarantors if principal is greater than noGuarantoramountcap
+   }
+  
     //take all the registration details but no guarantors
     //find user
 
@@ -478,6 +490,8 @@ class PersonalLoanService extends LoanService {
       user.registered = true;
       await user.save();
     }
+
+  }
     //find users registration
     //if registration edit if necessary
 
@@ -500,44 +514,44 @@ class PersonalLoanService extends LoanService {
     //     loanRequest,
     //   },
     // });
-  } else {
-    await checkguarantors(req);
-    // throwError(req) ;
+  // } else {
+  //   await checkguarantors(req);
+  //   // throwError(req) ;
 
-    if (!user.registered) {
-      await checkReg(req);
+  //   if (!user.registered) {
+  //     await checkReg(req);
 
-      // throwError(req)
-      const registration = await Registration.findOne({ user: user._id });
-      //check if user is registered
-      console.log("rnrifnonorern");
-      if (!registration) {
-        if (!face && !ghanaCardBack && !ghanaCardFront) {
-          console.log("ere");
-          throw new BadAuthError("Bad request error", 401);
-        }
-        //register user if not registered
-        const register = await new Registration({
-          ...req.body,
-          face,
-          ghanaCardBack,
-          ghanaCardFront,
-          user: user._id,
-        }).save();
-      } else {
-        // if user is not registered but registeration exist then update registration details;
-        await Registration.findByIdAndUpdate(registration._id, {
-          $set: { ...req.body },
-          new: true,
-        });
-      }
+  //     // throwError(req)
+  //     const registration = await Registration.findOne({ user: user._id });
+  //     //check if user is registered
+  //     console.log("rnrifnonorern");
+  //     if (!registration) {
+  //       if (!face && !ghanaCardBack && !ghanaCardFront) {
+  //         console.log("ere");
+  //         throw new BadAuthError("Bad request error", 401);
+  //       }
+  //       //register user if not registered
+  //       const register = await new Registration({
+  //         ...req.body,
+  //         face,
+  //         ghanaCardBack,
+  //         ghanaCardFront,
+  //         user: user._id,
+  //       }).save();
+  //     } else {
+  //       // if user is not registered but registeration exist then update registration details;
+  //       await Registration.findByIdAndUpdate(registration._id, {
+  //         $set: { ...req.body },
+  //         new: true,
+  //       });
+  //     }
 
-      //set user to registered
-      // user.set("registered", true);
-      user.registered = true;
-      await user.save();
-    }
-  }
+  //     //set user to registered
+  //     // user.set("registered", true);
+  //     user.registered = true;
+  //     await user.save();
+  //   }
+  // }
   const loanRequest = new Loan({
     principal: +principal,
     interestrate: +interestrate,
@@ -549,7 +563,7 @@ class PersonalLoanService extends LoanService {
 
   await loanRequest.save();
 
-  if (req.body.quarantor1fullname && req.body.guarantor2fullname) {
+  if (req.body.guarantor1fullname && req.body.guarantor2fullname) {
     const guarantors = [
       {
         FullName: req.body.guarantor1fullname,
@@ -563,9 +577,11 @@ class PersonalLoanService extends LoanService {
         Loan: loanRequest,
       },
     ];
+
+     await Guarantor.create(guarantors); 
   }
 
-  // await Guarantor.create(guarantors); ;
+
 
   await hubtelService.sendMessage({
     to: user.phoneNumber,
@@ -582,7 +598,8 @@ class PersonalLoanService extends LoanService {
       loanRequest,
     },
   });
-  }
+  
 }
 
+}
 export const personalLoanService = new PersonalLoanService();

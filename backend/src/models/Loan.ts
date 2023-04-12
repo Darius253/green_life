@@ -1,5 +1,6 @@
 import mongoose, { Schema , Types  ,Model} from "mongoose";
 import { ILoan, loanStatus, LOANTYPE  ,IloanInstallment , loanInstallmentStatus} from "./models.interface";
+import { calculateMonthlyInstallment } from "@utils/Sanitize";
 
 
 
@@ -78,18 +79,20 @@ loanSchema.pre("save" , function(next){
 const self =  this ;
 
     if(self.isModified("principal") || self.isModified("interestrate") || self.isModified("loanterm")){
-      
-      let monthlyinterestRate =  this.interestrate / 12 ; 
-       let monthlyPayment = this.principal * 
-         (monthlyinterestRate * (1 + monthlyinterestRate) ** this.loanterm) / ((1 + monthlyinterestRate) ** this.loanterm - 1);
+       
+      const payment=  calculateMonthlyInstallment(this.principal , this.interestrate , this.loanterm);
+      let monthlyinterestRate = payment.monthlyRate
+       let monthlyPayment =  payment.monthlyInstallment
+        
      
-      let repaymentAmount = monthlyPayment *  this.loanterm ; 
-
-      this.set("monthlyinterestRate", parseFloat(monthlyinterestRate.toFixed
-        (2))); 
-      this.set("monthlyPayment", parseFloat(monthlyPayment.toFixed(2))); 
-      this.set("repaymentAmount", parseFloat(repaymentAmount.toFixed(2))); 
-      this.set("remainingBalance", parseFloat(repaymentAmount.toFixed(2)));
+      let repaymentAmount = monthlyPayment.times(this.loanterm) ; 
+      console.log(this.loanterm)
+      console.log(monthlyinterestRate)
+        console.log(monthlyPayment)
+      this.set("monthlyinterestRate", monthlyinterestRate.toDecimalPlaces(5)); 
+      this.set("monthlyPayment", monthlyPayment); 
+      this.set("repaymentAmount",  repaymentAmount.toDecimalPlaces(2)); 
+      this.set("remainingBalance",  repaymentAmount.toDecimalPlaces(2));
 
     }
 

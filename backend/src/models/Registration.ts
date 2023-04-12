@@ -1,6 +1,6 @@
 
 import { Schema, model , SchemaType } from "mongoose";
-import {response , EducationLevel, employmentStatus, gender, Iregistration, MaritalStatus, residentialStatus, Surplus, Source } from "./models.interface";
+import {response , EducationLevel, employmentStatus, gender, Iregistration, MaritalStatus, residentialStatus, Surplus, Source, registerationRepresentativePostion } from "./models.interface";
 
 //creating the registration schema 
 const registrationSchema = new Schema<Iregistration>({
@@ -59,6 +59,22 @@ const registrationSchema = new Schema<Iregistration>({
   loanApproved: { type: String, enum: Object.values(response), default: response.NULL },
   defaulted: { type: String, enum: Object.values(response), default: response.NULL },
   NoMonthsDefaulted: { type: Number, default: null },
+  businessName:{type:String } , 
+  representativeName: String  ,
+  businessRegistrationNumber:String,
+  businessTin:String  ,
+  representativePosition:{type:String , enum:Object.values(registerationRepresentativePostion)} ,
+  businessCertificate:String , 
+  form3:String , 
+  municipalCertificate:String  ,
+  taxReturns:String  ,
+  bankStatement:String ,
+  financialStatement:String ,
+  numberofBeneficialOwners: Number,
+  numberofShareHolders:Number ,
+  numberofDirectors: Number,
+
+
   user: { type: Schema.Types.ObjectId, ref: "Client", required: true },
 });
 

@@ -1,5 +1,5 @@
 
-
+import Decimal from 'decimal.js'
 
 export function sanitizeName(name:string){
  
@@ -56,4 +56,26 @@ export const retLimit = (query:any)=>{
 
     return query["limit"] ? parseInt(query["limit"].toString()) : 10;
 
+}
+
+
+
+export function calculateMonthlyInstallment(principal:number, interestRate:number, loanTerm:number) {
+  // Convert interest rate to monthly rate
+  const monthlyRate = new Decimal(interestRate).dividedBy(100).dividedBy(12);
+
+  // Calculate monthly installment using the formula
+  const numerator = new Decimal(principal).times(monthlyRate);
+  const denominator = new Decimal(1).minus(
+    new Decimal(1).dividedBy(new Decimal(1).plus(monthlyRate).pow(loanTerm))
+  );
+  const monthlyInstallment = numerator.dividedBy(denominator);
+
+  // Round monthly installment to two decimal places
+  const roundedInstallment = monthlyInstallment.toDecimalPlaces(2);
+
+  return {
+    monthlyInstallment: roundedInstallment, 
+    monthlyRate
+  };
 }

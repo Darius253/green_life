@@ -1,12 +1,12 @@
 import  express  , {NextFunction, Request , Response}from 'express' ; 
-import {acceptPersonalLoanRequest, approvePersonalLoanRequest, denyPersonalLoanRequest, getAgentLoan, getAgentLoans, getAllLoans, getLoan, getclientLoan, getclientLoans, getuserLoans, rejectPersonalLoanRequest, requestPersonalLoan } from '../controllers/loanController'
+import {acceptPersonalLoanRequest, agentCreatePersonalloanRequest, approvePersonalLoanRequest, denyPersonalLoanRequest, getAgentLoan, getAgentLoans, getAllLoans, getLoan, getclientLoan, getclientLoans, getuserLoans, rejectPersonalLoanRequest, requestPersonalLoan } from '../controllers/loanController'
 import {upload} from '../middlewares/uploads'
 import { Auth } from '../middlewares/Auth';
 import  {body, query, validationResult} from 'express-validator'
 import { validate } from '../middlewares/validate';
 import { ValidationErrors } from '../utils/validationError';
 
-import { isRegionalAgent } from '../middlewares/userAuth';
+import { isRegionalAgent  , userAuth} from '../middlewares/userAuth';
 import { LOANTYPE } from '@models/models.interface';
 
 const Router=  express.Router() ;
@@ -69,7 +69,7 @@ Router.route("/personalloan/request").post(
 );
 
 Router.route("/personalloan/request/agent/:id").post(
-  Auth,
+  Auth, userAuth ,
   upload.fields([
     { name: "face", maxCount: 1 },
     { name: "ghanaCardFront", maxCount: 1 },
@@ -118,9 +118,8 @@ Router.route("/personalloan/request/agent/:id").post(
     //   next();
     // },
   ],
-  validate,
+  validate, agentCreatePersonalloanRequest
 
-  requestPersonalLoan
 );
 
 Router.route("/personalloan/reject/:id").patch(Auth,rejectPersonalLoanRequest)  ;
@@ -132,7 +131,7 @@ Router.route("/personalloan/approve/:id").patch(Auth , isRegionalAgent, approveP
 //query loans 
 
 //query all loans only admins
-Router.route("/").get(
+Router.route("/").get(Auth , isRegionalAgent ,
   [
     query("loanType")
       .escape()
@@ -283,6 +282,6 @@ Router.route("/clientsLoan").get(Auth ,  [
 //query a single loan that belongs to them
 Router.route("/clientsLoan/:id").get(Auth , getclientLoan)
 
-Router.route("/:id").get(getLoan);
+Router.route("/:id").get(Auth ,userAuth ,isRegionalAgent);
 
 export {Router as loanRouter} ; 

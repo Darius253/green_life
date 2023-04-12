@@ -32,6 +32,16 @@ export const approvePersonalLoanRequest= async(req:Request , res:Response)=>{
     return personalLoanService.approveRequest(req , res);
 }
 
+
+export const agentCreatePersonalloanRequest = async (
+  req: Request,
+  res: Response
+) => {
+  return personalLoanService.agentCreateRequest(req ,res)
+};
+
+
+
 export const getAllLoans= async (req:Request ,res:Response)=>{
   
     const filter:{

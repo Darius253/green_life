@@ -201,7 +201,7 @@ body("password").trim()
 //Todo: validate input and protect the route ; 
 
 //query all the clients 
-Router.route("/api/clients/getAll").get(
+Router.route("/api/clients").get(
   [
     query("name")
       .escape()
@@ -229,6 +229,6 @@ Router.route("/api/clients/getAll").get(
 
 
 //query a single clients
-Router.route("/api/clients/client/:id") .get(Auth  , userAuth, getClient)     
+Router.route("/api/clients/:id") .get(Auth  , userAuth, getClient)     
 
 export { Router as clientRouter };
