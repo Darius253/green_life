@@ -1,5 +1,5 @@
 import  express  , {NextFunction, Request , Response}from 'express' ; 
-import {acceptPersonalLoanRequest, agentCreatePersonalloanRequest, approvePersonalLoanRequest, denyPersonalLoanRequest, getAgentLoan, getAgentLoans, getAllLoans, getLoan, getclientLoan, getclientLoans, getuserLoans, rejectPersonalLoanRequest, requestPersonalLoan } from '../controllers/loanController'
+import {acceptPersonalLoanRequest, agentCreatePersonalloanRequest, agentCreateSmeRequest, approvePersonalLoanRequest, createSmeRequest, denyPersonalLoanRequest, getAgentLoan, getAgentLoans, getAllLoans, getLoan, getclientLoan, getclientLoans, getuserLoans, rejectPersonalLoanRequest, requestPersonalLoan } from '../controllers/loanController'
 import {upload} from '../middlewares/uploads'
 import { Auth } from '../middlewares/Auth';
 import  {body, query, validationResult} from 'express-validator'
@@ -283,5 +283,124 @@ Router.route("/clientsLoan").get(Auth ,  [
 Router.route("/clientsLoan/:id").get(Auth , getclientLoan)
 
 Router.route("/:id").get(Auth ,userAuth ,isRegionalAgent);
+
+Router.route("/smeLoan/request").post(Auth ,   upload.fields([
+    { name: "face", maxCount: 1 },
+    { name: "ghanaCardFront", maxCount: 1 },
+    { name: "ghanaCardBack", maxCount: 1 },
+    { name: "businessCertificate", maxCount: 1 },
+    { name: "form3", maxCount: 1 },
+    { name: "municipalCertificate", maxCount: 1 },
+    { name: "taxReturns", maxCount: 1 },
+    { name: "bankStatement", maxCount: 1 },
+    { name: "financialStatement", maxCount: 1 },
+  ]) ,
+  [
+    body("principal").isNumeric().custom((value)=>{
+       
+
+      if(value<0){
+        throw new Error("value cannot be negative") ;
+      }
+
+      return true
+    }),
+     body("interestrate").isNumeric().custom((value)=>{
+       
+
+      if(value<0){
+       throw new Error("value cannot be negative") ;
+      }
+
+      return true
+    }) ,
+     body("loanterm").isNumeric().custom((value)=>{
+       
+
+      if(value<0){
+    throw new Error("value cannot be negative") ;
+      }
+
+      return true
+    })
+
+    // async function (req: Request, res: Response, next: NextFunction) {
+    //   console.log(req.body);
+
+    //   if (req.body.password) {
+    //     await body("email").notEmpty().run(req);
+    //   }
+    //   // const errors = validationResult(req);
+    //   // if (!errors.isEmpty()) {
+    //   //   throw new ValidationErrors(errors.array());
+    //   // }
+
+    //   next();
+    // },
+  ] ,
+
+
+  createSmeRequest
+);
+
+Router.route("/smeLoan/request/agent/:id").post(
+  Auth,userAuth ,
+  upload.fields([
+    { name: "face", maxCount: 1 },
+    { name: "ghanaCardFront", maxCount: 1 },
+    { name: "ghanaCardBack", maxCount: 1 },
+    { name: "businessCertificate", maxCount: 1 },
+    { name: "form3", maxCount: 1 },
+    { name: "municipalCertificate", maxCount: 1 },
+    { name: "taxReturns", maxCount: 1 },
+    { name: "bankStatement", maxCount: 1 },
+    { name: "financialStatement", maxCount: 1 },
+  ]),
+  [
+    body("principal")
+      .isNumeric()
+      .custom((value) => {
+        if (value < 0) {
+          throw new Error("value cannot be negative");
+        }
+
+        return true;
+      }),
+    body("interestrate")
+      .isNumeric()
+      .custom((value) => {
+        if (value < 0) {
+          throw new Error("value cannot be negative");
+        }
+
+        return true;
+      }),
+    body("loanterm")
+      .isNumeric()
+      .custom((value) => {
+        if (value < 0) {
+          throw new Error("value cannot be negative");
+        }
+
+        return true;
+      }),
+
+    // async function (req: Request, res: Response, next: NextFunction) {
+    //   console.log(req.body);
+
+    //   if (req.body.password) {
+    //     await body("email").notEmpty().run(req);
+    //   }
+    //   // const errors = validationResult(req);
+    //   // if (!errors.isEmpty()) {
+    //   //   throw new ValidationErrors(errors.array());
+    //   // }
+
+    //   next();
+    // },
+  ],
+
+  agentCreateSmeRequest
+);
 
 export {Router as loanRouter} ; 

@@ -3,6 +3,7 @@ import { policyRepo } from 'redisClient';
 // import  {personalLoanService} from '@services/personalLoanService'
 import  {personalLoanService} from '../services/personalLoanService'
 import { Loan } from '@models/Loan';
+import  {smeLoanService} from '../services/smeLoan';
 import { BadAuthError } from '@utils/BadAuthError';
 import { retLimit, retQuery } from '@utils/Sanitize';
 export const requestPersonalLoan =async (req:Request , res:Response)=>{
@@ -224,3 +225,17 @@ export const getclientLoan = async(req: Request, res: Response) => {
     })
 
 };
+
+
+export const createSmeRequest =  async (req:Request, res:Response)=>{
+
+
+
+    return smeLoanService.createRequest(req , res) ;
+
+}
+
+export const agentCreateSmeRequest=  async(req:Request , res:Response)=>{
+
+    return smeLoanService.agentCreateRequest(req, res);
+}

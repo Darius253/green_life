@@ -142,12 +142,19 @@ export interface Iregistration {
   user: Types.ObjectId;
 }
 
+export enum guarantorRole{
+  BENEFICIALOWNERS =  "beneficialowners" , 
+  SHAREHOLDER =  "shareholder" , 
+  DIRECTOR ="director"
+}
 export interface Iguarantor {
   FullName: String;
   Loan: Types.ObjectId;
-  Address: String;
+  Address: String; 
+  role: guarantorRole
   phoneNumber: String;
 }
+
 
 export enum userRole {
   ADMIN = "ADMIN",

@@ -6,7 +6,7 @@ const storage = multer.diskStorage({
     cb(null, "./public");
   },
   filename(req, file, cb) {
-    const fileName = `${req.user?.id}_${moment().toISOString()}_${
+    const fileName = `${"rer"}_${moment().toISOString()}_${
     file.fieldname
     }.${file.mimetype.substring(file.mimetype.indexOf("/")+1)}`;
     cb(null, fileName);
@@ -24,7 +24,7 @@ export const upload = multer({
     cb(null, true);
   },
   limits: {
-    files: 5,
+    files: 10,
     fileSize: 5000000,
   },
 });

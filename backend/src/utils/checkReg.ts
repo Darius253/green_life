@@ -486,13 +486,13 @@ export async function checkSmeReg(req: any) {
       .escape()
       .bail()
       .run(req),
-    await body(" businessRegistrationNumber")
+    await body("businessRegistrationNumber")
       .notEmpty()
       .bail()
       .isLength({min:10 , max:20})
       .bail()
       .trim()
-      .isNumeric()
+      
       .escape()
       .bail()
       .run(req),
@@ -502,7 +502,7 @@ export async function checkSmeReg(req: any) {
       .isLength({min:10, max:20})
       .bail()
       .trim()
-      .isNumeric()
+      
       .escape()
       .bail()
       .run(req),
@@ -898,17 +898,16 @@ export async function checkSmeReg(req: any) {
 }
 
 
-async function checkexec(req:Request){
+export async function checkexec(req:Request){
 
 
   for(let  i = 1 ; i<= req.body.numberofBeneficialOwners ;i++){
 
         await body(`beneficialOwner${i}fullname`)
-          .bail()
-          .matches(/^[A-Za-z\s]*$/)
+        .matches(/^[A-Za-z\s]*$/)
           .bail()
           .trim()
-          .isLength({ min: 5, max: 100 })
+          .isLength({ min: 5, max: 100 }).bail()
           .escape()
           .notEmpty()
           .run(req),
@@ -921,11 +920,11 @@ async function checkexec(req:Request){
   }
     for (let i = 1; i <= req.body.numberofShareHolders; i++) {
       await body(`shareHolders${i}fullname`)
-        .bail()
         .matches(/^[A-Za-z\s]*$/)
         .bail()
         .trim()
         .isLength({ min: 5, max: 100 })
+        .bail()
         .escape()
         .notEmpty()
         .run(req),
@@ -938,11 +937,11 @@ async function checkexec(req:Request){
     }
       for (let i = 1; i <= req.body.numberofDirectors; i++) {
         await body(`directors${i}fullname`)
-          .bail()
           .matches(/^[A-Za-z\s]*$/)
           .bail()
           .trim()
           .isLength({ min: 5, max: 100 })
+          .bail()
           .escape()
           .notEmpty()
           .run(req),
