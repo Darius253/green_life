@@ -4,26 +4,7 @@
 // describe("user auth" , ()=>{
 
 
-// test("should return an error if user role is not admin" , ()=>{
-
-//     const next =  jest.fn() ; 
-
-//     const req = {
-//        user:{
-//         role : "amodn"
-//        }
-//     } 
-//     const res = {
-        
-//     }
-
-
-
-//     expect(()=>isAdmin(req  ,res, next)).toThrow() ;
-
-    
-
-// }) , 
+ 
 
 
 // test("should return an error if user role is not admin or regional manager" , ()=>{
@@ -48,7 +29,7 @@
 
 //     const req = {
 //        user:{
-//         role : "amodn"
+//         role : ""
 //        }
 //     } 
 //     const res = {
@@ -65,7 +46,7 @@
 
 //     const req = {
 //        user:{
-//         role : "AGENT"
+//         role : "R"
 //        }
 //     } 
 //     const res = {
@@ -118,25 +99,8 @@
 //     isRegionalAgent(req , res, next) ; 
 
 //     expect(next).toBeCalled()
-// }) ,
+// }) 
 
-// test("should call next when user role is admin" ,()=>{
-//     const next =  jest.fn() ; 
-
-//     const req = {
-//        user:{
-//         role : "ADMIN"
-//        }
-//     } 
-//     const res = {
-         
-
-
-//     }
-    
    
-//     isAdmin(req , res, next) ; 
-
-//     expect(next).toBeCalled()
-// })
+  
 // })

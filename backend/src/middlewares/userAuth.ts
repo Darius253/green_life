@@ -18,7 +18,7 @@ export const isAdmin =  (req:Request, res:Response,next:NextFunction)=>{
 }
 
 export const isRegionalAgent = (
-  req: Request,
+  req: any,
   res: Response,
   next: NextFunction
 ) => {
@@ -30,9 +30,9 @@ export const isRegionalAgent = (
 
 };
 
-export const userAuth = (req: Request, res: Response, next: NextFunction) => {
+export const userAuth = (req: any, res: Response, next: NextFunction) => {
   if (
-    !req.user.role || !(Object.values(userRole).includes(req.user.role!) ) 
+    !req.user.role || !(Object.values(userRole).includes(req.user.role) ) 
   ) {
     throw new BadAuthError("You are not authorized", 401);
   }

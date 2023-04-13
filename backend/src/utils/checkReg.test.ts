@@ -1,7 +1,7 @@
 // import { check } from 'express-validator';
 // import { checkReg, checkguarantors } from './checkReg';
 // import { Request } from 'express';
-
+import  {checkexec} from './checkReg'
 
 // describe("testing if req body comes with guarantors", () => {
 
@@ -363,3 +363,107 @@
 // } ,
 
 // ) 
+
+
+// describe('should throw an error ' , function(){
+
+
+
+//     test('should throw an error',  async()=>{
+
+
+//       let   obj:any = {} ; 
+
+//       for(let i =1 ;  i<=4 ; i++){
+//          obj[`beneficialOwner${i}fullname`]= 'Kelvin Ato Baiden' ;
+//          obj[`beneficialOwner${i}phoneNumber`]=`+23350706986`
+
+//       }
+//       for(let i =1 ;  i<=4 ; i++){
+//         obj[`shareHolders${i}fullname`]= 'Kelvin Ato Baiden' ;
+//         obj[`shareHolders${i}phoneNumber`]=`+23350706986`
+
+//      }
+//      for(let i =1 ;  i<=4 ; i++){
+//         obj[`directors${i}fullname`]= 'Kel' ;
+//         obj[`directors${i}phoneNumber`]=`+23350706986`
+
+//      }
+
+
+  
+//       let  req = {
+//       body:{  numberofBeneficialOwners:4 ,
+//         numberofShareHolders:4 ,
+//         numberofDirectors:4 ,
+//        ...obj
+    
+    
+//     }
+//         }
+    
+    
+//  await   expect(()=> checkexec(req)).rejects.toThrow()
+
+
+//     }) ,
+//     test('should throw an error',  async()=>{
+
+
+       
+  
+    
+//         let  req = {
+//         body:{  numberofBeneficialOwners:4 ,
+//           numberofShareHolders:4 ,
+//           numberofDirectors:4 ,
+//           beneficialOwner$1fullname:'Kelvin Ato Baiden',
+//           beneficialOwner$1phoneNumber:'+233507069806'
+      
+//       }
+//           }
+      
+      
+//    await   expect(()=> checkexec(req)).rejects.toThrow()
+  
+  
+//       }) ,
+//       test('should return false',  async()=>{
+
+
+//         let   obj:any = {} ; 
+  
+//         for(let i =1 ;  i<=4 ; i++){
+//            obj[`beneficialOwner${i}fullname`]= 'Kelvin Ato Baiden' ;
+//            obj[`beneficialOwner${i}phoneNumber`]=`+233507069806`
+  
+//         }
+//         for(let i =1 ;  i<=4 ; i++){
+//           obj[`shareHolders${i}fullname`]= 'Kelvin Ato Baiden' ;
+//           obj[`shareHolders${i}phoneNumber`]=`+233507069806`
+  
+//        }
+//        for(let i =1 ;  i<=4 ; i++){
+//           obj[`directors${i}fullname`]= 'Kelvin Ato Baiden' ;
+//           obj[`directors${i}phoneNumber`]=`+233507069806`
+  
+//        }
+  
+  
+    
+//         let  req = {
+//         body:{  numberofBeneficialOwners:4 ,
+//           numberofShareHolders:4 ,
+//           numberofDirectors:4 ,
+//          ...obj
+      
+      
+//       }
+//           }
+      
+      
+//    await   expect(()=> checkexec(req)).resolves.toBeUndefined()
+  
+  
+//       })
+// })
