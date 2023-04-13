@@ -44,7 +44,7 @@ export const agentCreatePersonalloanRequest = async (
 
 
 export const getAllLoans= async (req:Request ,res:Response)=>{
-  
+  console.log(req.query)
     const filter:{
         loanType?:string ;
         principal?:any
@@ -238,4 +238,9 @@ export const createSmeRequest =  async (req:Request, res:Response)=>{
 export const agentCreateSmeRequest=  async(req:Request , res:Response)=>{
 
     return smeLoanService.agentCreateRequest(req, res);
+}
+
+export const editLoan  =async (req:Request , res:Response) => {
+  
+    return personalLoanService.editLoan(req, res)
 }

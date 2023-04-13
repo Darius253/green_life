@@ -1,5 +1,5 @@
 import  express  , {NextFunction, Request , Response}from 'express' ; 
-import {acceptPersonalLoanRequest, agentCreatePersonalloanRequest, agentCreateSmeRequest, approvePersonalLoanRequest, createSmeRequest, denyPersonalLoanRequest, getAgentLoan, getAgentLoans, getAllLoans, getLoan, getclientLoan, getclientLoans, getuserLoans, rejectPersonalLoanRequest, requestPersonalLoan } from '../controllers/loanController'
+import {acceptPersonalLoanRequest, agentCreatePersonalloanRequest, agentCreateSmeRequest, approvePersonalLoanRequest, createSmeRequest, denyPersonalLoanRequest, editLoan, getAgentLoan, getAgentLoans, getAllLoans, getLoan, getclientLoan, getclientLoans, getuserLoans, rejectPersonalLoanRequest, requestPersonalLoan } from '../controllers/loanController'
 import {upload} from '../middlewares/uploads'
 import { Auth } from '../middlewares/Auth';
 import  {body, query, validationResult} from 'express-validator'
@@ -122,10 +122,10 @@ Router.route("/personalloan/request/agent/:id").post(
 
 );
 
-Router.route("/personalloan/reject/:id").patch(Auth,rejectPersonalLoanRequest)  ;
-Router.route("/personalloan/accept/:id").patch(Auth ,acceptPersonalLoanRequest) 
-Router.route("/personalloan/deny/:id").patch(Auth,isRegionalAgent, denyPersonalLoanRequest) ; 
-Router.route("/personalloan/approve/:id").patch(Auth , isRegionalAgent, approvePersonalLoanRequest);
+Router.route("/reject/:id").patch(Auth,rejectPersonalLoanRequest)  ;
+Router.route("/accept/:id").patch(Auth ,acceptPersonalLoanRequest) 
+Router.route("/deny/:id").patch(Auth,isRegionalAgent, denyPersonalLoanRequest) ; 
+Router.route("/approve/:id").patch(Auth , isRegionalAgent, approvePersonalLoanRequest);
 
 //ADMIN orCLientmanager
 //query loans 
@@ -137,9 +137,10 @@ Router.route("/").get(Auth , isRegionalAgent ,
       .escape()
       .trim()
       .customSanitizer((value: string) => {
+        console.log(value);
         //@ts-ignore
         if (!Object.values(LOANTYPE).includes(value)) {
-          return ;
+          return;
         }
         return value;
       }),
@@ -239,9 +240,9 @@ Router.route("/agentloans/:id").get( [
         }
         return value;
       }),
-  ] ,getAgentLoans) ;
+  ] , Auth , userAuth,getAgentLoans) ;
 //query a single loan that was registered by them
-Router.route("/agentloan/:id").get(getAgentLoan) ;
+Router.route("/agentloan/:id").get(Auth ,userAuth , getAgentLoan) ;
 
 //user actions 
 
@@ -282,7 +283,40 @@ Router.route("/clientsLoan").get(Auth ,  [
 //query a single loan that belongs to them
 Router.route("/clientsLoan/:id").get(Auth , getclientLoan)
 
-Router.route("/:id").get(Auth ,userAuth ,isRegionalAgent);
+Router.route("/:id").get(Auth ,isRegionalAgent , getLoan).put([
+    body("principal").isNumeric().custom((value)=>{
+       
+
+      if(value<0){
+        throw new Error("value cannot be negative") ;
+      }
+
+      return true
+    }) ,
+     body("loanterm").isNumeric().custom((value)=>{
+       
+
+      if(value<0){
+    throw new Error("value cannot be negative") ;
+      }
+
+      return true
+    })
+
+    // async function (req: Request, res: Response, next: NextFunction) {
+    //   console.log(req.body);
+
+    //   if (req.body.password) {
+    //     await body("email").notEmpty().run(req);
+    //   }
+    //   // const errors = validationResult(req);
+    //   // if (!errors.isEmpty()) {
+    //   //   throw new ValidationErrors(errors.array());
+    //   // }
+
+    //   next();
+    // },
+  ] ,Auth , isRegionalAgent,editLoan )
 
 Router.route("/smeLoan/request").post(Auth ,   upload.fields([
     { name: "face", maxCount: 1 },

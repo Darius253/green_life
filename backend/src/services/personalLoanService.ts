@@ -601,5 +601,11 @@ class PersonalLoanService extends LoanService {
   
 }
 
+
+
+
 }
+
+
+
 export const personalLoanService = new PersonalLoanService();

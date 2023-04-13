@@ -489,7 +489,7 @@ export async function checkSmeReg(req: any) {
     await body("businessRegistrationNumber")
       .notEmpty()
       .bail()
-      .isLength({min:10 , max:20})
+      .isLength({min:5 , max:40})
       .bail()
       .trim()
       
@@ -499,7 +499,7 @@ export async function checkSmeReg(req: any) {
     await body("businessTin")
       .notEmpty()
       .bail()
-      .isLength({min:10, max:20})
+      .isLength({min:5, max:40})
       .bail()
       .trim()
       

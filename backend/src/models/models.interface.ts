@@ -173,7 +173,7 @@ export enum loanStatus {
 }
 export enum LOANTYPE{
   PERSONALLOAN = "Personal loan" ,
-  SMELOAN =  "Sme's loan"
+  SMELOAN =  "SmesLoan"
 }
 
 export enum loanInstallmentStatus{
