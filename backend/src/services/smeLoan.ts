@@ -3,14 +3,14 @@ import  {LoanService} from './loanService'
 import { ParamsDictionary } from 'express-serve-static-core';
 import { ParsedQs } from 'qs';
 import {checkSmeReg , checkexec} from '../utils/checkReg' ;
-import { BadAuthError } from '@utils/BadAuthError';
+import { BadAuthError } from '../utils/BadAuthError';
 import { Client } from '../models/Client';
 import  {Registration} from '../models/Registration'
-import { LOANTYPE, guarantorRole, loanStatus } from '@models/models.interface';
-import { Loan } from '@models/Loan';
-import { Guarantor } from '@models/Guarantor';
+import { LOANTYPE, guarantorRole, loanStatus } from '../models/models.interface';
+import { Loan } from '../models/Loan';
+import { Guarantor } from '../models/Guarantor';
 import { hubtelService } from "./huntelService";
-import { returnAppMessage, returnMessage } from "@utils/message";
+import { returnAppMessage, returnMessage } from "../utils/message";
 
 export class  SmeLoan extends LoanService{
     

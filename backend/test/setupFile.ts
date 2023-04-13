@@ -1,9 +1,10 @@
 import { MongoMemoryServer } from "mongodb-memory-server"; 
 import request from 'supertest'; 
+import jwt from 'jsonwebtoken' ;
 import mongoose  from "mongoose";
 let mongo:any ;
 beforeAll(async () => {
-  process.env.JWt_SECRET = "1212";
+  process.env.JWT_SECRET = "1212";
   process.env.JWT_refresh = "1111";
   process.env.otp_expiry= '5'
 process.env.locked_tries= '3'
@@ -38,3 +39,17 @@ afterAll(async () => {
   // await mongo.stop();
   await mongoose.connection.close();
 });
+
+
+
+export function returnJwt(obj:{id:any , email:any ,role?:any }){
+
+ 
+ 
+  return jwt.sign(obj , process.env.JWT_SECRET! , {expiresIn:'1hr'})
+
+
+
+
+
+}

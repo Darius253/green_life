@@ -13,8 +13,8 @@ import { body, validationResult } from "express-validator";
 import { checkReg, checkguarantors } from "../utils/checkReg";
 import { ValidationErrors } from "../utils/validationError";
 import { hubtelService } from "./huntelService";
-import { returnAppMessage , returnMessage } from "@utils/message";
-import { User } from "@models/User";
+import { returnAppMessage , returnMessage } from "../utils/message";
+
 class PersonalLoanService extends LoanService {
   async createRequest(req: Request, res: Response) {
     console.log(req.files);

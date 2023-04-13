@@ -7,7 +7,7 @@ import { validate } from '../middlewares/validate';
 import { ValidationErrors } from '../utils/validationError';
 
 import { isRegionalAgent  , userAuth} from '../middlewares/userAuth';
-import { LOANTYPE } from '@models/models.interface';
+import { LOANTYPE } from '../models/models.interface';
 
 const Router=  express.Router() ;
 

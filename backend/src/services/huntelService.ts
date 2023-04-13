@@ -1,7 +1,7 @@
 import { isJSDocThisTag } from "typescript";
 import { moneyParams, resendOtp, sendMessageparams, verifyotpparams } from "./hubtel.interface";
 import axios, { AxiosError } from 'axios' ;
-import { BadAuthError } from "@utils/BadAuthError";
+import { BadAuthError } from '../utils/BadAuthError';
 
 export class hubtelService{
 

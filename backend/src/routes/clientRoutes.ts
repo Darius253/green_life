@@ -3,8 +3,8 @@ import  {login,requestAccessToken,requestAccessTokenMobile,resendOtp,resetPasswo
 import {body, query } from 'express-validator' ; 
 import  {validate} from '../middlewares/validate'
 import { Auth } from '../middlewares/Auth';
-import { sanitizeName, sanitizeNumber } from '@utils/Sanitize';
-import { userAuth } from '@middlewares/userAuth';
+import { sanitizeName, sanitizeNumber } from '../utils/Sanitize';
+import { userAuth } from '../middlewares/userAuth';
 const Router = express.Router();
 
 

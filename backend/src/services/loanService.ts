@@ -1,7 +1,7 @@
 
-import { Loan } from '@models/Loan'
-import { loanStatus } from '@models/models.interface';
-import { BadAuthError } from '@utils/BadAuthError';
+import { Loan } from '../models/Loan'
+import { loanStatus } from '../models/models.interface';
+import { BadAuthError } from '../utils/BadAuthError';
 import  {Request , Response} from 'express'
 
 export abstract class LoanService {

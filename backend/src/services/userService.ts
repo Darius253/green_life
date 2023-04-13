@@ -1,5 +1,5 @@
-import { User } from "@models/User";
-import { BadAuthError } from "@utils/BadAuthError";
+import { User } from "../models/User";
+import { BadAuthError } from "../utils/BadAuthError";
 import { Request, Response } from 'express';
 
 

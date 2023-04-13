@@ -1,6 +1,6 @@
 import mongoose, { Schema , Types  ,Model} from "mongoose";
 import { ILoan, loanStatus, LOANTYPE  ,IloanInstallment , loanInstallmentStatus} from "./models.interface";
-import { calculateMonthlyInstallment } from "@utils/Sanitize";
+import { calculateMonthlyInstallment } from "../utils/Sanitize";
 
 
 

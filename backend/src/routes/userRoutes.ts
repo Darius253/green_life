@@ -3,10 +3,10 @@ import * as Usercontroller  from '../controllers/UserController' ;
 import { body, param, query } from "express-validator"; 
 import { validate } from "../middlewares/validate";
 import { Auth } from "../middlewares/Auth";
-import { sanitizeName  , sanitizeNumber} from "@utils/Sanitize";
-import { userRole } from "@models/models.interface";
+import { sanitizeName  , sanitizeNumber} from "../utils/Sanitize";
+import { userRole } from "../models/models.interface";
 import mongoose from "mongoose";
-import { isRegionalAgent } from "@middlewares/userAuth";
+import { isRegionalAgent } from "../middlewares/userAuth";
 
 
 const Router =  express.Router()  ;
