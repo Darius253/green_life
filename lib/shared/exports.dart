@@ -33,3 +33,6 @@ export 'package:green_life/screens/home_page/widgets/drawer_widget.dart';
 export 'package:smooth_page_indicator/smooth_page_indicator.dart';
 export 'package:get/get.dart';
 //export 'package:image_picker/image_picker.dart';
+
+
+export 'package:share_plus/share_plus.dart';
