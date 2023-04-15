@@ -82,15 +82,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     activeIndex: currentIndex,
                     count: pages.length,
                     axisDirection: Axis.horizontal,
-                    effect: WormEffect(
+                    effect: const WormEffect(
                         spacing: 8.0,
-                        dotWidth: width * 0.03,
-                        dotHeight: width * 0.03,
-                        paintStyle: PaintingStyle.stroke,
+                        paintStyle: PaintingStyle.fill,
                         strokeWidth: 1.5,
-                        dotColor: const Color.fromARGB(255, 255, 251, 251),
-                        activeDotColor:
-                            const Color.fromARGB(209, 52, 168, 83))),
+                        dotColor: Color.fromARGB(255, 217, 217, 217),
+                        activeDotColor: Color.fromARGB(209, 52, 168, 83))),
               ),
             ),
             Padding(

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:green_life/screens/sign_up/sign_up_verification.dart';
 import 'package:green_life/shared/exports.dart';
 
 class SignUp extends StatefulWidget {
@@ -15,8 +16,11 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _referralCode = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String email = '';
+  String name = '';
+  String phoneNumber = '';
+  String password = '';
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -90,7 +94,11 @@ class _SignUpState extends State<SignUp> {
                               width,
                               TextInputType.emailAddress,
                               _emailController,
-                              (value) {},
+                              (value) {
+                                setState(() {
+                                  email = value!;
+                                });
+                              },
                             ),
                             SizedBox(
                               height: height * 0.02,
@@ -179,10 +187,14 @@ class _SignUpState extends State<SignUp> {
                               height: height * 0.07,
                             ),
                             button(height * 0.08, width, () {
-                              Get.to(() => const LoanType());
-                              // if (_formKey.currentState!.validate()) {
-                              //   print('Good to go');
-                              // }
+                              if (_formKey.currentState!.validate()) {
+                                Get.to(() => SignupVerification(
+                                      email: email,
+                                    ));
+                                // if (_formKey.currentState!.validate()) {
+                                //   print('Good to go');
+                                // }
+                              }
                             }, 'Create Account', Colors.green, 24,
                                 Colors.white),
                             SizedBox(
