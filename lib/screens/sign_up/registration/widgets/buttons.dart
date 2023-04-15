@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:green_life/shared/exports.dart';
 
 class Buttons extends StatelessWidget {
-  final String title, firstOption, secondOption, thirdOption;
-  final String? fourthOption;
+  final String title, firstOption, secondOption;
+  final String? thirdOption, fourthOption;
   final Function()? onTap;
 
   const Buttons(
@@ -11,7 +10,7 @@ class Buttons extends StatelessWidget {
       required this.title,
       required this.firstOption,
       required this.secondOption,
-      required this.thirdOption,
+      this.thirdOption,
       required this.onTap,
       this.fourthOption});
 
@@ -24,6 +23,7 @@ class Buttons extends StatelessWidget {
       children: [
         Text(
           title,
+          textAlign: TextAlign.center,
           style: const TextStyle(
             wordSpacing: 2.5,
             fontSize: 20,
@@ -37,20 +37,17 @@ class Buttons extends StatelessWidget {
         SizedBox(
           height: height * 0.01,
         ),
-        button(
-          secondOption,
-          width,
-          height,
-          onTap
-        ),
+        button(secondOption, width, height, onTap),
         SizedBox(
           height: height * 0.01,
         ),
-        button(thirdOption, width, height, onTap),
+         thirdOption!.isNotEmpty
+            ? button(thirdOption!, width, height, onTap)
+            : const SizedBox.shrink(),
         SizedBox(
           height: height * 0.01,
         ),
-        fourthOption != null || fourthOption!.isNotEmpty
+       fourthOption!.isNotEmpty
             ? button(fourthOption!, width, height, onTap)
             : const SizedBox.shrink()
       ],

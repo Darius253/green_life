@@ -45,8 +45,8 @@ Widget textform(
   );
 }
 
-Widget loginOrsignin(String initial, later, Function() onTap) {
-  return GestureDetector(
+Widget loginOrsignin(String initial, later, Function()? onTap) {
+  return InkWell(
     onTap: onTap,
     child: Text.rich(
       TextSpan(children: <TextSpan>[
