@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:green_life/screens/home_page/approval/review/review_page.dart';
+import 'package:green_life/screens/home_page/clients_manager/widget/list_view_cmanager.dart';
 import 'package:green_life/shared/exports.dart';
 
 class ClientsManager extends StatelessWidget {
@@ -21,7 +23,7 @@ class ClientsManager extends StatelessWidget {
                   const TopBar(
                     position: 'Client’s Manager Name',
                   ),
-                  SizedBox(height: height * 0.20, child: const MyListView()),
+                  SizedBox(height: height * 0.20, child: const ListViewClientManager()),
                   const SizedBox(
                     height: 8,
                   ),
@@ -63,7 +65,7 @@ class ClientsManager extends StatelessWidget {
                           return HistoryCard(
                             hdatas: hdata[index],
                             onTap: () {
-                              Get.to(const NotificationPage());
+                              Get.to(const ReviewPage());
                             },
                           );
                         },

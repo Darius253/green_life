@@ -22,7 +22,7 @@ class HomeClient extends StatelessWidget {
                   const TopBar(
                     position: 'Client’s Name',
                   ),
-                  SizedBox(height: height * 0.20, child: const MyListView()),
+                  SizedBox(height: height * 0.20, child: const ListViewClient()),
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(

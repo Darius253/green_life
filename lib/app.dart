@@ -19,7 +19,7 @@ class App extends StatelessWidget {
         DefaultWidgetsLocalizations.delegate,
       ],
 
-      home: HomeClient(),
+      home: ClientsManager(),
 
     );
   }

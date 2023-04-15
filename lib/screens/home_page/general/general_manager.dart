@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:green_life/screens/home_page/approval/review/review_page.dart';
+import 'package:green_life/screens/home_page/general/widget/list_view_gmanager.dart';
 import 'package:green_life/screens/home_page/widgets/drawer_widget.dart';
 import 'package:green_life/shared/exports.dart';
 
@@ -22,7 +24,7 @@ class GeneralManager extends StatelessWidget {
                   const TopBar(
                     position: 'Gen. Manager’s Name',
                   ),
-                  SizedBox(height: height * 0.20, child: const MyListView()),
+                  SizedBox(height: height * 0.20, child: const ListViewGeneralManager()),
                   const SizedBox(
                     height: 8,
                   ),
@@ -64,7 +66,7 @@ class GeneralManager extends StatelessWidget {
                           return HistoryCard(
                             hdatas: hdata[index],
                             onTap: () {
-                              Get.to(const NotificationPage());
+                              Get.to(const ReviewPage());
                             },
                           );
                         },
