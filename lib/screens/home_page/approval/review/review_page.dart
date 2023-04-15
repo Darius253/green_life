@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:green_life/screens/notification/widgets/confirm_card.dart';
+import 'package:green_life/screens/home_page/approval/review/review_card.dart';
+import 'package:green_life/screens/home_page/notification/widgets/confirm_card.dart';
 
-class NotificationPage extends StatelessWidget {
-  const NotificationPage({super.key});
+class ReviewPage extends StatelessWidget {
+  const ReviewPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
-    final double width = MediaQuery.of(context).size.width;
+    //final double width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
           title: const Text(
-            'Notification',
+            'Approve Loan',
             style: TextStyle(
                 color: Colors.black, fontSize: 28, fontWeight: FontWeight.bold),
           ),
@@ -60,8 +61,8 @@ class NotificationPage extends StatelessWidget {
                     ),
                     SizedBox(
                       height: height * 0.6,
-                      child: ListView.builder(itemBuilder: (context, index){
-                        return const ConfirmCard();
+                      child: ListView.builder(itemBuilder: (context, index) {
+                        return const ReviewCard();
                       }),
                     )
                   ],

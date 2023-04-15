@@ -57,6 +57,7 @@ dependencies:
   
   #S
   smooth_page_indicator:
+  share_plus: ^6.3.2
 
 dev_dependencies:
   flutter_test:

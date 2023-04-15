@@ -133,8 +133,8 @@ class History {
 }
 
 List<History> hdata = [
-  History('200', 'In progree', '60%'),
-  History('2000', 'Paid', '100%'),
-  History('200', 'Unpaid', '50%'),
-  History('200', 'Paid', '20%'),
+  History('2,00', 'In progree', '60%'),
+  History('2,000', 'Paid', '100%'),
+  History('2,00', 'Unpaid', '50%'),
+  History('2,00', 'Paid', '20%'),
 ];

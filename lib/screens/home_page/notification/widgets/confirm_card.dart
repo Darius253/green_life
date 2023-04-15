@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:green_life/screens/home_page/approval/approval_page.dart';
+import 'package:green_life/shared/exports.dart';
 
 class ConfirmCard extends StatelessWidget {
   const ConfirmCard({
@@ -8,7 +10,7 @@ class ConfirmCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
-    final double width = MediaQuery.of(context).size.width;
+    //final double width = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -50,12 +52,14 @@ class ConfirmCard extends StatelessWidget {
                         width: 6,
                       ),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.to(  ApprovalPage());
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                              minimumSize: const Size(40, 14),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 2),
+                          minimumSize: const Size(40, 14),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                             side: const BorderSide(color: Colors.green),

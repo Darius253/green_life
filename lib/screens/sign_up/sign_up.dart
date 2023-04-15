@@ -16,7 +16,6 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _referralCode = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String email = '';
   String name = '';

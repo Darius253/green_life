@@ -42,7 +42,7 @@ class DrawerWidget extends StatelessWidget {
                         name: 'Home',
                         icon: Icons.home_filled,
                         onPressed: () {
-                          Get.to(const HomePage());
+                          Get.to(const GeneralManager());
                         },
                       ),
                       SizedBox(
