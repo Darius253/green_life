@@ -32,7 +32,8 @@ const userSchema = new Schema<Iuser ,Authclass , UserModel>(
     phoneNumber:{type:String , required:true ,unique:true} , 
     role:{type:String  ,required:true , enum:Object.values(userRole) , default:userRole.AGENT} ,
     lock:lockSchema , 
-    otpLock:otpLockSchema , 
+    otpLock:otpLockSchema ,
+    session:[String] , 
     otp:{type:Number , default:null} , 
     verified:{type:Boolean , required:true ,default:false}
      
@@ -44,6 +45,7 @@ const userSchema = new Schema<Iuser ,Authclass , UserModel>(
         ret.id = ret._id;
         delete ret.password;
         delete ret._id;
+        delete ret.session
       },
     },
   }

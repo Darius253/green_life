@@ -189,7 +189,9 @@ Router.route("/api/user/auth/changepassword").post(
 
 //query all the users=admin 
 Router.route("/api/users/").get(
-  [Auth , isRegionalAgent ,
+  [
+    Auth,
+    isRegionalAgent,
     query("name")
       .escape()
       .trim()
@@ -197,9 +199,10 @@ Router.route("/api/users/").get(
         return value.slice(0, 101);
       })
       .customSanitizer((value: string) => {
-        return  sanitizeName(value);
+        return sanitizeName(value);
       }),
-    query("limit").escape().trim(),
+  
+    query("page").escape().trim(),
     query("role")
       .escape()
       .trim()
@@ -208,9 +211,9 @@ Router.route("/api/users/").get(
         if (Object.values(userRole).includes(value)) {
           return value;
         } else {
-          return ;
+          return;
         }
-      })
+      }),
   ],
   Usercontroller.getAllusers
 );

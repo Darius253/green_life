@@ -31,6 +31,7 @@ email:{type:String, required:true , unique:true},
 registered:{type:Boolean , default:false , required:true} , 
 verified:{type:Boolean , default:false , required:true} , 
 lock:lock , 
+session:[String]  ,
 otp: {type:Number , default:null} ,
 otpLock:otplock,
 password:{type:String , required:true }
@@ -41,6 +42,7 @@ password:{type:String , required:true }
              ret.id =  ret._id ;
              delete ret.password ;
              delete ret._id ;
+             delete ret.session
          },
        
     } ,

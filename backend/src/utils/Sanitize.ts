@@ -54,7 +54,7 @@ for (let keys in query) {
 export const retLimit = (query:any)=>{
 
 
-    return query["limit"] ? parseInt(query["limit"].toString()) : 10;
+    return query ? parseInt(query) : 10;
 
 }
 

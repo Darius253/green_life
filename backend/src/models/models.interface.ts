@@ -11,6 +11,7 @@ export interface Iauth {
   otp: number | null;
   verified: boolean;
   role: userRole;
+  session:Types.Array<string>;
 }
 export interface Iclient extends Iauth {
   name: string;

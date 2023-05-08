@@ -220,7 +220,8 @@ Router.route("/api/clients").get(
       .customSanitizer((value: string) => {
         return sanitizeNumber(value);
       }),
-    query("limit").escape().trim(),
+    
+    query("page").escape().trim() ,
   ],
   Auth  , userAuth ,
   

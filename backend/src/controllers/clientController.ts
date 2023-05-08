@@ -570,9 +570,11 @@ export const changePassword = async (req: Request, res: Response) => {
 
 export const getAllClients = async(req:Request , res:Response)=>{
         const filter: { key?: object } = {};
-        const limit = req.query["limit"]
-          ? parseInt(req.query["limit"].toString())
-          : 10;
+        const limit = 10
+            const page = req.query["page"]
+              ? parseInt(req.query["page"].toString())
+              : 1;
+          
          
  
           if(req.query["name"] && !req.query["phoneNumber"]){
@@ -602,11 +604,12 @@ export const getAllClients = async(req:Request , res:Response)=>{
             }
           }
 
-      const users= await Client.find(filter["key"] || {}).limit(limit) ;
+          const count =  await Client.countDocuments() ;
+      const users= await Client.find(filter["key"] || {}).skip((page-1) * limit).limit(limit) ;
 
       res.send({
         success:true ,data:{
-          clients:users
+          clients:users ,count
         }
       })
       

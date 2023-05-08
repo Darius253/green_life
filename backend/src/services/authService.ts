@@ -177,12 +177,8 @@ export class Auth<T extends Iauth> {
     // user.otp = null;
 
     //if user is not verified verify user
-    if (!user.verified) {
-      user.verified = true;
-
-      await user.save();
       const accessToken = jwt.sign(
-        { id: user._id, email: user.email ,role:user.role || ''},
+        { id: user._id, email: user.email, role: user.role || "" },
         process.env.JWT_SECRET!,
         { expiresIn: "15m" }
       );
@@ -191,6 +187,12 @@ export class Auth<T extends Iauth> {
         process.env.JWT_refresh!,
         { expiresIn: "1hr" }
       );
+      user.session.push(refreshToken) ;
+    if (!user.verified) {
+      user.verified = true;
+
+      await user.save();
+    
       res.cookie("refreshToken", refreshToken, { httpOnly: true, signed: true });
       return res.send({
         success: true,
@@ -205,16 +207,7 @@ export class Auth<T extends Iauth> {
     await user.save();
     //if user is already verified just send user
 
-    const accessToken = jwt.sign(
-      { id: user._id, email: user.email, role: user.role || "" },
-      process.env.JWT_SECRET!,
-      { expiresIn: "15m" }
-    );
-    const refreshToken = jwt.sign(
-      { id: user._id, email: user.email },
-      process.env.JWT_refresh!,
-      { expiresIn: "1hr" }
-    );
+  
     //if its from the web app set an http only cookie
 
     //create an http only cookie containing the refreshToken
@@ -271,20 +264,25 @@ export class Auth<T extends Iauth> {
     // user.otp = null;
 
     //if user is not verified verify user
+    const accessToken = jwt.sign(
+      { id: user._id, email: user.email, role: user.role || "" },
+      process.env.JWT_SECRET!,
+      { expiresIn: "15m" }
+    );
+    const refreshToken = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_refresh!,
+      { expiresIn: "2hr" }
+    );
+
+
+    user.session.push(refreshToken) ;
+    
     if (!user.verified) {
       user.verified = true;
 
       await user.save();
-      const accessToken = jwt.sign(
-        { id: user._id, email: user.email, role: user.role || "" },
-        process.env.JWT_SECRET!,
-        { expiresIn: "15m" }
-      );
-      const refreshToken = jwt.sign(
-        { id: user._id, email: user.email },
-        process.env.JWT_refresh!,
-        { expiresIn: "1hr" }
-      );
+      
       return res.send({
         success: true,
         data: {
@@ -299,16 +297,8 @@ export class Auth<T extends Iauth> {
     await user.save();
     //if user is already verified just send user
 
-    const accessToken = jwt.sign(
-      { id: user._id, email: user.email, role: user.role || "" },
-      process.env.JWT_SECRET!,
-      { expiresIn: "15m" }
-    );
-    const refreshToken = jwt.sign(
-      { id: user._id, email: user.email },
-      process.env.JWT_refresh!,
-      { expiresIn: "1hr" }
-    );
+    
+    
     //if its from the web app set an http only cookie
 
     //send the user , accessToken and refreshToken to the user
@@ -380,16 +370,30 @@ export class Auth<T extends Iauth> {
     }
 
     try {
+ 
+      
+    
+
       const payload = jwt.verify(
         refreshToken,
         process.env.JWT_refresh!
       ) as Payload;
+
 
       const user = await doc.findById(payload.id);
 
       if (!user) {
         throw new BadAuthError("Authorization failed", 401);
       }
+
+      const sessionExist =  user.session.find(session=>session=== refreshToken) ; 
+    
+      console.log(sessionExist)
+       if(!sessionExist){
+        throw new BadAuthError("Authorization failed session" , 401) ;
+       }
+
+
 
       const newaccessToken = jwt.sign(
         { id: user._id, email: user.email, role: user.role || "" },
@@ -417,7 +421,7 @@ export class Auth<T extends Iauth> {
     const refreshToken = req.headers["x-refresh-token"] as string;
     // console.log(req.headers["accept"]);
     //check if header exist with the request;
-    // console.log(refreshToken);
+    console.log(refreshToken);
     if (!refreshToken) {
       throw new BadAuthError("Authorization failed", 401);
     }
@@ -438,6 +442,16 @@ export class Auth<T extends Iauth> {
       if (!user) {
         throw new BadAuthError("Authorization failed", 401);
       }
+
+      const sessionExist = user.session.find(
+        (session) => session === token
+      );
+
+      console.log(sessionExist)
+      if (!sessionExist) {
+        throw new BadAuthError("Authorization failed session", 401);
+      }
+
 
       //create new user
       const newaccessToken = jwt.sign(
@@ -510,10 +524,16 @@ export class Auth<T extends Iauth> {
     user.password = password;
     user.lock.tries = 0;
     user.lock.expiresAt = null;
+
+    user.session.splice(0, user.session.length) ; 
+
+
+
     await user.save();
 
     //find a way to delete user session from logged in devices ;
 
+    res.clearCookie("refreshToken")
     res.send({
       success: true,
     });
@@ -609,6 +629,7 @@ if(isEqual){
 }
    user.password =    password ; 
 
+     user.session.splice(0, user.session.length); 
    await user.save()  ; 
   
 

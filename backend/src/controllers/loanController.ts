@@ -49,19 +49,20 @@ export const getAllLoans= async (req:Request ,res:Response)=>{
         loanType?:string ;
         principal?:any
     }= {}
-const limit = retLimit(req.query)
-
+const limit = 10
+const page =  retLimit(req.query["page"])
 
 
 retQuery(req.query , filter) ;
 
    console.log(filter) ; 
+    
 
-
-   const loans =  await Loan.find(filter).limit(limit) ;
+   const count = await Loan.find(filter).countDocuments() ;   
+   const loans =  await Loan.find(filter).skip((page-1)*limit).limit(limit) ;
    res.send({
   success:true , data:{
-    loans
+    loans , count
   }
 
 
@@ -92,31 +93,31 @@ export const getLoan  = async (req:Request , res:Response)=>{
 //export const getuserloan
 
 export const getuserLoans = async(req:Request ,res:Response)=>{
- 
+  const filter: {
+    loantype?: string;
+    principal?: any;
+    client?: string;
+  } = {};
+  const limit = 10;
+  const page = retLimit(req.query["page"]);
 
-const filter: {
-  loantype?: string;
-  principal?: any;
-  client?:string
-} = {};
-const limit = retLimit(req.query);
+  retQuery(req.query, filter);
 
-retQuery(req.query, filter);
+  filter["client"] = req.params.id;
 
-filter["client"] =  req.params.id ; 
+  console.log(filter);
 
-console.log(filter)
+  const count = await Loan.find(filter).countDocuments();
+  const loans = await Loan.find(filter)
+    .skip((page - 1) * limit)
+    .limit(limit);
 
-const loans =  await Loan.find(filter).limit(limit) ; 
-
-
- 
-res.send({
-    success:true , data:{
-        loans
-    }
-})
-    
+  res.send({
+    success: true,
+    data: {
+      loans, count
+    },
+  });
 }
 
 
@@ -127,27 +128,32 @@ res.send({
 //agent
 
 export const getAgentLoans =async (req: Request, res: Response) => {
-const filter: {
-  loantype?: string;
-  principal?: any;
-  clientAgent?:string
-} = {};
-const limit = retLimit(req.query);
+  const filter: {
+    loantype?: string;
+    principal?: any;
+    clientAgent?: string;
+  } = {};
+  const limit = 10;
+  const page = retLimit(req.query["page"]);
 
-retQuery(req.query, filter);
+  retQuery(req.query, filter);
 
-filter["clientAgent"] =  req.params.id ; 
+  filter["clientAgent"] = req.params.id;
 
-console.log(223)
+  console.log(223);
 
- const loans = await Loan.find(filter).limit(limit).populate("client") ; 
+  const count = await Loan.find(filter).countDocuments();
+  const loans = await Loan.find(filter)
+    .skip((page - 1) * limit)
+    .limit(limit)
+    
 
- res.send({
-    success:true , data:{
-        loans
-    }
- })
-
+  res.send({
+    success: true,
+    data: {
+      loans, count
+    },
+  });
 };
 
 
@@ -174,29 +180,29 @@ console.log(22)
 
 
 export const getclientLoans = async(req: Request, res: Response) => {
+  const filter: {
+    loantype?: string;
+    principal?: any;
+    client?: string;
+  } = {};
+  const limit = 10;
+  const page = retLimit(req.query["page"]);
+  retQuery(req.query, filter);
 
- const filter: {
-   loantype?: string;
-   principal?: any;
-   client?: string;
- } = {};
- const limit = retLimit(req.query);
+  filter["client"] = req.user.id;
+  console.log(filter);
+  const count = await Loan.find(filter).countDocuments();
+  const loans = await Loan.find(filter)
+    .skip((page - 1) * limit)
+    .limit(limit);
 
- retQuery(req.query, filter);
-
- filter["client"] = req.user.id;
-console.log(filter) ;
- const loans = await Loan.find(filter).limit(limit);
-
- res.send({
-   success: true,
-   data: {
-     loans,
-   },
- });
-    // const loans =  await Loa
-
-
+  res.send({
+    success: true,
+    data: {
+      loans,count
+    },
+  });
+  // const loans =  await Loa
 };
 
 

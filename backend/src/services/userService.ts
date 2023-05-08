@@ -22,8 +22,10 @@ export class Userservice{
             FullName?:object , 
             role?:string
         }={} ;
-        const limit = req.query["limit"]? parseInt(req.query["limit"].toString()) : 10
-         
+        const limit = 10
+         const page = req.query["page"]
+           ? parseInt(req.query["page"].toString())
+           : 1;
              
          
         for(let key in req.query){
@@ -49,13 +51,13 @@ export class Userservice{
     
  console.log(filter)
     
-        
-      const users =  await User.find(filter).limit(limit) ;  
+        const count =  await User.find(filter).countDocuments() ;
+      const users =  await User.find(filter).skip((page-1)*limit).limit(limit) ;  
 
 
       return res.send({
         success:true , data:{
-            users
+            users , count
         }
       })
       

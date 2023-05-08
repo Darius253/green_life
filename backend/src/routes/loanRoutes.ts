@@ -154,6 +154,7 @@ Router.route("/").get(Auth , isRegionalAgent ,
         }
       return value
       }),
+      query("page").escape().trim() ,
     query("max_principal")
       .escape()
       .trim()
@@ -181,7 +182,7 @@ Router.route("/clientsloans/:id").get(
         }
         return value;
       }),
-
+query("page").escape().trim() ,
     query("min_principal")
       .escape()
       .trim()
@@ -231,6 +232,7 @@ Router.route("/agentloans/:id").get( [
         }
         return value;
       }),
+      query("page").escape().trim()  ,
     query("max_principal")
       .escape()
       .trim()
@@ -259,7 +261,7 @@ Router.route("/clientsLoan").get(Auth ,  [
         }
         return value;
       }),
-
+query("page").escape().trim()  ,
     query("min_principal")
       .escape()
       .trim()
