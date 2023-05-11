@@ -15,7 +15,7 @@ const installmentSchema = new Schema<IloanInstallment>({
      
   amount:{type:Number , required:true , min:0} , 
   dueDate:{type:Date , required:true} , 
-  remainingBalance:{type:Number ,required:true} , 
+  remainingBalance:{type:Number ,required:true,min:0} , 
   status:{type:String , required:true , enum:Object.values(loanInstallmentStatus)} , 
   latePayment:{type:Boolean , required:true },
   lastPaymentDate:{type:Date ,required:true}
@@ -38,8 +38,8 @@ const loanSchema = new mongoose.Schema<ILoan>(
     installment:[installmentSchema] , 
     monthlyPayment:{type:Number },
     
-    repaymentAmount: { type: Number, required: true ,default:0.0 },
-    remainingBalance: { type: Number, required: true , default:0.0 },
+    repaymentAmount: { type: Number, required: true ,default:0.0 ,min:0 },
+    remainingBalance: { type: Number, required: true , default:0.0 ,min:0},
     client: { type: Schema.Types.ObjectId, required: true, ref: "Client" },
    
     DateApproved: { type: Date  },
