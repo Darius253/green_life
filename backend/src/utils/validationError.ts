@@ -1,10 +1,11 @@
+import { ACTIONS } from 'actions';
 import  {ValidationError} from 'express-validator'
 
 
 export class ValidationErrors extends Error {
   public statusCode: number = 422;
 
-  constructor(private errors: ValidationError[]) {
+  constructor(private errors: ValidationError[] , public action:ACTIONS) {
     super("wrong input");
 
     Object.setPrototypeOf(this , ValidationErrors.prototype)

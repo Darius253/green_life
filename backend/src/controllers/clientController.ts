@@ -10,6 +10,8 @@ import { compare } from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Payload } from "app.interface";
 import moment from "moment";
+import { logger } from "@utils/logger";
+import { ACTIONS } from "actions";
 
 /* @ web app login controller for login in user returns 
 returns user details after checking if user exists.
@@ -607,6 +609,19 @@ export const getAllClients = async(req:Request , res:Response)=>{
           const count =  await Client.countDocuments() ;
       const users= await Client.find(filter["key"] || {}).skip((page-1) * limit).limit(limit) ;
 
+
+       
+          logger.info({
+            device: {
+              ip: req.ip,
+              agent: req.headers["user-agent"],
+              method: req.method,
+              url: req.url,
+            },
+            action: ACTIONS.GET_ALL_CLIENTS_ACTION,
+            user: req.user,
+          });
+        
       res.send({
         success:true ,data:{
           clients:users ,count
@@ -622,9 +637,19 @@ export const getClient = async (req: Request, res: Response) => {
   const user = await Client.findById(req.params.id);
 
    if(!user){
-    throw  new  BadAuthError("client doesnt exist" ,404) ;
+    throw  new  BadAuthError("client doesnt exist" ,404 ,ACTIONS.GET_CLIENT_ATTEMPTS) ;
    }
 
+    logger.info({
+      device: {
+        ip: req.ip,
+        agent: req.headers["user-agent"],
+        method: req.method,
+        url: req.url,
+      },
+      action: ACTIONS.GET_CLIENT_ACTION,
+      user: req.user,
+    });
 
    res.send({
     success:true , data:{

@@ -1,8 +1,8 @@
 import { User } from "../models/User";
 import { BadAuthError } from "../utils/BadAuthError";
 import { Request, Response } from 'express';
-
-
+import { ACTIONS } from "actions";
+import { logger } from "@utils/logger";
 export class Userservice{
      
   
@@ -55,6 +55,18 @@ export class Userservice{
       const users =  await User.find(filter).skip((page-1)*limit).limit(limit) ;  
 
 
+       logger.info({
+         device: {
+           ip: req.ip,
+           agent: req.headers["user-agent"],
+           method: req.method,
+           url: req.url,
+         },
+         action: ACTIONS.GET_All_USER_ACTION,
+         user: req.user,
+         
+       });
+
       return res.send({
         success:true , data:{
             users , count
@@ -75,9 +87,24 @@ export class Userservice{
         const user=  await User.findById(req.params.id) ;
 
         if(!user){
-            throw new BadAuthError("user does not exist" , 404) ;
+            throw new BadAuthError(
+              "user does not exist",
+              404,
+              ACTIONS.GET_A_USER_ATTEMPTS
+            );
         }
 
+
+       logger.info({
+         device: {
+           ip: req.ip,
+           agent: req.headers["user-agent"],
+           method: req.method,
+           url: req.url,
+         },
+         action: ACTIONS.GET_A_USER_ACTION,
+         user: req.user,
+       });
 
         return res.send({
            success:true , data:{

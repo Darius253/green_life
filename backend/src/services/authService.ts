@@ -9,6 +9,8 @@ import moment from "moment";
 // import { Client } from "@models/Client";
 import { Authclass, Iauth } from "../models/models.interface";
 import  {hubtelService} from './huntelService'
+import { ACTIONS } from "actions";
+import { logger } from "@utils/logger";
 export class Auth<T extends Iauth> {
   constructor() {}
 
@@ -19,7 +21,7 @@ export class Auth<T extends Iauth> {
     const user = await doc.findOne({ phoneNumber });
 
     if (!user) {
-      throw new BadAuthError("Email or password is incorrect", 401);
+      throw new BadAuthError("Email or password is incorrect", 401 ,ACTIONS.LOGIN_ATTEMPTS );
     }
 
     //  console.log(user.userLocked());//compare password  , with user's hashpassword.. send error if password is incorrect
@@ -27,7 +29,7 @@ export class Auth<T extends Iauth> {
     if (user.userLocked()) {
       throw new BadAuthError(
         "Account is locked.Try again " + moment().to(user.lock.expiresAt),
-        401
+        401 , ACTIONS.LOGIN_ATTEMPTS
       );
     }
 
@@ -47,7 +49,7 @@ export class Auth<T extends Iauth> {
 
       await user.save();
 
-      throw new BadAuthError("Email or password is incorrect", 401);
+      throw new BadAuthError("Email or password is incorrect", 401 , ACTIONS.LOGIN_ATTEMPTS);
     }
 
     //creat two jwt one as a refreshToken  and one as an accessToken
@@ -60,7 +62,7 @@ export class Auth<T extends Iauth> {
       await user.save();
       throw new BadAuthError(
         "otp limit reached. Try again " + moment().to(user.otpLock.expiresAt),
-        401
+        401 , ACTIONS.LOGIN_ATTEMPTS
       );
     }
 
@@ -87,6 +89,10 @@ export class Auth<T extends Iauth> {
     const resdata = await hubtelService.sendotp(user.phoneNumber);
        
     
+    if(user.role){
+      
+    logger.info({device:{ip:req.ip , agent:req.headers["user-agent"] , method:req.method , url:req.url} , action:ACTIONS.USER_LOGIN_ACTION , user:user})
+    }
 
     return res.send({
       success: true,
@@ -103,14 +109,14 @@ export class Auth<T extends Iauth> {
     //check if email is  available
     const EmailExist = await doc.findOne({ email });
     if (EmailExist) {
-      throw new BadAuthError("Email already exist", 400);
+      throw new BadAuthError("Email already exist", 400 ,ACTIONS.SIGNIN_ATTEMPTS);
     }
 
     //check if phoneNumber is  already in use
 
     const phoneNumberExist = await doc.findOne({ phoneNumber });
     if (phoneNumberExist) {
-      throw new BadAuthError("phone number already exist", 400);
+      throw new BadAuthError("phone number already exist", 400 , ACTIONS.SIGNIN_ATTEMPTS);
     }
 
     //create and save user
@@ -157,7 +163,7 @@ export class Auth<T extends Iauth> {
 
     //check if user exists;
     if (!user) {
-      throw new BadAuthError("incorrect phoneNumber", 401);
+      throw new BadAuthError("incorrect phoneNumber", 401 , ACTIONS.VERIFY_OTP_ATTEMTPS);
     }
 
     //check if otp is correct
@@ -232,7 +238,7 @@ export class Auth<T extends Iauth> {
 
     //check if user exists;
     if (!user) {
-      throw new BadAuthError("incorrect phoneNumber", 401);
+      throw new BadAuthError("incorrect phoneNumber", 401 , ACTIONS.VERIFY_OTP_ATTEMTPS);
     }
 
     //check if otp is correct
@@ -318,7 +324,7 @@ export class Auth<T extends Iauth> {
     const user = await doc.findOne({phoneNumber});
 
     if (!user) {
-      throw new BadAuthError("user not found ", 400);
+      throw new BadAuthError("user not found ", 400 , ACTIONS.RESEND_OTP_ATTEMPTS);
     }
 
     // user.otp = null;
@@ -329,7 +335,7 @@ export class Auth<T extends Iauth> {
       throw new BadAuthError(
         "otp limit reached. Try again in " +
           moment().to(user.otpLock.expiresAt),
-        401
+        401 ,ACTIONS.RESEND_OTP_ATTEMPTS 
       );
     }
     //generate new otp  ;
@@ -366,7 +372,7 @@ export class Auth<T extends Iauth> {
     const { refreshToken } = req.signedCookies;
 
     if (!refreshToken) {
-      throw new BadAuthError("Authorization failed", 401);
+      throw new BadAuthError("Authorization failed", 401  ,ACTIONS.REQUEST_ACCESS_TOKEN_ATTEMPTS);
     }
 
     try {
@@ -383,14 +389,14 @@ export class Auth<T extends Iauth> {
       const user = await doc.findById(payload.id);
 
       if (!user) {
-        throw new BadAuthError("Authorization failed", 401);
+        throw new BadAuthError("Authorization failed", 401 , ACTIONS.REQUEST_ACCESS_TOKEN_ATTEMPTS);
       }
 
       const sessionExist =  user.session.find(session=>session=== refreshToken) ; 
     
       console.log(sessionExist)
        if(!sessionExist){
-        throw new BadAuthError("Authorization failed session" , 401) ;
+        throw new BadAuthError("Authorization failed session" , 401 , ACTIONS.REQUEST_ACCESS_TOKEN_ATTEMPTS) ;
        }
 
 
@@ -409,7 +415,7 @@ export class Auth<T extends Iauth> {
       });
     } catch (error) {
   
-      throw new BadAuthError("Authorization failed", 401);
+      throw new BadAuthError("Authorization failed", 401 , ACTIONS.REQUEST_ACCESS_TOKEN_ATTEMPTS)  ;
     }
   }
 
@@ -423,7 +429,7 @@ export class Auth<T extends Iauth> {
     //check if header exist with the request;
     console.log(refreshToken);
     if (!refreshToken) {
-      throw new BadAuthError("Authorization failed", 401);
+      throw new BadAuthError("Authorization failed", 401 , ACTIONS.REQUEST_ACCESS_TOKEN_ATTEMPTS);
     }
 
     //take the token from the string  : refreshToken =  "Bearer {$Token}"
@@ -431,7 +437,7 @@ export class Auth<T extends Iauth> {
 
     //extra check for token to improve security
     if (!token) {
-      throw new BadAuthError("Authorization failed", 401);
+      throw new BadAuthError("Authorization failed", 401 , ACTIONS.REQUEST_ACCESS_TOKEN_ATTEMPTS);;
     }
     try {
       //verify token
@@ -440,7 +446,7 @@ export class Auth<T extends Iauth> {
       const user = await doc.findById(payload.id);
 
       if (!user) {
-        throw new BadAuthError("Authorization failed", 401);
+        throw new BadAuthError("Authorization failed", 401 , ACTIONS.REQUEST_ACCESS_TOKEN_ATTEMPTS);;
       }
 
       const sessionExist = user.session.find(
@@ -449,7 +455,7 @@ export class Auth<T extends Iauth> {
 
       console.log(sessionExist)
       if (!sessionExist) {
-        throw new BadAuthError("Authorization failed session", 401);
+        throw new BadAuthError("Authorization failed session", 401  , ACTIONS.REQUEST_ACCESS_TOKEN_ATTEMPTS);
       }
 
 
@@ -468,7 +474,7 @@ export class Auth<T extends Iauth> {
       });
     } catch (error) {
       
-      throw new BadAuthError("Authorization failed", 401);
+      throw new BadAuthError("Authorization failed", 401 , ACTIONS.REQUEST_ACCESS_TOKEN_ATTEMPTS);;
     }
   }
 
@@ -483,13 +489,13 @@ export class Auth<T extends Iauth> {
 
     console.log(user)
     if (!user) {
-      throw new BadAuthError("user not authorized", 401);
+      throw new BadAuthError("user not authorized", 401 ,ACTIONS.RESET_PASSWORD_ATTEMTPS);
     }
     //check if user has account is locked. that it user has made too many wrong entries
     if (user.userLocked()) {
       throw new BadAuthError(
         "Account is locked.Try again " + moment().to(user.lock.expiresAt),
-        401
+        401 ,ACTIONS.RESET_PASSWORD_ATTEMTPS
       );
     }
 
@@ -498,7 +504,7 @@ export class Auth<T extends Iauth> {
 
      const isEqual =  await compare(password , user.password) ; 
      if(isEqual){
-      throw new BadAuthError('new password cannot be the same as old password' , 401);
+      throw new BadAuthError('new password cannot be the same as old password' , 401 ,ACTIONS.RESET_PASSWORD_ATTEMTPS);
      }
     const isValid = await compare(oldPassword, user.password);
 
@@ -516,7 +522,7 @@ export class Auth<T extends Iauth> {
 
       await user.save();
 
-      throw new BadAuthError("Email or password is incorrect", 401);
+      throw new BadAuthError("Email or password is incorrect", 401 , ACTIONS.RESET_PASSWORD_ATTEMTPS);
     }
 
     //if is password is valid change user password
@@ -531,8 +537,21 @@ export class Auth<T extends Iauth> {
 
     await user.save();
 
-    //find a way to delete user session from logged in devices ;
+      if (user.role) {
+        logger.info({
+          device: {
+            ip: req.ip,
+            agent: req.headers["user-agent"],
+            method: req.method,
+            url: req.url,
+          },
+          action: ACTIONS.RESET_PASSWORD_ACTION,
+          user: user,
+        });
+      }
 
+    //find a way to delete user session from logged in devices ;
+   
     res.clearCookie("refreshToken")
     res.send({
       success: true,
@@ -557,7 +576,7 @@ export class Auth<T extends Iauth> {
     const user = await doc.findOne({  phoneNumber});
 
     if (!user) {
-      throw new BadAuthError("user not found", 403);
+      throw new BadAuthError("user not found", 403 , ACTIONS.RESET_PASSWORD_ATTEMTPS);
     }
 
     //generate an otp to user
@@ -586,7 +605,7 @@ export class Auth<T extends Iauth> {
     const user = await doc.findOne({ phoneNumber });
 
     if (!user) {
-      throw new BadAuthError("wrong or incorrect phoneNumber", 401);
+      throw new BadAuthError("wrong or incorrect phoneNumber", 401 , ACTIONS.RESET_PASSWORD_ATTEMTPS);
     }
 
     // if (user.otp !== otp) {
@@ -619,20 +638,31 @@ const {password ,phoneNumber} = req.body ;
 const user =  await doc.findOne({phoneNumber}) ; 
 
 if(!user){
-  throw new BadAuthError("incorrect phoneNumber" ,401) ; 
+  throw new BadAuthError("incorrect phoneNumber" ,401 ,ACTIONS.RESET_PASSWORD_ATTEMTPS) ; 
 } 
 
  
 const isEqual =  await compare(password , user.password) ; 
 if(isEqual){
- throw new BadAuthError('new password cannot be the same as old password' , 401);
+ throw new BadAuthError('new password cannot be the same as old password' , 401 ,ACTIONS.RESET_PASSWORD_ATTEMTPS);
 }
    user.password =    password ; 
 
      user.session.splice(0, user.session.length); 
    await user.save()  ; 
   
-
+  if (user.role) {
+    logger.info({
+      device: {
+        ip: req.ip,
+        agent: req.headers["user-agent"],
+        method: req.method,
+        url: req.url,
+      },
+      action: ACTIONS.CHANGE_PASSWORD_ACTION,
+      user: user,
+    });
+  }
    res.send({
     success:true ,data:{
       message:"password changed successfully"

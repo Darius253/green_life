@@ -11,6 +11,7 @@ import { Loan } from '../models/Loan';
 import { Guarantor } from '../models/Guarantor';
 import { hubtelService } from "./huntelService";
 import { returnAppMessage, returnMessage } from "../utils/message";
+import { ACTIONS } from 'actions';
 
 export class  SmeLoan extends LoanService{
     
@@ -41,7 +42,7 @@ for(let keys in obj){
   //@ts-ignore
   if (!req.files[keys]) {
   
-    throw new BadAuthError("Bad request error" , 400);
+    throw new BadAuthError("Bad request error" , 400 ,ACTIONS.REQUEST_SME_LOAN_ATTEMPTS);
   }
 
   //@ts-ignore
@@ -52,7 +53,11 @@ for(let keys in obj){
 const user =  await Client.findById(req.user.id) ; 
 
 if(!user){
-  throw new BadAuthError("not authorized" , 401) ;
+  throw new BadAuthError(
+    "not authorized",
+    401,
+    ACTIONS.REQUEST_SME_LOAN_ATTEMPTS
+  );
 }
 
  
@@ -180,7 +185,11 @@ async  agentCreateRequest(req:Request , res:Response){
     for (let keys in obj) {
       //@ts-ignore
       if (!req.files[keys]) {
-        throw new BadAuthError("Bad request error", 400);
+        throw new BadAuthError(
+          "Bad request error",
+          400,
+          ACTIONS.REQUEST_SME_LOAN_ATTEMPTS
+        );
       }
 
       //@ts-ignore
@@ -191,7 +200,11 @@ async  agentCreateRequest(req:Request , res:Response){
     const user = await Client.findById(req.params.id);
 
     if (!user) {
-      throw new BadAuthError("not authorized", 401);
+      throw new BadAuthError(
+        "not authorized",
+        401,
+        ACTIONS.REQUEST_SME_LOAN_ATTEMPTS
+      );
     }
 
     const registration = await new Registration({

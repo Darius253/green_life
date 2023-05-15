@@ -1,9 +1,9 @@
 
-
+import { ACTIONS } from "actions";
 export class BadAuthError extends Error{
 
 
-       constructor(public message:string , public statusCode:number ){
+       constructor(public message:string , public statusCode:number  , public action:ACTIONS){
 
 
             super(message) ;

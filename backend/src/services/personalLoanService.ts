@@ -14,13 +14,14 @@ import { checkReg, checkguarantors } from "../utils/checkReg";
 import { ValidationErrors } from "../utils/validationError";
 import { hubtelService } from "./huntelService";
 import { returnAppMessage , returnMessage } from "../utils/message";
-
+import { ACTIONS } from "actions";
+import { logger } from "@utils/logger";
 class PersonalLoanService extends LoanService {
   async createRequest(req: Request, res: Response) {
     console.log(req.files);
     const user = await Client.findById(req.user?.id);
     if (!user) {
-      throw new BadAuthError("Not authorized", 401);
+      throw new BadAuthError("Not authorized", 401 ,ACTIONS.REQUEST_PERSONAL_LOAN_ATTEMPTS);
     }
 
     const policy = await policyRepo.search().returnFirst();
@@ -60,7 +61,7 @@ class PersonalLoanService extends LoanService {
         console.log(userRegistration);
         if (!userRegistration) {
           if (!face && !ghanaCardBack && !ghanaCardFront) {
-            throw new BadAuthError("Bad request error", 401);
+            throw new BadAuthError("Bad request error", 400 ,ACTIONS.REQUEST_PERSONAL_LOAN_ATTEMPTS);
           }
 
           const newRegistration = new Registration({
@@ -120,7 +121,7 @@ class PersonalLoanService extends LoanService {
         //check if user is registered
         if (!registration) {
           if (!face && !ghanaCardBack && !ghanaCardFront) {
-            throw new BadAuthError("Bad request error", 401);
+            throw new BadAuthError("Bad request error", 400 ,ACTIONS.REQUEST_PERSONAL_LOAN_ATTEMPTS);
           }
           //register user if not registered
 
@@ -181,7 +182,7 @@ class PersonalLoanService extends LoanService {
     //     if (!registration) {
     //       if (!face && !ghanaCardBack && !ghanaCardFront) {
     //         console.log("ere");
-    //         throw new BadAuthError("Bad request error", 401);
+    //         throw new BadAuthError("Bad request error",  ,ACTIONS.REQUEST_PERSONAL_LOAN_ATTEMPTS401);
     //       }
     //       //register user if not registered
     //       const register = await new Registration({
@@ -255,16 +256,16 @@ class PersonalLoanService extends LoanService {
     const loan = await Loan.findById(req.params.id).populate<{client:Iclient}>("client");
    
     if (!loan) {
-      throw new BadAuthError("Loan does not exist or deleted", 400);
+      throw new BadAuthError("Loan does not exist or deleted", 401, ACTIONS.REJECT_LOAN_ATTEMPTS);
     }
 
 
     if (loan?.client.toString() !== req.user.id) {
-      throw new BadAuthError("user is not authorized", 400);
+      throw new BadAuthError("user is not authorized", 401, ACTIONS.REJECT_LOAN_ATTEMPTS);
     }
 
     if (loan.loanStatus !== loanStatus.APPROVED) {
-      throw new BadAuthError("loan is no more pending", 400);
+      throw new BadAuthError("loan is no more pending", 401, ACTIONS.REJECT_LOAN_ATTEMPTS);
     }
 
     loan.loanStatus = loanStatus.REJECTED;
@@ -307,11 +308,11 @@ class PersonalLoanService extends LoanService {
 
 
     if (!loan) {
-      throw new BadAuthError("Loan does not exist or deleted", 400);
+      throw new BadAuthError("Loan does not exist or deleted", 401, ACTIONS.APPROVE_LOAN_ATTEMPTS);
     }
 
     if (loan.loanStatus !== loanStatus.PENDING) {
-      throw new BadAuthError("loan is no more pending", 400);
+      throw new BadAuthError("loan is no more pending", 401, ACTIONS.APPROVE_LOAN_ATTEMPTS);
     }
 
     loan.loanStatus = loanStatus.APPROVED;
@@ -328,6 +329,18 @@ class PersonalLoanService extends LoanService {
        "approved"
      ).toUpperCase(),
    });
+
+    logger.info({
+      device: {
+        ip: req.ip,
+        agent: req.headers["user-agent"],
+        method: req.method,
+        url: req.url,
+      },
+      action: ACTIONS.APPROVE_LOAN_ACTION,
+      user: req.user,
+      loan:loan
+    });
     res.send({
       success: true,
       data: {
@@ -340,11 +353,11 @@ class PersonalLoanService extends LoanService {
     const loan = await Loan.findById(req.params.id).populate<{client:Iclient}>("client");
 
     if (!loan) {
-      throw new BadAuthError("Loan does not exist or deleted", 400);
+      throw new BadAuthError("Loan does not exist or deleted", 401 , ACTIONS.DENY_LOAN_ATTEMTPS);
     }
   
     if (loan.loanStatus !== loanStatus.PENDING) {
-      throw new BadAuthError("loan is no more pending", 400);
+      throw new BadAuthError("loan is no more pending", 401 , ACTIONS.DENY_LOAN_ATTEMTPS);
     }
 
     loan.loanStatus = loanStatus.DENIED;
@@ -361,6 +374,18 @@ class PersonalLoanService extends LoanService {
      "denied"
    ).toUpperCase(),
  });
+ 
+  logger.info({
+    device: {
+      ip: req.ip,
+      agent: req.headers["user-agent"],
+      method: req.method,
+      url: req.url,
+    },
+    action: ACTIONS.DENY_LOAN_ATTEMTPS,
+    user: req.user,
+    loan
+  });
     res.send({
       success: true,
       data: {
@@ -374,7 +399,7 @@ class PersonalLoanService extends LoanService {
   console.log(req.files);
   const user = await Client.findById(req.params.id);
   if (!user) {
-    throw new BadAuthError("Not authorized", 401);
+    throw new BadAuthError("Not authorized", 401 , ACTIONS.REQUEST_PERSONAL_LOAN_ATTEMPTS);
   }
 
   const policy = await policyRepo.search().returnFirst();
@@ -414,7 +439,11 @@ class PersonalLoanService extends LoanService {
       console.log(userRegistration);
       if (!userRegistration) {
         if (!face && !ghanaCardBack && !ghanaCardFront) {
-          throw new BadAuthError("Bad request error", 401);
+          throw new BadAuthError(
+            "Bad request error",
+            400,
+            ACTIONS.REQUEST_PERSONAL_LOAN_ATTEMPTS
+          );
         }
 
         const newRegistration = new Registration({
@@ -467,7 +496,11 @@ class PersonalLoanService extends LoanService {
       //check if user is registered
       if (!registration) {
         if (!face && !ghanaCardBack && !ghanaCardFront) {
-          throw new BadAuthError("Bad request error", 401);
+          throw new BadAuthError(
+            "Bad request error",
+            401,
+            ACTIONS.REQUEST_PERSONAL_LOAN_ATTEMPTS
+          );
         }
         //register user if not registered
 

@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import { BadAuthError } from '../utils/BadAuthError'; 
 import { Payload } from 'app.interface';
 import {NextFunction, Request , Response} from 'express'
+import { ACTIONS } from 'actions';
 
 declare  global{
     namespace Express{
@@ -15,13 +16,13 @@ declare  global{
 export const Auth = (req:Request ,res:Response ,next:NextFunction)=>{
      
     if(!req.headers["authorization"]){
-        throw new BadAuthError("Authorization failed" , 401); 
+        throw new BadAuthError("Authorization failed" , 401 , ACTIONS.AUTHORIZING_USER_ATTEMPTS); 
     }
 
     const  [_ ,  token] =  req.headers["authorization"].split(" "); 
    
     if(!token){
-        throw new BadAuthError("Authorization failed", 401); 
+        throw new BadAuthError("Authorization failed", 401 , ACTIONS.AUTHORIZING_USER_ATTEMPTS); 
     }
 
  
@@ -35,7 +36,7 @@ export const Auth = (req:Request ,res:Response ,next:NextFunction)=>{
     } catch (error) {
         
        
-         throw new BadAuthError("Authorization failed", 401); 
+         throw new BadAuthError("Authorization failed", 401, ACTIONS.AUTHORIZING_USER_ATTEMPTS); 
     }
 
     next() ;

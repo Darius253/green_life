@@ -6,6 +6,9 @@ import { Loan } from '../models/Loan';
 import  {smeLoanService} from '../services/smeLoan';
 import { BadAuthError } from '../utils/BadAuthError';
 import { retLimit, retQuery } from '../utils/Sanitize';
+import { logger } from '@utils/logger';
+import { ACTIONS } from 'actions';
+
 export const requestPersonalLoan =async (req:Request , res:Response)=>{
 
 return personalLoanService.createRequest(req ,res) ;
@@ -60,6 +63,18 @@ retQuery(req.query , filter) ;
 
    const count = await Loan.find(filter).countDocuments() ;   
    const loans =  await Loan.find(filter).skip((page-1)*limit).limit(limit) ;
+    
+   logger.info({
+      device: {
+        ip: req.ip,
+        agent: req.headers["user-agent"],
+        method: req.method,
+        url: req.url,
+      },
+      action: ACTIONS.FETCH_ALL_LOAN_ACTION,
+      user: req.user,
+    });
+   
    res.send({
   success:true , data:{
     loans , count
@@ -76,7 +91,7 @@ export const getLoan  = async (req:Request , res:Response)=>{
     const loan  =   await Loan.findById(req.params.id).populate("client").populate("clientAgent") ;
 
     if(!loan){
-        throw new BadAuthError("loan not found" , 404) ;
+        throw new BadAuthError("loan not found" , 404 , ACTIONS.FETCH_ALL_LOAN_ACTION) ;
     }
 
  console.log("ewew")
@@ -148,6 +163,17 @@ export const getAgentLoans =async (req: Request, res: Response) => {
     .limit(limit)
     
 
+     logger.info({
+       device: {
+         ip: req.ip,
+         agent: req.headers["user-agent"],
+         method: req.method,
+         url: req.url,
+       },
+       action: ACTIONS.FETCH_AGENT_LOAN_ATTEMPTS,
+       user: req.user,
+     });
+
   res.send({
     success: true,
     data: {
@@ -162,11 +188,21 @@ export const getAgentLoan = async(req: Request, res: Response) => {
 const loan =  await Loan.findOne({_id:req.params.id , clientAgent:req.user.id}).populate("client") ; 
 
    if (!loan) {
-     throw new BadAuthError("loan not found", 404);
+     throw new BadAuthError("loan not found", 404 , ACTIONS.FETCH_AGENT_LOAN_ATTEMPTS);
    }
 
 console.log(22)
 
+ logger.info({
+   device: {
+     ip: req.ip,
+     agent: req.headers["user-agent"],
+     method: req.method,
+     url: req.url,
+   },
+   action: ACTIONS.FETCH_AGENT_LOAN_ATTEMPTS,
+   user: req.user,
+ });
    res.send({
     success:true , data:{
         loan
@@ -213,12 +249,12 @@ export const getclientLoan = async(req: Request, res: Response) => {
 
     
     if(!loans){
-        throw new BadAuthError("loan not found" , 404);
+        throw new BadAuthError("loan not found" , 404 , ACTIONS.FETCH_CLIENT_LOAN_ATTEMPTS);
     }
 
     if(loans.client._id.toString() !== req.user.id){
 
-        throw new BadAuthError("user not authorized" , 401) ;
+        throw new BadAuthError("user not authorized" , 401 , ACTIONS.FETCH_CLIENT_LOAN_ATTEMPTS) ;
     }
     console.log(212)
 
