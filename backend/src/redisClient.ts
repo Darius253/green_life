@@ -1,13 +1,14 @@
-import * as redis from 'redis-om' ; 
-import { Policy, policySchema ,} from './models/Policy';
+// import * as redis from 'redis-om' ; 
+import {createClient} from 'redis'
+;
 
-export let  policyRepo:redis.Repository<Policy>; 
 
-(async()=>{
  
 
-     const client =  await new redis.Client().open() ;  
-     policyRepo =  client.fetchRepository(policySchema) ; 
-      await policyRepo.createIndex() ; 
-     
-})() 
+     const client =  createClient({}) ;  
+      client.on("connect" , ()=>{
+            console.log("redis connected")
+      })
+       
+
+      export {client as redisClient}

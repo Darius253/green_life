@@ -2,7 +2,7 @@ import { Loan } from "../models/Loan";
 import { Request, Response } from "express";
 import { LoanService } from "./loanService";
 import { BadAuthError } from "../utils/BadAuthError";
-import { policyRepo } from "redisClient";
+import { policyRepo } from "../models/Policy";
 import { Registration } from "../models/Registration";
 import { Iclient, LOANTYPE, loanStatus } from "../models/models.interface";
 // import { User } from "@models/User";

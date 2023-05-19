@@ -1,8 +1,10 @@
 import { BadAuthError } from "../utils/BadAuthError";
 import mongoose from "mongoose";
 import  * as redis from 'redis-om' ; 
-import { Ipolicy } from "./models.interface";
 
+import { Ipolicy } from "./models.interface";
+import { redisClient } from "../redisClient";
+import { Repository } from "redis-om";
 
 export class Policy extends redis.Entity {
   interestRate?: number;
@@ -13,8 +15,8 @@ export class Policy extends redis.Entity {
 }
 
 
-
-export const policySchema = new redis.Schema(Policy, {
+//@ts-ignore
+export const policySchema = new redis.Schema("policy", {
   interestRate: { type: "number" },
   noRegisterationAmountCap: { type: "number" },
   noGurantorAmountCap: { type: "number" },
@@ -38,7 +40,8 @@ export const policySchema = new redis.Schema(Policy, {
 //         },
 //     }
 // });
-
+//@ts-ignore
+export const policyRepo =new Repository(policySchema , redisClient)
 
 
 // export const Policy = mongoose.model<Ipolicy>("Policy", aprSchema);

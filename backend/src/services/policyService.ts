@@ -1,6 +1,6 @@
 import { BadAuthError } from '../utils/BadAuthError';
 import {Request , Response} from 'express' ; 
-import {policyRepo} from '../redisClient'
+import {policyRepo} from  '../models/Policy'
 import { ACTIONS } from 'actions';
 import { logger } from '@utils/logger';
 
