@@ -6,6 +6,7 @@ import express, { Request } from 'express' ;
 import {validationResult , ValidationError} from 'express-validator'
 import { EducationLevel, employmentStatus, gender, MaritalStatus, registerationRepresentativePostion, residentialStatus, response, Source, Surplus } from '../models/models.interface';
 import { ValidationErrors } from './validationError';
+import { ACTIONS } from '../actions';
 
 
 export async  function checkReg(req:any){
@@ -425,7 +426,7 @@ run(req),
       const errors = validationResult(req);
       console.log(errors)
       if (!errors.isEmpty()) {
-        throw new ValidationErrors(errors.array());
+        throw new ValidationErrors(errors.array() , ACTIONS.INPUT_ERROR_ACTION);
       }
 }
 
@@ -457,7 +458,7 @@ export async function checkguarantors(req:any){
    const errors = validationResult(req);
   //  console.log(errors.array())
    if (!errors.isEmpty()) {
-     throw new ValidationErrors(errors.array());
+     throw new ValidationErrors(errors.array() , ACTIONS.INPUT_ERROR_ACTION);
    }
 
 
@@ -893,7 +894,7 @@ export async function checkSmeReg(req: any) {
   const errors = validationResult(req);
   console.log(errors);
   if (!errors.isEmpty()) {
-    throw new ValidationErrors(errors.array());
+    throw new ValidationErrors(errors.array() , ACTIONS.INPUT_ERROR_ACTION);
   }
 }
 
@@ -955,7 +956,7 @@ export async function checkexec(req:Request){
  const errors = validationResult(req);
  console.log(errors);
  if (!errors.isEmpty()) {
-   throw new ValidationErrors(errors.array());
+   throw new ValidationErrors(errors.array() ,ACTIONS.INPUT_ERROR_ACTION);
  }
 
 

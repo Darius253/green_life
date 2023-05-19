@@ -1,6 +1,7 @@
 import { NextFunction, Request , Response } from 'express';
 import  {validationResult} from 'express-validator' ; 
 import  {ValidationErrors} from '../utils/validationError' ; 
+import { ACTIONS } from '../actions';
 
 
 
@@ -13,7 +14,7 @@ export function validate(req:Request ,res:Response, next:NextFunction){
       
     if(!errors.isEmpty()){
 
-         throw new ValidationErrors(errors.array()) 
+         throw new ValidationErrors(errors.array() , ACTIONS.INPUT_ERROR_ACTION) 
 
 
     }

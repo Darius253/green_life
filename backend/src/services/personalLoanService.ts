@@ -1,8 +1,8 @@
 import { Loan } from "../models/Loan";
 import { Request, Response } from "express";
 import { LoanService } from "./loanService";
-import { BadAuthError } from "../utils/BadAuthError";
-import { policyRepo } from "redisClient";
+import { BadAuthError } from "../utils/BadAuthError"
+import { policyRepo } from "../redisClient";
 import { Registration } from "../models/Registration";
 import { Iclient, LOANTYPE, loanStatus } from "../models/models.interface";
 // import { User } from "@models/User";
@@ -14,8 +14,8 @@ import { checkReg, checkguarantors } from "../utils/checkReg";
 import { ValidationErrors } from "../utils/validationError";
 import { hubtelService } from "./huntelService";
 import { returnAppMessage , returnMessage } from "../utils/message";
-import { ACTIONS } from "actions";
-import { logger } from "@utils/logger";
+import { ACTIONS } from "../actions";
+import { logger } from "../utils/logger";
 class PersonalLoanService extends LoanService {
   async createRequest(req: Request, res: Response) {
     console.log(req.files);
@@ -23,7 +23,7 @@ class PersonalLoanService extends LoanService {
     if (!user) {
       throw new BadAuthError("Not authorized", 401 ,ACTIONS.REQUEST_PERSONAL_LOAN_ATTEMPTS);
     }
-
+console.log(policyRepo)
     const policy = await policyRepo.search().returnFirst();
 
     if (!policy) {

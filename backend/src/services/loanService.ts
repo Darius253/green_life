@@ -1,10 +1,10 @@
 
-import { ACTIONS } from 'actions';
+import { ACTIONS } from '../actions';
 import { Loan } from '../models/Loan'
 import { loanStatus } from '../models/models.interface';
 import { BadAuthError } from '../utils/BadAuthError';
 import  {Request , Response} from 'express'
-import { logger } from '@utils/logger';
+import { logger } from '../utils/logger';
 
 
 export abstract class LoanService {

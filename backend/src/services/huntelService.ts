@@ -2,7 +2,7 @@ import { isJSDocThisTag } from "typescript";
 import { moneyParams, resendOtp, sendMessageparams, verifyotpparams } from "./hubtel.interface";
 import axios, { AxiosError } from 'axios' ;
 import { BadAuthError } from '../utils/BadAuthError';
-
+import { ACTIONS } from "../actions";
 export class hubtelService{
 
  
@@ -41,7 +41,7 @@ export class hubtelService{
             throw new Error("")
           }
           
-          throw new BadAuthError(error.response.data.message , 400 )
+          throw new BadAuthError(error.response.data.message , 400  , ACTIONS.AUTHORIZING_USER_ATTEMPTS)
 
 
       }

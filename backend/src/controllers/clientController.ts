@@ -10,8 +10,8 @@ import { compare } from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Payload } from "app.interface";
 import moment from "moment";
-import { logger } from "@utils/logger";
-import { ACTIONS } from "actions";
+import { logger } from "../utils/logger";
+import { ACTIONS } from "../actions";
 
 /* @ web app login controller for login in user returns 
 returns user details after checking if user exists.

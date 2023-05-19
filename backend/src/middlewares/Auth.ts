@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { BadAuthError } from '../utils/BadAuthError'; 
 import { Payload } from 'app.interface';
 import {NextFunction, Request , Response} from 'express'
-import { ACTIONS } from 'actions';
+import { ACTIONS } from '../actions';
 
 declare  global{
     namespace Express{
