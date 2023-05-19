@@ -6,8 +6,8 @@ import { Loan } from '../models/Loan';
 import  {smeLoanService} from '../services/smeLoan';
 import { BadAuthError } from '../utils/BadAuthError';
 import { retLimit, retQuery } from '../utils/Sanitize';
-import { logger } from '@utils/logger';
-import { ACTIONS } from 'actions';
+import { logger } from '../utils/logger';
+import { ACTIONS } from '../actions';
 
 export const requestPersonalLoan =async (req:Request , res:Response)=>{
 

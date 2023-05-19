@@ -9,8 +9,8 @@ import moment from "moment";
 // import { Client } from "@models/Client";
 import { Authclass, Iauth } from "../models/models.interface";
 import  {hubtelService} from './huntelService'
-import { ACTIONS } from "actions";
-import { logger } from "@utils/logger";
+import { ACTIONS } from "../actions";
+import { logger } from "../utils/logger";
 export class Auth<T extends Iauth> {
   constructor() {}
 

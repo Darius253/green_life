@@ -12,7 +12,7 @@ export const register = async (req: Request, res: Response) => {
   //update user
   const user = await Client.findById(req.user.id);
   if (!user) {
-    throw new BadAuthError("user does not exist", 404);
+    throw new Error("user does not exist");
   }
 
   user.set("registered", true);

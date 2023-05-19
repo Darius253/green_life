@@ -1,5 +1,5 @@
 
-import { ACTIONS } from "actions";
+import { ACTIONS } from "../actions";
 export class BadAuthError extends Error{
 
 

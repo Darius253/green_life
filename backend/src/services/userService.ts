@@ -1,8 +1,8 @@
 import { User } from "../models/User";
 import { BadAuthError } from "../utils/BadAuthError";
 import { Request, Response } from 'express';
-import { ACTIONS } from "actions";
-import { logger } from "@utils/logger";
+import { ACTIONS } from "../actions";
+import { logger } from "../utils/logger";
 export class Userservice{
      
   

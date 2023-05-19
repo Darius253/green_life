@@ -11,7 +11,7 @@ import { Loan } from '../models/Loan';
 import { Guarantor } from '../models/Guarantor';
 import { hubtelService } from "./huntelService";
 import { returnAppMessage, returnMessage } from "../utils/message";
-import { ACTIONS } from 'actions';
+import { ACTIONS } from '../actions';
 
 export class  SmeLoan extends LoanService{
     
