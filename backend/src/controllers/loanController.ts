@@ -1,5 +1,5 @@
 import  {Request , Response} from  'express' ;
-import { policyRepo } from 'redisClient';
+// import { policyRepo } from 'redisClient';
 // import  {personalLoanService} from '@services/personalLoanService'
 import  {personalLoanService} from '../services/personalLoanService'
 import { Loan } from '../models/Loan';

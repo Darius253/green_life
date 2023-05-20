@@ -1,13 +1,13 @@
 import { BadAuthError } from '../utils/BadAuthError';
 import {Request , Response} from 'express' ; 
-import {policyRepo} from '../models/Policy'
+import {policyRepo} from '../redisClient';
 import { ACTIONS } from '../actions';
 import { logger } from '../utils/logger';
 
 
  class Policyservice {
   async createPolicy(req: Request, res: Response) {
- 
+console.log(policyRepo , 1)
  const policyexist = await  policyRepo.search().returnFirst() ; 
 
  if(policyexist){
@@ -104,7 +104,7 @@ return res.status(200).send({
 }
 
   async getPolicy(req: Request, res: Response) {
-       
+       console.log(policyRepo)
 let policy=  await policyRepo.search().returnFirst()
     
   if(!policy){
