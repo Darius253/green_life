@@ -11,7 +11,7 @@ import { hubtelRoute } from "@routes/hubtel";
 import { query } from "express-validator";
 import { policyRouter } from "./routes/aprRoutes";
 import { loanRouter } from "./routes/loanRoutes";
-import  {connectRedis} from 'redisClient'
+import  {connectRedis} from './redisClient'
 import { createClient } from "redis";
 import { User } from "@models/User";
 import { Loan } from "@models/Loan";
