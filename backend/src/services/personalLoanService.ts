@@ -18,14 +18,14 @@ import { ACTIONS } from "../actions";
 import { logger } from "../utils/logger";
 class PersonalLoanService extends LoanService {
   async createRequest(req: Request, res: Response) {
-    console.log(req.files);
+    console.log(req.files , "FFEFE");
     const user = await Client.findById(req.user?.id);
     if (!user) {
       throw new BadAuthError("Not authorized", 401 ,ACTIONS.REQUEST_PERSONAL_LOAN_ATTEMPTS);
     }
 console.log(policyRepo)
     const policy = await policyRepo.search().returnFirst();
-
+  console.log(policy)
     if (!policy) {
       throw new Error("");
     }
