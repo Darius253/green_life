@@ -10,7 +10,7 @@ level:'info' ,
 format: prettyPrint() ,
 transports:[
     new transports.Console() 
-
+ 
 ]
 
 

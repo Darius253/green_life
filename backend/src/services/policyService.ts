@@ -68,6 +68,7 @@ const {
 
 let policy = await policyRepo.fetch(req.params.id);
 
+
 if(!policy){
     throw new BadAuthError("policy not found" , 404 ,ACTIONS.EDIT_POLICY_ATTEMPTS) ;
 }

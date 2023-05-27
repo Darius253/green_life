@@ -4,14 +4,14 @@ import path from "path";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.resolve(__dirname , "public"));
+    cb(null, './public');
   },
   filename(req, file, cb) {
     // const fileName = `${req.user.id}_${moment().toISOString()}_${
     // file.fieldname
     // }.${file.mimetype.substring(file.mimetype.indexOf("/")+1)}`;
 
-     const fileName =  file.originalname 
+     const fileName =  file.originalname.replace(/\\/g, '/');
      
     cb(null, fileName);
   },
