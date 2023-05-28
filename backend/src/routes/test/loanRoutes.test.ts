@@ -7,6 +7,8 @@ import { policyRepo } from '../../redisClient';
 import  {hubtelService} from '../../services/huntelService' ;
 import { createReadStream  ,readFileSync} from 'fs';
 import path from 'path' ;
+import { User } from '../../models/User' ;
+
 
 const picpath =  path.resolve(__dirname , "Screenshot.png")
 let user:any ;
@@ -600,4 +602,76 @@ test("Should create a no registration amount cap  ,should return a 200" , async(
   expect(res3.body.data.loanRequest).toBeDefined() 
 
 })
+
+ 
+
+ test("should return 401  if loan status is not pending" , async()=>{
+   
+  const loan = await new Loan({
+    principal: 700,
+    interestrate: 0.2,
+    loanType: 'Personal loan',
+    loanterm: 1,
+    loanStatus: 'approved',
+   
+    client: '64727f91bd468133c17b3065',
+  
+  }).save()
+ 
+const user =  await new User({
+  FullName: "Kelvin Baiden" ,
+  role :'ADMIN' ,
+  email: 'ejermker@gmail.com' , 
+  password : '21212' ,
+  phoneNumber : '323233232' ,
+  
+}).save() ;
+   await request(app).put('/api/loan/'+loan._id.toString())
+   .set('Authorization' , 'Bearer '+ returnJwt({id:user._id.toString() , email:user.email , role:user.role}))
+   .send({
+    "principal":300 , 
+    "loanterm":2
+   })
+   .expect(401)  
+   
+ }) 
+ ,
+ 
+ test("should return 200 " , async()=>{
+   
+  const loan = await new Loan({
+    principal: 700,
+    interestrate: 0.2,
+    loanType: 'Personal loan',
+    loanterm: 1,
+    loanStatus: 'pending',
+   
+    client: '64727f91bd468133c17b3065',
+  
+  }).save()
+ 
+const user =  await new User({
+  FullName: "Kelvin Baiden" ,
+  role :'ADMIN' ,
+  email: 'ejermker@gmail.com' , 
+  password : '21212' ,
+  phoneNumber : '323233232' ,
+  
+}).save() ;
+   const res = await request(app).put('/api/loan/'+loan._id.toString())
+   .set('Authorization' , 'Bearer '+ returnJwt({id:user._id.toString() , email:user.email , role:user.role}))
+   .send({
+    "principal":300 , 
+    "loanterm":2
+   })
+   .expect(200) 
+   
+   expect(res.body.success).toBeTruthy() ;
+   console.log(res.body.data.loan)
+   expect(res.body.data.loan).toBeDefined()
+   
+ }) 
+
+
+
   })
