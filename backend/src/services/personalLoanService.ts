@@ -288,19 +288,19 @@ console.log(policyRepo)
     });
   } //reject request if loan status is pending
 
-  async acceptloan(req: Request, res: Response) {
-    //fetch loan
-    //change loan status
-    //create the first installment
-    //change the dateAccepted
-    //Date paid
-    //amount paid
-    //repaymetAmount
-    //remainingBalace
-    //send api reques to send money
-    //create first installment sent
-    //send res
-  } // only accept if loan is approved think through
+  // async acceptloan(req: Request, res: Response) {
+  //   //fetch loan
+  //   //change loan status
+  //   //create the first installment
+  //   //change the dateAccepted
+  //   //Date paid
+  //   //amount paid
+  //   //repaymetAmount
+  //   //remainingBalace
+  //   //send api reques to send money
+  //   //create first installment sent
+  //   //send res
+  // } // only accept if loan is approved think through
 
   async approveRequest(req: Request, res: Response) {
     const loan = await Loan.findById(req.params.id).populate<{

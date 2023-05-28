@@ -19,11 +19,7 @@ export let policyRepo: redis.Repository<Policy>;
  export const connectRedis =  async ()=>{
  
       const redisClient =  createClient({
-            password: 'C9gvJea8SY97HGmkD4HiwL4KV4Jth0M5',
-            socket: {
-                host: 'redis-16022.c10.us-east-1-2.ec2.cloud.redislabs.com',
-                port: 16022
-            }
+           
             });;
       await redisClient.connect() ;
       // console.log(redisClient)

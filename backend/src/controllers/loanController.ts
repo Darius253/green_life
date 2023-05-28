@@ -286,3 +286,5 @@ export const editLoan  =async (req:Request , res:Response) => {
   
     return personalLoanService.editLoan(req, res)
 }
+
+

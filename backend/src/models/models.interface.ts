@@ -14,6 +14,7 @@ export interface Iauth {
   session:Types.Array<string>;
 }
 export interface Iclient extends Iauth {
+  _id:Types.ObjectId ;
   name: string;
 
   registered: boolean;
