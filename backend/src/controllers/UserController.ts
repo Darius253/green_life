@@ -12,7 +12,7 @@ const userController =   new Userservice() ;
 //controller for admin login
 
 export const createUser = async (req: Request, res: Response) => {
-  const { FullName, email, password, phoneNumber } = req.body;
+  const { FullName, email, password, phoneNumber  , number} = req.body;
 
   const user =new User({
     FullName,
@@ -26,6 +26,12 @@ export const createUser = async (req: Request, res: Response) => {
     lock: {
       tries: 0,
     },
+    numberOfClient:number,
+
+    location:{
+      type:'Point' ,
+      coordinates:[req.body.longitude, req.body.latitude]
+    }
   });
 
   await user.save();

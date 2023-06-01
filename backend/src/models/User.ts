@@ -1,4 +1,4 @@
-import  {Schema , model, Model} from  'mongoose'
+import  {Schema , model, Model, SchemaType, Types} from  'mongoose'
 import { Iuser, userRole, Authclass, userlock, otpLock } from './models.interface' ; 
 import {hash ,genSalt} from 'bcrypt'
 import moment from 'moment' 
@@ -35,8 +35,19 @@ const userSchema = new Schema<Iuser ,Authclass , UserModel>(
     otpLock:otpLockSchema ,
     session:[String] , 
     otp:{type:Number , default:null} , 
-    verified:{type:Boolean , required:true ,default:false}
-     
+    verified:{type:Boolean , required:true ,default:false} ,
+     location: {
+   type:{
+       type:String  ,
+       required:true
+   } 
+   , 
+   coordinates:{
+    type: [Number]  ,
+    required:true
+   }
+     } ,
+     numberOfClient:Number 
   },
   {
     timestamps: true,
@@ -112,5 +123,7 @@ userSchema.method("otpLocked" , function(){
   //check if the opt tries is greater than the approved otp tries
   return this.otpLock.otpTries > parseInt(process.env.otp_tries!); 
 })
+
+userSchema.index({location: '2dsphere'});
 
 export const User= model<Iuser , UserModel>("User" , userSchema) ; 

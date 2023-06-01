@@ -1,4 +1,4 @@
-import express from "express";
+import express  ,  {Request , Response}from "express";
 import * as Usercontroller  from '../controllers/UserController' ;
 import { body, param, query } from "express-validator"; 
 import { validate } from "../middlewares/validate";
@@ -7,9 +7,11 @@ import { sanitizeName  , sanitizeNumber} from "../utils/Sanitize";
 import { userRole } from "../models/models.interface";
 import mongoose from "mongoose";
 import { isRegionalAgent } from "../middlewares/userAuth";
+import { User } from "@models/User";
 
 
 const Router =  express.Router()  ;
+
 
 
 Router.route("/api/user/auth/create").post(Usercontroller.createUser)

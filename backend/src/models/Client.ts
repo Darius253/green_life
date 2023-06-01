@@ -35,6 +35,8 @@ session:[String]  ,
 otp: {type:Number , default:null} ,
 otpLock:otplock,
 password:{type:String , required:true }
+ ,
+ agent:{type:Schema.Types.ObjectId , ref:'User'} 
 
 } , {
     timestamps:true , toJSON:{

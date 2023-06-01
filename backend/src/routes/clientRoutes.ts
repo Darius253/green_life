@@ -1,5 +1,5 @@
 import  express from 'express';
-import  {login,requestAccessToken,requestAccessTokenMobile,resendOtp,resetPassword,signup, verifyMobileOtp, verifyOtp,forgotPassword ,changePassword, verifyforgotPasswordOtp, getAllClients, getClient} from '../controllers/clientController';
+import  {login,requestAccessToken,requestAccessTokenMobile,resendOtp,resetPassword,signup, verifyMobileOtp, verifyOtp,forgotPassword ,changePassword, verifyforgotPasswordOtp, getAllClients, getClient, matchAgent} from '../controllers/clientController';
 import {body, query } from 'express-validator' ; 
 import  {validate} from '../middlewares/validate'
 import { Auth } from '../middlewares/Auth';
@@ -63,6 +63,17 @@ body("prefix").isAlpha().bail().isLength({min:4 , max:7}).bail().trim().notEmpty
  ] , validate   ,verifyMobileOtp
 );
 
+
+Router.route("/api/auth/matchagent").put(
+  [
+    body("latitude").notEmpty().bail().isNumeric().bail(),
+    body("longitude").notEmpty().bail().isNumeric().bail(),
+    
+  ],
+  validate,
+  Auth , 
+  matchAgent
+);
 
 Router.route("/api/auth/requestMobile")
 .get(requestAccessTokenMobile) 

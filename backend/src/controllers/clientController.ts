@@ -12,6 +12,8 @@ import { Payload } from "app.interface";
 import moment from "moment";
 import { logger } from "../utils/logger";
 import { ACTIONS } from "../actions";
+import {User} from '../models/User'
+import { agent } from "supertest";
 
 /* @ web app login controller for login in user returns 
 returns user details after checking if user exists.
@@ -660,3 +662,51 @@ export const getClient = async (req: Request, res: Response) => {
 
 
 };
+
+
+export async function matchAgent(req:Request , res:Response){
+
+const user  = await Client.findById(req.user.id) ;
+
+if(!user){
+  throw new BadAuthError('not authorized' , 401 ,ACTIONS.MATCH_USER_TO_AGENT_ACTION ) ;
+
+}
+
+if(user.agent){
+    throw new BadAuthError("not authorized", 401 , ACTIONS.MATCH_USER_TO_AGENT_ACTION);
+}
+ 
+const  {latitude , longitude}  = req.body ;
+
+  const agents = await User.find({
+    role: "AGENT",
+    numberOfClient:{
+     $lte: 20
+    } ,
+     
+    location: {
+      $nearSphere: {
+        $geometry: {
+          type: "Point",
+          coordinates: [+longitude, +latitude],
+        },
+      },
+    },
+  });
+ 
+  user.agent = agents[0]._id ;
+   
+agents[0].numberOfClient++ ;
+
+await user.save() ;
+await agents[0].save() ;
+
+
+res.send({
+  success:true , 
+  data:{
+    agent :agents[0]
+  }
+})
+}

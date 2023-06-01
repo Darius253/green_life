@@ -15,13 +15,20 @@ export interface Iauth {
 }
 export interface Iclient extends Iauth {
   name: string;
-
+  agent: Types.ObjectId;
   registered: boolean;
   registration: Types.ObjectId;
 }
 
+interface geoJson{
+type:string; 
+coordinates:[]
+
+}
 export interface Iuser extends Iauth {
-  FullName: string;
+  FullName: string; 
+  location:geoJson;
+  numberOfClient:number
 }
 
 export interface Authclass {
@@ -167,6 +174,7 @@ export enum loanStatus {
   PENDING = "pending",
   APPROVED = "approved",
   ACCEPTED = "accepted",
+  INPROGRESS ="INPROGRESS" , 
   DENIED = "denied",
   PAID = "paid",
   DEFAULTED = "defaulted",
