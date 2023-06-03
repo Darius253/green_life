@@ -85,6 +85,7 @@ const loan =  await new Loan({
   interestrate:+req.body.interestrate ,
    loanType:LOANTYPE.SMELOAN , 
    client : user._id ,
+   clientAgent: user.agent._id , 
    requestedBy: req.user.role || 'USER'
 }).save() 
 
@@ -127,24 +128,21 @@ console.log(beneficialOwners)
  const benef =  await Guarantor.create(beneficialOwners) ;
 
  const  results =  [shareH , dir ,benef]  ; 
- const promises =[]
+
  for(let result of results){
     
         for(let guarantor  of result){
 
 
-          promises.push(
+        
                await hubtelService.sendMessage({
       to: guarantor.phoneNumber.toString(),
       from: "buddybuss",
-      content: returnAppMessage(
-        loan._id.toString(),
-        loan.principal.toFixed(2)
-      ).toUpperCase(),
+      content:"hello world",
     })
  
  
-          )
+          
         }
  
      
@@ -160,7 +158,7 @@ console.log(beneficialOwners)
 
 
  
- promises.push(
+ 
     await hubtelService.sendMessage({
       to: user.phoneNumber,
       from: "buddybuss",
@@ -169,10 +167,10 @@ console.log(beneficialOwners)
         loan.principal.toFixed(2)
       ).toUpperCase(),
     })
- )
+ 
  
 
- await Promise.all(promises);
+ 
 
 
 return res.send({

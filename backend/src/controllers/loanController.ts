@@ -146,21 +146,23 @@ export const getAgentLoans =async (req: Request, res: Response) => {
   const filter: {
     loantype?: string;
     principal?: any;
-    clientAgent?: string;
-  } = {};
+    clientAgent:string
+  } = {clientAgent:req.params.id};
   const limit = 10;
   const page = retLimit(req.query["page"]);
 
+ 
   retQuery(req.query, filter);
 
-  filter["clientAgent"] = req.params.id;
+ 
 
   console.log(223);
 
   const count = await Loan.find(filter).countDocuments();
   const loans = await Loan.find(filter)
+    .populate('clientAgent')
     .skip((page - 1) * limit)
-    .limit(limit)
+    .limit(limit);
     
 
      logger.info({
@@ -185,11 +187,23 @@ export const getAgentLoans =async (req: Request, res: Response) => {
 
 export const getAgentLoan = async(req: Request, res: Response) => {
 
-const loan =  await Loan.findOne({_id:req.params.id , clientAgent:req.user.id}).populate("client") ; 
+const loan = await Loan.findById(req.params.id ).populate('clientAgent'); 
 
    if (!loan) {
      throw new BadAuthError("loan not found", 404 , ACTIONS.FETCH_AGENT_LOAN_ATTEMPTS);
    }
+
+  
+    if(loan.clientAgent?._id.toString() !== req.user.id) {
+
+    throw new BadAuthError(
+      "loan not found",
+      404,
+      ACTIONS.FETCH_AGENT_LOAN_ATTEMPTS
+    );
+    }
+  
+   
 
 console.log(22)
 

@@ -223,6 +223,7 @@ console.log(policyRepo)
        loanType: LOANTYPE.PERSONALLOAN,
        loanterm: +loanterm,
        client: req.user?.id,
+       clientAgent: user.agent._id , 
        requestedBy: req.user.role || 'USER'
      });
 

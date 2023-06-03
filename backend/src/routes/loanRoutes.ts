@@ -175,6 +175,7 @@ Router.route("/").get(Auth , isRegionalAgent ,
 
 //query a users loans  // 
 Router.route("/clientsloans/:id").get(
+  isRegionalAgent ,
   [
     query("loanType")
       .escape()
