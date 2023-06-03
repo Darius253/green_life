@@ -7,11 +7,10 @@ const storage = multer.diskStorage({
     cb(null, './public');
   },
   filename(req, file, cb) {
-    // const fileName = `${req.user.id}_${moment().toISOString()}_${
-    // file.fieldname
-    // }.${file.mimetype.substring(file.mimetype.indexOf("/")+1)}`;
+    const fileName = `${req.user.id}_${moment().toISOString()}_${
+    file.fieldname
+    }.${file.mimetype.substring(file.mimetype.indexOf("/")+1)}`;
 
-     const fileName =  file.originalname.replace(/\\/g, '/');
      
     cb(null, fileName);
   },
@@ -19,16 +18,16 @@ const storage = multer.diskStorage({
 
 export const upload = multer({
   storage: storage,
-  // fileFilter: (req, file, cb) => {
-  //   let regex = /image\/(jpg|jpeg|png)$/g;
-  //   if (!regex.test(file.mimetype)) {
-  //     return cb(new MulterError("LIMIT_UNEXPECTED_FILE", "wrong file type"));
-  //   }
+  fileFilter: (req, file, cb) => {
+    let regex = /image\/(jpg|jpeg|png)$/g;
+    if (!regex.test(file.mimetype)) {
+      return cb(new MulterError("LIMIT_UNEXPECTED_FILE", "wrong file type"));
+    }
 
-  //   cb(null, true);
-  // },
-  // limits: {
-  //   files: 10,
-  //   fileSize: 5000000,
-  // },
+    cb(null, true);
+  },
+  limits: {
+    files: 10,
+    fileSize: 5000000,
+  },
 });

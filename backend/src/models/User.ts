@@ -39,12 +39,12 @@ const userSchema = new Schema<Iuser ,Authclass , UserModel>(
      location: {
    type:{
        type:String  ,
-       required:true
+       
    } 
    , 
    coordinates:{
     type: [Number]  ,
-    required:true
+ 
    }
      } ,
      numberOfClient:Number 

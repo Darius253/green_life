@@ -50,7 +50,15 @@ for(let keys in obj){
 }
    console.log(obj);
 
-const user =  await Client.findById(req.user.id) ; 
+   let user ; 
+
+   if(req.user.role){
+    user =await  Client.findById(req.params.id) ;
+   }
+   else {
+ user = await Client.findById(req.user.id); 
+   }
+
 
 if(!user){
   throw new BadAuthError(
@@ -76,7 +84,8 @@ const loan =  await new Loan({
   loanterm : +req.body.loanterm , 
   interestrate:+req.body.interestrate ,
    loanType:LOANTYPE.SMELOAN , 
-   client : user._id
+   client : user._id ,
+   requestedBy: req.user.role || 'USER'
 }).save() 
 
 
@@ -113,16 +122,45 @@ for (let i = 1; i <= registration.numberofShareHolders; i++) {
 console.log(shareholders) ;
 console.log(directors ) ;
 console.log(beneficialOwners)
-await  Guarantor.create(shareholders); 
-await Guarantor.create(directors); 
-await Guarantor.create(beneficialOwners) ;
+ const shareH  =await  Guarantor.create(shareholders); 
+ const dir = await Guarantor.create(directors); 
+ const benef =  await Guarantor.create(beneficialOwners) ;
+
+ const  results =  [shareH , dir ,benef]  ; 
+ const promises =[]
+ for(let result of results){
+    
+        for(let guarantor  of result){
+
+
+          promises.push(
+               await hubtelService.sendMessage({
+      to: guarantor.phoneNumber.toString(),
+      from: "buddybuss",
+      content: returnAppMessage(
+        loan._id.toString(),
+        loan.principal.toFixed(2)
+      ).toUpperCase(),
+    })
+ 
+ 
+          )
+        }
+ 
+     
+
+
+ }
+
+
+ 
 
 
 
 
 
  
- 
+ promises.push(
     await hubtelService.sendMessage({
       to: user.phoneNumber,
       from: "buddybuss",
@@ -130,9 +168,12 @@ await Guarantor.create(beneficialOwners) ;
         loan._id.toString(),
         loan.principal.toFixed(2)
       ).toUpperCase(),
-    });
+    })
+ )
  
- 
+
+ await Promise.all(promises);
+
 
 return res.send({
   success:true  ,data:{

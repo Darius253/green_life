@@ -43,9 +43,10 @@ const loanSchema = new mongoose.Schema<ILoan>(
     client: { type: Schema.Types.ObjectId, required: true, ref: "Client" },
    
     DateApproved: { type: Date  },
-    clientAgent:{type:Schema.Types.ObjectId , ref:"User"} ,
+   
     DateAccepted: { type: Date},
     DatePaid: { type: Date },
+    requestedBy:String
   },
   {
     timestamps: true,

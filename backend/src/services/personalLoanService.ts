@@ -19,7 +19,16 @@ import { logger } from "../utils/logger";
 class PersonalLoanService extends LoanService {
   async createRequest(req: Request, res: Response) {
     console.log(req.files , "FFEFE");
-    const user = await Client.findById(req.user?.id);
+    let user ;
+
+    if(req.user.role){
+      user  =  await Client.findById(req.params.id)
+    }else {
+
+      user = await Client.findById(req.user?.id);
+    }
+console.log(user)
+     
     if (!user) {
       throw new BadAuthError("Not authorized", 401 ,ACTIONS.REQUEST_PERSONAL_LOAN_ATTEMPTS);
     }
@@ -214,10 +223,12 @@ console.log(policyRepo)
        loanType: LOANTYPE.PERSONALLOAN,
        loanterm: +loanterm,
        client: req.user?.id,
+       requestedBy: req.user.role || 'USER'
      });
 
      await loanRequest.save();
 
+     const promises = [] ;
      if(req.body.guarantor1fullname && req.body.guarantor2fullname){
        const guarantors = [
          {
@@ -233,16 +244,34 @@ console.log(policyRepo)
          },
        ];
         
-       await Guarantor.create(guarantors); ;
+     const result=   await Guarantor.create(guarantors); 
+
+       
+        for (let guarantor of result) {
+         await hubtelService.sendMessage({
+            to: guarantor.phoneNumber.toString(),
+            from: "buddybuss",
+            content: "hello world",
+          });
+        }
+
      }
+
 
      
     
-     await hubtelService.sendMessage({
-      to: user.phoneNumber ,
-      from:"buddybuss",
-      content: returnAppMessage(loanRequest._id.toString() , loanRequest.principal.toFixed(2) ).toUpperCase()
-     })
+ 
+   await hubtelService.sendMessage({
+      to: user.phoneNumber,
+      from: "buddybuss",
+      content: returnAppMessage(
+        loanRequest._id.toString(),
+        loanRequest.principal.toFixed(2)
+      ).toUpperCase(),
+    })
+  
+
+
      
 
      return res.send({
@@ -597,6 +626,7 @@ console.log(policyRepo)
 
   await loanRequest.save();
 
+  const promises = [] ;
   if (req.body.guarantor1fullname && req.body.guarantor2fullname) {
     const guarantors = [
       {
@@ -609,22 +639,37 @@ console.log(policyRepo)
         FullName: req.body.guarantor2fullname,
         phoneNumber: req.body.guarantor2phoneNumber,
         Loan: loanRequest,
-      },
+      }
     ];
 
-     await Guarantor.create(guarantors); 
+   const result =  await Guarantor.create(guarantors); 
+
+      
+   for(let guarantor of result){
+
+    promises.push(hubtelService.sendMessage({
+
+      to: guarantor.phoneNumber.toString() , 
+      from : 'buddybuss' , 
+      content: 'hello world'
+    }))
+   }
+   
+   
   }
 
+  
 
-
-  await hubtelService.sendMessage({
+ promises.push( hubtelService.sendMessage({
     to: user.phoneNumber,
     from: "buddybuss",
     content: returnAppMessage(
       loanRequest._id.toString(),
       loanRequest.principal.toFixed(2)
     ).toUpperCase(),
-  });
+  })) ;
+
+  await Promise.all(promises)
 
   return res.send({
     success: true,

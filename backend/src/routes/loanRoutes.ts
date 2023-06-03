@@ -22,12 +22,8 @@ Router.route("/personalloan/request").post(
     { name: "ghanaCardBack", maxCount: 1 },
   ]),
 
-  function(req:Request , res:Response , next:NextFunction){
 
-    console.log(req.body) ;
-    next() ;
 
-  } ,
 
   [
     body("principal").isNumeric().custom((value)=>{
@@ -126,7 +122,7 @@ Router.route("/personalloan/request/agent/:id").post(
     //   next();
     // },
   ],
-  validate, agentCreatePersonalloanRequest
+  validate,requestPersonalLoan
 
 );
 
@@ -444,7 +440,7 @@ Router.route("/smeLoan/request/agent/:id").post(
     // },
   ],
 
-  agentCreateSmeRequest
+  createSmeRequest
 );
 
 export {Router as loanRouter} ; 

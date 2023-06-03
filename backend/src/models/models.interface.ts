@@ -222,6 +222,7 @@ export interface ILoan {
   DateAccepted: Date;
   clientAgent?:Types.ObjectId ; 
   DatePaid: Date;
+  requestedBy:string
 }
 
 export interface Ipolicy {
