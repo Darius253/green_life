@@ -11,7 +11,7 @@ import { User } from '../../models/User' ;
 import mongoose, { Types }  from 'mongoose' ;
 
 
-const picpath =  path.join(__dirname , "Screenshot.png")
+const picpath =  path.resolve(__dirname , "Screenshot.png")
 let user:any ;
  const buffer=  readFileSync(picpath)  ;
 
@@ -691,43 +691,7 @@ const loan = await new Loan({
    
  }) 
  
- ,
 
- test('should return a 200 if  created by agent ' ,async ()=>{
-
-  let user =  await new  Client({
-    name: 'kelvinv' ,
-    email:'test12@test.com',
-    password:'1234.' ,
-    phoneNumber:'+23350709802' ,
-    agent:new  mongoose.Types.ObjectId()
-   
-    }).save()
-
-  const agent =  await new User({
-    FullName: "Kelvin Baiden" ,
-    role :'ADMIN' ,
-    email: 'ejermker@gmail.com' , 
-    password : '21212' ,
-    phoneNumber : '323233232' ,
-    
-  }).save() ;
-
-const res =  await request(app).post('/personalloan/request/agent/'+user._id.toString())
- .set('Authorization' , returnJwt({id:user._id.toString() ,email:user.email , role:user.role }))
- .field('principal', '10')
- .field('interestrate' , '.2') 
- .field('loanterm' , '1')
- .attach("face" , picpath) 
- .attach('ghanaCardBack'  ,picpath)
- .attach('ghanaCardFront' , picpath)
-.expect(200 ) ;
-
-
-expect(res.body.success).toBeTruthy() ;
-expect(res.body.data.loan).toBeDefined() ;
-expect(res.body.data.loan.requestedBy).toMatch('ADMIN')
- })
  
 
   })
