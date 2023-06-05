@@ -8,9 +8,10 @@ import  {hubtelService} from '../../services/huntelService' ;
 import { createReadStream  ,readFileSync} from 'fs';
 import path from 'path' ;
 import { User } from '../../models/User' ;
+import mongoose, { Types }  from 'mongoose' ;
 
 
-const picpath =  path.resolve(__dirname , "Screenshot.png")
+const picpath =  path.join(__dirname , "Screenshot.png")
 let user:any ;
  const buffer=  readFileSync(picpath)  ;
 
@@ -32,8 +33,8 @@ jest.mock("../../services/huntelService")
          name: 'kelvinc' ,
          email:'test@test.com',
          password:'1234.' ,
-         phoneNumber:'+23350709805'
-     
+         phoneNumber:'+23350709805' ,
+         agent:new  mongoose.Types.ObjectId()
          }).save()
      
          let policy =  await policyRepo.search().returnFirst() ;
@@ -89,8 +90,9 @@ test("should return a 422 c" ,async () => {
   name: 'kelvinv' ,
   email:'test12@test.com',
   password:'1234.' ,
-  phoneNumber:'+23350709802'
-
+  phoneNumber:'+23350709802' ,
+  agent:new  mongoose.Types.ObjectId()
+  
   }).save()
 
  await  request(app).post('/api/loan/personalloan/request')
@@ -107,7 +109,8 @@ test("should return a 400  if no registration and no images passed and amount is
    name: 'kelvinv' ,
    email:'test12@test.com',
    password:'1234.' ,
-   phoneNumber:'+23350709802'
+   phoneNumber:'+23350709802' ,
+   agent:new  mongoose.Types.ObjectId()
  
    }).save()
  
@@ -128,7 +131,8 @@ test("Should create a no registration amount cap  ,should return a 200" , async(
     name: 'kelvinv' ,
     email:'test12@test.com',
     password:'1234.' ,
-    phoneNumber:'+23350709802'
+    phoneNumber:'+23350709802' ,
+    agent:new  mongoose.Types.ObjectId()
   
     }).save()
 
@@ -152,7 +156,8 @@ test("Should create a no registration amount cap  ,should return a 200" , async(
     name: 'kelvinv' ,
     email:'test12@test.com',
     password:'1234.' ,
-    phoneNumber:'+23350709802'
+    phoneNumber:'+23350709802' ,
+    agent:new  mongoose.Types.ObjectId()
   
     }).save()
 
@@ -179,8 +184,9 @@ test("Should return a 422 " , async()=>{
     name: 'kelvinv' ,
     email:'test12@test.com',
     password:'1234.' ,
-    phoneNumber:'+23350709802'
-  
+    phoneNumber:'+23350709802' ,
+    agent:new  mongoose.Types.ObjectId()
+   
     }).save()
 
     console.log(picpath)
@@ -203,7 +209,8 @@ test("Should return a 422 " , async()=>{
     name: 'kelvinv' ,
     email:'test12@test.com',
     password:'1234.' ,
-    phoneNumber:'+23350709802'
+    phoneNumber:'+23350709802' ,
+    agent:new  mongoose.Types.ObjectId()
   
     }).save()
 
@@ -249,7 +256,8 @@ test("Should return a 200 " , async()=>{
     name: 'kelvinv' ,
     email:'test12@test.com',
     password:'1234.' ,
-    phoneNumber:'+23350709802'
+    phoneNumber:'+23350709802' ,
+    agent:new  mongoose.Types.ObjectId()
   
     }).save()
 
@@ -295,7 +303,8 @@ test("Should return a 200 " , async()=>{
     name: 'kelvinv' ,
     email:'test12@test.com',
     password:'1234.' ,
-    phoneNumber:'+23350709802'
+    phoneNumber:'+23350709802' , 
+    agent:new  mongoose.Types.ObjectId()
   
     }).save()
 
@@ -346,7 +355,8 @@ test("Should create a no registration amount cap  ,should return a 200" , async(
     email:'test12@test.com',
     password:'1234.' ,
     phoneNumber:'+23350709802' ,
-    registered:true
+    registered:true ,
+    agent:new  mongoose.Types.ObjectId()
     }).save()
 
     console.log(picpath)
@@ -372,7 +382,8 @@ test("Should return a 200 " , async()=>{
     email:'test12@test.com',
     password:'1234.' ,
     phoneNumber:'+23350709802' ,
-  registered:true
+  registered:true , 
+  agent:new  mongoose.Types.ObjectId()
     }).save()
 
     console.log(picpath)
@@ -419,7 +430,8 @@ test("Should return a 200 " , async()=>{
     email:'test12@test.com',
     password:'1234.' ,
     phoneNumber:'+23350709802' ,
-  registered:true
+  registered:true ,
+  agent:new  mongoose.Types.ObjectId()
     }).save()
 
     console.log(picpath)
@@ -469,7 +481,7 @@ test("Should create a no registration amount cap  ,should return a 200" , async(
     email:'test12@test.com',
     password:'1234.' ,
     phoneNumber:'+23350709802' ,
-   
+    agent:new  mongoose.Types.ObjectId()
     }).save()
 
     console.log(picpath)
@@ -531,7 +543,7 @@ test("Should create a no registration amount cap  ,should return a 200" , async(
     email:'test12@test.com',
     password:'1234.' ,
     phoneNumber:'+23350709802' ,
-   
+    agent:new  mongoose.Types.ObjectId()
     }).save()
 
     console.log(picpath)
@@ -607,16 +619,7 @@ test("Should create a no registration amount cap  ,should return a 200" , async(
 
  test("should return 401  if loan status is not pending" , async()=>{
    
-  const loan = await new Loan({
-    principal: 700,
-    interestrate: 0.2,
-    loanType: 'Personal loan',
-    loanterm: 1,
-    loanStatus: 'approved',
-   
-    client: '64727f91bd468133c17b3065',
-  
-  }).save()
+ 
  
 const user =  await new User({
   FullName: "Kelvin Baiden" ,
@@ -624,8 +627,21 @@ const user =  await new User({
   email: 'ejermker@gmail.com' , 
   password : '21212' ,
   phoneNumber : '323233232' ,
+
   
 }).save() ;
+
+
+const loan = await new Loan({
+  principal: 700,
+  interestrate: 0.2,
+  loanType: 'Personal loan',
+  loanterm: 1,
+  loanStatus: 'approved',
+ clientAgent: user._id ,
+  client: '64727f91bd468133c17b3065',
+
+}).save()
    await request(app).put('/api/loan/'+loan._id.toString())
    .set('Authorization' , 'Bearer '+ returnJwt({id:user._id.toString() , email:user.email , role:user.role}))
    .send({
@@ -637,18 +653,9 @@ const user =  await new User({
  }) 
  ,
  
- test("should return 200 " , async()=>{
+ test("should return 200  if loan is edited" , async()=>{
    
-  const loan = await new Loan({
-    principal: 700,
-    interestrate: 0.2,
-    loanType: 'Personal loan',
-    loanterm: 1,
-    loanStatus: 'pending',
-   
-    client: '64727f91bd468133c17b3065',
-  
-  }).save()
+
  
 const user =  await new User({
   FullName: "Kelvin Baiden" ,
@@ -656,7 +663,19 @@ const user =  await new User({
   email: 'ejermker@gmail.com' , 
   password : '21212' ,
   phoneNumber : '323233232' ,
+  agent:new  mongoose.Types.ObjectId()
   
+}).save() ;
+
+const loan = await new Loan({
+  principal: 700,
+  interestrate: 0.2,
+  loanType: 'Personal loan',
+  loanterm: 1,
+  loanStatus: 'pending',
+  clientAgent: user._id , 
+  client: '64727f91bd468133c17b3065',
+
 }).save() ;
    const res = await request(app).put('/api/loan/'+loan._id.toString())
    .set('Authorization' , 'Bearer '+ returnJwt({id:user._id.toString() , email:user.email , role:user.role}))
@@ -671,7 +690,44 @@ const user =  await new User({
    expect(res.body.data.loan).toBeDefined()
    
  }) 
+ 
+ ,
+
+ test('should return a 200 if  created by agent ' ,async ()=>{
+
+  let user =  await new  Client({
+    name: 'kelvinv' ,
+    email:'test12@test.com',
+    password:'1234.' ,
+    phoneNumber:'+23350709802' ,
+    agent:new  mongoose.Types.ObjectId()
+   
+    }).save()
+
+  const agent =  await new User({
+    FullName: "Kelvin Baiden" ,
+    role :'ADMIN' ,
+    email: 'ejermker@gmail.com' , 
+    password : '21212' ,
+    phoneNumber : '323233232' ,
+    
+  }).save() ;
+
+const res =  await request(app).post('/personalloan/request/agent/'+user._id.toString())
+ .set('Authorization' , returnJwt({id:user._id.toString() ,email:user.email , role:user.role }))
+ .field('principal', '10')
+ .field('interestrate' , '.2') 
+ .field('loanterm' , '1')
+ .attach("face" , picpath) 
+ .attach('ghanaCardBack'  ,picpath)
+ .attach('ghanaCardFront' , picpath)
+.expect(200 ) ;
 
 
+expect(res.body.success).toBeTruthy() ;
+expect(res.body.data.loan).toBeDefined() ;
+expect(res.body.data.loan.requestedBy).toMatch('ADMIN')
+ })
+ 
 
   })
