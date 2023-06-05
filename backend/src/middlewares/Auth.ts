@@ -14,7 +14,7 @@ declare  global{
 
 
 export const Auth = (req:Request ,res:Response ,next:NextFunction)=>{
-     
+     console.log(req.headers['authorization'])
     if(!req.headers["authorization"]){
         throw new BadAuthError("Authorization failed" , 401 , ACTIONS.AUTHORIZING_USER_ATTEMPTS); 
     }

@@ -32,7 +32,7 @@ const obj = {
   municipalCertificate: "municipalCertificate",
   taxReturns: "taxReturns",
   bankStatement: "bankStatement",
-  financialStatement: "taxReturns",
+  financialStatement: "financialStatement",
 };
  
 //@ts-ignore

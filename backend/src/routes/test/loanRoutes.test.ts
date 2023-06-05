@@ -34,7 +34,7 @@ jest.mock("../../services/huntelService")
          email:'test@test.com',
          password:'1234.' ,
          phoneNumber:'+23350709805' ,
-         agent:new  mongoose.Types.ObjectId()
+         agent:'64727f91bd468133c17b3065'
          }).save()
      
          let policy =  await policyRepo.search().returnFirst() ;
@@ -91,7 +91,7 @@ test("should return a 422 c" ,async () => {
   email:'test12@test.com',
   password:'1234.' ,
   phoneNumber:'+23350709802' ,
-  agent:new  mongoose.Types.ObjectId()
+  agent:'64727f91bd468133c17b3065'
   
   }).save()
 
@@ -110,7 +110,7 @@ test("should return a 400  if no registration and no images passed and amount is
    email:'test12@test.com',
    password:'1234.' ,
    phoneNumber:'+23350709802' ,
-   agent:new  mongoose.Types.ObjectId()
+   agent:'64727f91bd468133c17b3065'
  
    }).save()
  
@@ -132,7 +132,7 @@ test("Should create a no registration amount cap  ,should return a 200" , async(
     email:'test12@test.com',
     password:'1234.' ,
     phoneNumber:'+23350709802' ,
-    agent:new  mongoose.Types.ObjectId()
+    agent:'64727f91bd468133c17b3065'
   
     }).save()
 
@@ -157,7 +157,7 @@ test("Should create a no registration amount cap  ,should return a 200" , async(
     email:'test12@test.com',
     password:'1234.' ,
     phoneNumber:'+23350709802' ,
-    agent:new  mongoose.Types.ObjectId()
+    agent:'64727f91bd468133c17b3065'
   
     }).save()
 
@@ -185,7 +185,7 @@ test("Should return a 422 " , async()=>{
     email:'test12@test.com',
     password:'1234.' ,
     phoneNumber:'+23350709802' ,
-    agent:new  mongoose.Types.ObjectId()
+    agent:'64727f91bd468133c17b3065'
    
     }).save()
 
@@ -210,7 +210,7 @@ test("Should return a 422 " , async()=>{
     email:'test12@test.com',
     password:'1234.' ,
     phoneNumber:'+23350709802' ,
-    agent:new  mongoose.Types.ObjectId()
+    agent: '64727f91bd468133c17b3065'
   
     }).save()
 
@@ -257,7 +257,7 @@ test("Should return a 200 " , async()=>{
     email:'test12@test.com',
     password:'1234.' ,
     phoneNumber:'+23350709802' ,
-    agent:new  mongoose.Types.ObjectId()
+    agent: '64727f91bd468133c17b3065'
   
     }).save()
 
@@ -304,7 +304,7 @@ test("Should return a 200 " , async()=>{
     email:'test12@test.com',
     password:'1234.' ,
     phoneNumber:'+23350709802' , 
-    agent:new  mongoose.Types.ObjectId()
+    agent: '64727f91bd468133c17b3065'
   
     }).save()
 
@@ -356,7 +356,7 @@ test("Should create a no registration amount cap  ,should return a 200" , async(
     password:'1234.' ,
     phoneNumber:'+23350709802' ,
     registered:true ,
-    agent:new  mongoose.Types.ObjectId()
+    agent: '64727f91bd468133c17b3065'
     }).save()
 
     console.log(picpath)
@@ -383,7 +383,7 @@ test("Should return a 200 " , async()=>{
     password:'1234.' ,
     phoneNumber:'+23350709802' ,
   registered:true , 
-  agent:new  mongoose.Types.ObjectId()
+  agent: '64727f91bd468133c17b3065'
     }).save()
 
     console.log(picpath)
@@ -431,7 +431,7 @@ test("Should return a 200 " , async()=>{
     password:'1234.' ,
     phoneNumber:'+23350709802' ,
   registered:true ,
-  agent:new  mongoose.Types.ObjectId()
+  agent: '64727f91bd468133c17b3065'
     }).save()
 
     console.log(picpath)
@@ -481,7 +481,7 @@ test("Should create a no registration amount cap  ,should return a 200" , async(
     email:'test12@test.com',
     password:'1234.' ,
     phoneNumber:'+23350709802' ,
-    agent:new  mongoose.Types.ObjectId()
+    agent: '64727f91bd468133c17b3065'
     }).save()
 
     console.log(picpath)
@@ -543,7 +543,7 @@ test("Should create a no registration amount cap  ,should return a 200" , async(
     email:'test12@test.com',
     password:'1234.' ,
     phoneNumber:'+23350709802' ,
-    agent:new  mongoose.Types.ObjectId()
+    agent: '64727f91bd468133c17b3065'
     }).save()
 
     console.log(picpath)
@@ -663,7 +663,8 @@ const user =  await new User({
   email: 'ejermker@gmail.com' , 
   password : '21212' ,
   phoneNumber : '323233232' ,
-  agent:new  mongoose.Types.ObjectId()
+  
+  
   
 }).save() ;
 
@@ -691,7 +692,334 @@ const loan = await new Loan({
    
  }) 
  
+ , 
+ test('return a 200 if created by agent' , async()=>{
 
+  let agent = await new User({
+    FullName: "Kelvin Baiden" ,
+    role :'ADMIN' ,
+    email: 'ejermker@gmail.com' , 
+    password : '21212' ,
+    phoneNumber : '323233232' ,
+    
+  }).save()
+
+  let user =  await new  Client({
+    name: 'kelvinv' ,
+    email:'test12@test.com',
+    password:'1234.' ,
+    phoneNumber:'+23350709802' ,
+    registered:true ,
+    agent: agent._id
+    }).save()
+
+
+    const res = await request(app).post(`/api/loan/personalloan/request/agent/${user._id.toString()}`)
+    .set('Authorization' ,'Bearer '+returnJwt({id:agent._id.toString() , email:agent.email , role:agent.role})) 
+  .set('Content-Type', 'multipart/form-data')
+  .field('principal', '600')
+  .field('interestrate' , '.2') 
+  .field('loanterm' , '1') 
+  .attach("face" , picpath) 
+  .attach('ghanaCardBack'  ,picpath)
+  .attach('ghanaCardFront' , picpath)
+  .expect(200) 
+
+
+  expect(res.body.success).toBeTruthy() ;
+  expect(res.body.data.loanRequest).toBeDefined() ;
+  expect(res.body.data.loanRequest.clientAgent).toMatch(agent._id.toString())
+  
  
+ })
 
+
+ test('should return a  200 ' , async()=>{
+
+
+
+
+  await  request(app).post('/api/loan/smeLoan/request')
+   
+   .field('name', 'my awesome avatar')
+   .expect(401) ; 
+})
+
+, 
+
+test("should return a 422" , async()=>{
+ 
+ 
+await  request(app).post('/api/loan/smeLoan/request')
+.set("Authorization" , "Bearer "+returnJwt({id:user._id.toString()  , email:user.email }) )
+.field('name', 'my awesome avatar')
+.expect(422) ; 
+}) ,
+
+
+test("should return a 422 c" ,async () => {
+ 
+let user =  await new  Client({
+ name: 'kelvinv' ,
+ email:'test12@test.com',
+ password:'1234.' ,
+ phoneNumber:'+23350709802' ,
+ agent:'64727f91bd468133c17b3065'
+ 
+ }).save()
+
+await  request(app).post('/api/loan/smeLoan/request')
+.set("Authorization" , "Bearer "+returnJwt({id:user._id.toString()  , email:user.email }) )
+.field('principal', '21')
+.field('interestrate' , '.2') 
+.field('loanterm' , 1) 
+.field(  "fullname" ,"lelvin baiden")
+.field("age" ,10)  
+.field('businessName' ,  '3e2r3vde')
+.field('representativeName'  , 'reg322')
+.field('businessRegistrationNumber' , 'mnoienn')
+.field('businessTin' , 'ewe23r3f2')
+.field('representativePosition' , 'dfe4')
+.field('numberofBeneficialOwners' ,1)
+.field("numberofShareHolders" , 1)
+.field('numberofDirectors' , 1)
+.field('beneficialOwner1fullname' , 'vrefr')
+.field('beneficialOwner1phoneNumber' ,'22121212')
+.field('shareHolders1fullname' , 'creffr')
+.field('shareHolders1phoneNumber' , '12e132')
+.field('directors1fullname' , 'frerer')
+.field(`directors1phoneNumber`  ,'32232')
+.field("gender" , "Male")
+.field("NoOfDependants" ,12 ) 
+.field( "CurrentlyServingaLoan" ,"YES") 
+.field( "SourceOfLoan" ,"Bank") 
+.field("loanAmount" ,2112) 
+.field( "loanApproved" ,'YES') 
+.field( "defaulted", "YES") 
+.field("NoMonthsDefaulted" ,12) 
+.field("Employer" ,"efwefrfer") 
+.field("Surplus" ,"Save") 
+.field(    "Savings" ,12) 
+.field( "Income" ,12 ) 
+.field(   "Occupation" ,"roofrkop") 
+.field( "employmentStatus" , "Employed" ) 
+.field( "NoYearsAtResidence" ,12 ) 
+.field("residentialAddress" ,"Ewecpojcojweoojjoejjor") 
+.field("residentialStatus" ,"Resident") 
+.field("educationLevel" ,"JHS") 
+.field("maritalStatus" ,"Divorced") 
+.attach("face" , picpath) 
+ .attach('ghanaCardBack'  ,picpath)
+ .attach('ghanaCardFront' , picpath)
+ .attach('businessCertificate', picpath)
+ .attach("form3" , picpath)
+ .attach("municipalCertificate" , picpath)
+ .attach("taxReturns" , picpath)
+ .attach("bankStatement" , picpath)
+ .attach('financialStatement' , picpath)
+.expect(422) ; 
+})  , 
+
+test("should return a 400  if no registration and no images passed and amount is > noregistration amount cap" ,async () => {
+ 
+ let user =  await new  Client({
+  name: 'kelvinv' ,
+  email:'test12@test.com',
+  password:'1234.' ,
+  phoneNumber:'+23350709802' ,
+  agent:'64727f91bd468133c17b3065'
+
+  }).save()
+
+ await  request(app).post('/api/loan/smeLoan/request')
+ .set("Authorization" , "Bearer "+returnJwt({id:user._id.toString()  , email:user.email }) )
+ .field('principal', '100')
+ .field('interestrate' , '.2') 
+ .field('loanterm' , 1)
+ .field(  "fullname" ,"lelvin baiden")
+ .field('businessName' ,  'roofrkop')
+.field('representativeName'  , 'agyecsc')
+.field('businessRegistrationNumber' , 'mnoienn')
+.field('businessTin' , 'ewe23r3f2')
+.field('representativePosition' , 'Owner')
+.field('numberofBeneficialOwners' ,1)
+.field("numberofShareHolders" , 1)
+.field('numberofDirectors' , 1)
+.field('beneficialOwner1fullname','rereefert' )
+.field('beneficialOwner1phoneNumber' ,'+233507069802' )
+.field('shareHolders1fullname' , 'efreee')
+.field('shareHolders1phoneNumber' ,'+233507069802')
+.field('directors1fullname',  'efreferf')
+.field(`directors1phoneNumber`,'+233507069802')
+ .field("age" ,10)  
+ .field("gender" , "Male")
+ .field("NoOfDependants" ,12 ) 
+ .field( "CurrentlyServingaLoan" ,"YES") 
+ .field( "SourceOfLoan" ,"Bank") 
+ .field("loanAmount" ,2112) 
+ .field( "loanApproved" ,'YES') 
+ .field( "defaulted", "YES") 
+ .field("NoMonthsDefaulted" ,12) 
+ .field("Employer" ,"efwefrfer") 
+ .field("Surplus" ,"Save") 
+ .field(    "Savings" ,12) 
+ .field( "Income" ,12 ) 
+ .field(   "Occupation" ,"roofrkop") 
+ .field( "employmentStatus" , "Employed" ) 
+ .field( "NoYearsAtResidence" ,12 ) 
+ .field("residentialAddress" ,"Ewecpojcojweoojjoejjor") 
+ .field("residentialStatus" ,"Resident") 
+ .field("educationLevel" ,"JHS") 
+ .field("maritalStatus" ,"Divorced")  
+ 
+ .expect(400) ; 
+}) 
+ ,
+ test("should return a 200  if no registration and no images passed and amount is > noregistration amount cap" ,async () => {
+ 
+  let user =  await new  Client({
+   name: 'kelvinv' ,
+   email:'test12@test.com',
+   password:'1234.' ,
+   phoneNumber:'+23350709802' ,
+   agent:'64727f91bd468133c17b3065'
+ 
+   }).save()
+ 
+ const res = await  request(app).post('/api/loan/smeLoan/request')
+  .set("Authorization" , "Bearer "+returnJwt({id:user._id.toString()  , email:user.email }) )
+  .field('principal', '100')
+  .field('interestrate' , '.2') 
+  .field('loanterm' , 1)
+  .field(  "fullname" ,"lelvin baiden")
+  .field('businessName' ,  'roofrkop')
+ .field('representativeName'  , 'agyecsc')
+ .field('businessRegistrationNumber' , 'mnoienn')
+ .field('businessTin' , 'ewe23r3f2')
+ .field('representativePosition' , 'Owner')
+ .field('numberofBeneficialOwners' ,1)
+ .field("numberofShareHolders" , 1)
+ .field('numberofDirectors' , 1)
+ .field('beneficialOwner1fullname','rereefert' )
+ .field('beneficialOwner1phoneNumber' ,'+233507069802' )
+ .field('shareHolders1fullname' , 'efreee')
+ .field('shareHolders1phoneNumber' ,'+233507069802')
+ .field('directors1fullname',  'efreferf')
+ .field(`directors1phoneNumber`,'+233507069802')
+  .field("age" ,10)  
+  .field("gender" , "Male")
+  .field("NoOfDependants" ,12 ) 
+  .field( "CurrentlyServingaLoan" ,"YES") 
+  .field( "SourceOfLoan" ,"Bank") 
+  .field("loanAmount" ,2112) 
+  .field( "loanApproved" ,'YES') 
+  .field( "defaulted", "YES") 
+  .field("NoMonthsDefaulted" ,12) 
+  .field("Employer" ,"efwefrfer") 
+  .field("Surplus" ,"Save") 
+  .field(    "Savings" ,12) 
+  .field( "Income" ,12 ) 
+  .field(   "Occupation" ,"roofrkop") 
+  .field( "employmentStatus" , "Employed" ) 
+  .field( "NoYearsAtResidence" ,12 ) 
+  .field("residentialAddress" ,"Ewecpojcojweoojjoejjor") 
+  .field("residentialStatus" ,"Resident") 
+  .field("educationLevel" ,"JHS") 
+  .field("maritalStatus" ,"Divorced")  
+  .attach("face" , picpath) 
+  .attach('ghanaCardBack'  ,picpath)
+  .attach('ghanaCardFront' , picpath)
+  .attach('businessCertificate', picpath)
+  .attach("form3" , picpath)
+  .attach("municipalCertificate" , picpath)
+  .attach("taxReturns" , picpath)
+  .attach("bankStatement" , picpath)
+  .attach('financialStatement' , picpath)
+
+  .expect(200) ; 
+
+  expect(res.body.success).toBeTruthy() ;
+  expect(res.body.data.loan).toBeDefined()
+  expect(res.body.data.loan.requestedBy).toMatch('USER')
+ }) 
+ 
+  ,
+  test("should return a 200  if created by agent" ,async () => {
+ 
+    let agent = await new User({
+      FullName: "Kelvin Baiden" ,
+      role :'ADMIN' ,
+      email: 'ejermker@gmail.com' , 
+      password : '21212' ,
+      phoneNumber : '323233232' ,
+      
+    }).save() 
+
+    let user =  await new  Client({
+     name: 'kelvinv' ,
+     email:'test12@test.com',
+     password:'1234.' ,
+     phoneNumber:'+23350709802' ,
+     agent:'64727f91bd468133c17b3065'
+   
+     }).save()
+   
+   const res = await  request(app).post('/api/loan/smeLoan/request/agent/'+user._id.toString())
+    .set("Authorization" , "Bearer "+returnJwt({id:agent._id.toString()  , email:agent.email , role:agent.role }) )
+    .field('principal', '100')
+    .field('interestrate' , '.2') 
+    .field('loanterm' , 1)
+    .field(  "fullname" ,"lelvin baiden")
+    .field('businessName' ,  'roofrkop')
+   .field('representativeName'  , 'agyecsc')
+   .field('businessRegistrationNumber' , 'mnoienn')
+   .field('businessTin' , 'ewe23r3f2')
+   .field('representativePosition' , 'Owner')
+   .field('numberofBeneficialOwners' ,1)
+   .field("numberofShareHolders" , 1)
+   .field('numberofDirectors' , 1)
+   .field('beneficialOwner1fullname','rereefert' )
+   .field('beneficialOwner1phoneNumber' ,'+233507069802' )
+   .field('shareHolders1fullname' , 'efreee')
+   .field('shareHolders1phoneNumber' ,'+233507069802')
+   .field('directors1fullname',  'efreferf')
+   .field(`directors1phoneNumber`,'+233507069802')
+    .field("age" ,10)  
+    .field("gender" , "Male")
+    .field("NoOfDependants" ,12 ) 
+    .field( "CurrentlyServingaLoan" ,"YES") 
+    .field( "SourceOfLoan" ,"Bank") 
+    .field("loanAmount" ,2112) 
+    .field( "loanApproved" ,'YES') 
+    .field( "defaulted", "YES") 
+    .field("NoMonthsDefaulted" ,12) 
+    .field("Employer" ,"efwefrfer") 
+    .field("Surplus" ,"Save") 
+    .field(    "Savings" ,12) 
+    .field( "Income" ,12 ) 
+    .field(   "Occupation" ,"roofrkop") 
+    .field( "employmentStatus" , "Employed" ) 
+    .field( "NoYearsAtResidence" ,12 ) 
+    .field("residentialAddress" ,"Ewecpojcojweoojjoejjor") 
+    .field("residentialStatus" ,"Resident") 
+    .field("educationLevel" ,"JHS") 
+    .field("maritalStatus" ,"Divorced")  
+    .attach("face" , picpath) 
+    .attach('ghanaCardBack'  ,picpath)
+    .attach('ghanaCardFront' , picpath)
+    .attach('businessCertificate', picpath)
+    .attach("form3" , picpath)
+    .attach("municipalCertificate" , picpath)
+    .attach("taxReturns" , picpath)
+    .attach("bankStatement" , picpath)
+    .attach('financialStatement' , picpath)
+  
+    .expect(200) ; 
+  
+    expect(res.body.success).toBeTruthy() ;
+    expect(res.body.data.loan).toBeDefined()
+    expect(res.body.data.loan.requestedBy).toMatch('ADMIN')
+    expect(res.body.data.loan.clientAgent).toMatch('64727f91bd468133c17b3065')
+   }) 
+   
   })

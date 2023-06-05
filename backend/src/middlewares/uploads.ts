@@ -7,9 +7,7 @@ const storage = multer.diskStorage({
     cb(null, './public');
   },
   filename(req, file, cb) {
-    const fileName = `${req.user.id}_${moment().toISOString()}_${
-    file.fieldname
-    }.${file.mimetype.substring(file.mimetype.indexOf("/")+1)}`;
+    const fileName = file.originalname.replace(/\\/g, '/');
 
      
     cb(null, fileName);
