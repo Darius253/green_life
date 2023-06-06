@@ -12,6 +12,7 @@ export class Policy extends redis.Entity {
   noGurantorAmountCap?: number;
   personalloanAmountCap?: number;
   personalloanterm?: number;
+  tolerancePercentage?:number
 }
 
 
@@ -21,7 +22,8 @@ export const policySchema = new redis.Schema(Policy, {
   noRegisterationAmountCap: { type: "number" },
   noGurantorAmountCap: { type: "number" },
   personalloanAmountCap: { type: "number" },
-  personalloanterm:{type:"number"}
+  personalloanterm:{type:"number"} , 
+   tolerancePercentage:{type:'number'}
 });
 
 // const aprSchema = new mongoose.Schema<Ipolicy>({

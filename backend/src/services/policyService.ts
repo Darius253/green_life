@@ -20,13 +20,14 @@ let policy = await  policyRepo.createEntity() ;
   noRegisterationAmountCap ,
   noGurantorAmountCap ,
   personalloanAmountCap ,
-  personalloanterm} =  req.body;
+  personalloanterm , tolerancePercentage} =  req.body;
  
  policy.interestRate =  interestRate || 0 ; 
  policy.noRegisterationAmountCap=  noRegisterationAmountCap || 0 ;
  policy.personalloanAmountCap=  personalloanAmountCap || 0 ;
  policy.personalloanterm =  personalloanterm  || 1 ;
  policy.noGurantorAmountCap =  noGurantorAmountCap || 0;
+ policy.tolerancePercentage =  tolerancePercentage || 0;
 
 
  let id=  await policyRepo.save(policy) ; 
@@ -64,6 +65,7 @@ const {
   noGurantorAmountCap,
   personalloanAmountCap,
   personalloanterm,
+  tolerancePercentage
 } = req.body;
 
 let policy = await policyRepo.fetch(req.params.id);
@@ -78,6 +80,7 @@ policy.noRegisterationAmountCap = noRegisterationAmountCap || 0;
 policy.personalloanAmountCap = personalloanAmountCap || 0;
 policy.personalloanterm = personalloanterm || 1;
 policy.noGurantorAmountCap = noGurantorAmountCap || 0;
+policy.tolerancePercentage =  tolerancePercentage ;
 
 let id = await policyRepo.save(policy);
 console.log(policy);

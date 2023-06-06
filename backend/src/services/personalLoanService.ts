@@ -318,8 +318,35 @@ console.log(policyRepo)
     });
   } //reject request if loan status is pending
 
-  async acceptloan(req: Request, res: Response) {
-    //fetch loan
+//   async acceptloan(req: Request, res: Response) {
+//     //fetch loan
+//     const loan =   await Loan.findById(req.params.id) ;
+//     if(!loan){
+//       throw new BadAuthError("Loan does not exist or deleted", 404, ACTIONS.APPROVE_LOAN_ATTEMPTS);
+//     }
+
+//     if(loan.client._id.toString() !== req.user.id){
+//        throw new BadAuthError(
+//          "user is not authorized",
+//          401,
+//          ACTIONS.REJECT_LOAN_ATTEMPTS
+//        );
+//     }
+
+// let newLoan ;    
+//     const currentLoan =  await Loan.findOne({client:req.user.id , loanStatus:loanStatus.INPROGRESS}) ; 
+
+//     if(currentLoan){
+
+//     }
+  
+    
+  
+  
+
+
+
+
     //change loan status
     //create the first installment
     //change the dateAccepted
@@ -330,7 +357,7 @@ console.log(policyRepo)
     //send api reques to send money
     //create first installment sent
     //send res
-  } // only accept if loan is approved think through
+  // only accept if loan is approved think through
 
   async approveRequest(req: Request, res: Response) {
     const loan = await Loan.findById(req.params.id).populate<{
