@@ -45,7 +45,23 @@ export const agentCreatePersonalloanRequest = async (
 };
 
 
+export const repayment = async(req:Request ,res:Response)=>{
 
+  return personalLoanService.repaymentRequest(req ,res) ;
+}
+
+export const repaymentHook = async (req:Request , res:Response) => {
+
+const { paymentType, amount , clientReference} = req.body; ;
+
+const loan =  Loan.findById(clientReference) ;
+
+
+
+
+
+
+}
 export const getAllLoans= async (req:Request ,res:Response)=>{
   console.log(req.query)
     const filter:{

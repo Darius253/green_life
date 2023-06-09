@@ -318,7 +318,7 @@ console.log(policyRepo)
     });
   } //reject request if loan status is pending
 
-//   async acceptloan(req: Request, res: Response) {
+  async acceptloan(req: Request, res: Response) {
 //     //fetch loan
 //     const loan =   await Loan.findById(req.params.id) ;
 //     if(!loan){
@@ -331,7 +331,8 @@ console.log(policyRepo)
 //          401,
 //          ACTIONS.REJECT_LOAN_ATTEMPTS
 //        );
-//     }
+
+  }
 
 // let newLoan ;    
 //     const currentLoan =  await Loan.findOne({client:req.user.id , loanStatus:loanStatus.INPROGRESS}) ; 
@@ -364,6 +365,8 @@ console.log(policyRepo)
       client: Iclient;
     }>("client");
 
+    const loanInprogress =  await Loan.findOne({loanStatus:loanStatus.INPROGRESS})
+
 
     if (!loan) {
       throw new BadAuthError("Loan does not exist or deleted", 401, ACTIONS.APPROVE_LOAN_ATTEMPTS);
@@ -373,8 +376,25 @@ console.log(policyRepo)
       throw new BadAuthError("loan is no more pending", 401, ACTIONS.APPROVE_LOAN_ATTEMPTS);
     }
 
-    loan.loanStatus = loanStatus.APPROVED;
-    loan.DateApproved = moment().toDate();
+
+
+  if(!loanInprogress){
+loan.loanStatus = loanStatus.APPROVED;
+loan.DateApproved = moment().toDate();
+  }
+   
+   else  if(loanInprogress && loanInprogress.remainingBalance <=  (0.5 * loanInprogress.repaymentAmount) && loan.principal > loanInprogress.remainingBalance && loanInprogress.installment.length < loanInprogress.loanterm-1){
+
+loan.loanStatus = loanStatus.APPROVED
+loan.DateApproved = moment().toDate();
+    }
+    else{
+
+      throw new BadAuthError('loan topup not allowed' , 401 , ACTIONS.APPROVE_LOAN_ATTEMPTS)
+    }
+
+
+    
     await loan.save();
 
     //send message to  client ;

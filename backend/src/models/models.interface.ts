@@ -14,6 +14,7 @@ export interface Iauth {
   session:Types.Array<string>;
 }
 export interface Iclient extends Iauth {
+  _id:Types.ObjectId
   name: string;
   agent: Types.ObjectId;
   registered: boolean;
@@ -174,7 +175,7 @@ export enum loanStatus {
   PENDING = "pending",
   APPROVED = "approved",
   ACCEPTED = "accepted",
-  INPROGRESS ="INPROGRESS" , 
+  INPROGRESS ="inprogress" , 
   DENIED = "denied",
   PAID = "paid",
   DEFAULTED = "defaulted",

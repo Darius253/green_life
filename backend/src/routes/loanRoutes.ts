@@ -1,5 +1,5 @@
 import  express  , {NextFunction, Request , Response}from 'express' ; 
-import {acceptPersonalLoanRequest, agentCreatePersonalloanRequest, agentCreateSmeRequest, approvePersonalLoanRequest, createSmeRequest, denyPersonalLoanRequest, editLoan, getAgentLoan, getAgentLoans, getAllLoans, getLoan, getclientLoan, getclientLoans, getuserLoans, rejectPersonalLoanRequest, requestPersonalLoan } from '../controllers/loanController'
+import {acceptPersonalLoanRequest, agentCreatePersonalloanRequest, agentCreateSmeRequest, approvePersonalLoanRequest, createSmeRequest, denyPersonalLoanRequest, editLoan, getAgentLoan, getAgentLoans, getAllLoans, getLoan, getclientLoan, getclientLoans, getuserLoans, rejectPersonalLoanRequest, repayment, requestPersonalLoan } from '../controllers/loanController'
 import {upload} from '../middlewares/uploads'
 import { Auth } from '../middlewares/Auth';
 import  {body, query, validationResult} from 'express-validator'
@@ -130,7 +130,23 @@ Router.route("/reject/:id").patch(Auth,rejectPersonalLoanRequest)  ;
 Router.route("/accept/:id").patch(Auth ,acceptPersonalLoanRequest) 
 Router.route("/deny/:id").patch(Auth,isRegionalAgent, denyPersonalLoanRequest) ; 
 Router.route("/approve/:id").patch(Auth , isRegionalAgent, approvePersonalLoanRequest);
+Router.route("/repayment/:id").put(
+  [
+    body("amount")
+      .isNumeric()
+      .custom((value) => {
+        console.log(value)
+        if (value < 1) {
+          throw new Error("amount cannot be negative");
+        }
 
+        return true;
+      }),
+  ],
+  validate , 
+  Auth,
+  repayment
+);
 //ADMIN orCLientmanager
 //query loans 
 

@@ -40,8 +40,9 @@ export class hubtelService{
           if(error.response.status === 500){
             throw new Error("")
           }
+          console.log(error.response.data)
           
-          throw new BadAuthError(error.response.data.message , 400  , ACTIONS.AUTHORIZING_USER_ATTEMPTS)
+          throw new BadAuthError(error.response.data , 400  , ACTIONS.HUBTEL_SERVICE_ACTION)
 
 
       }
