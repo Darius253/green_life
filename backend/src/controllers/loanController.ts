@@ -8,6 +8,9 @@ import { BadAuthError } from '../utils/BadAuthError';
 import { retLimit, retQuery } from '../utils/Sanitize';
 import { logger } from '../utils/logger';
 import { ACTIONS } from '../actions';
+import { loanInstallmentStatus, loanStatus } from '@models/models.interface';
+import moment from 'moment';
+import { Payment } from '@models/payment';
 
 export const requestPersonalLoan =async (req:Request , res:Response)=>{
 
@@ -51,16 +54,99 @@ export const repayment = async(req:Request ,res:Response)=>{
 }
 
 export const repaymentHook = async (req:Request , res:Response) => {
+  const { paymentType, amount, clientReference } = req.body;
 
-const { paymentType, amount , clientReference} = req.body; ;
+  const loan = await Loan.findById(clientReference);
 
-const loan =  Loan.findById(clientReference) ;
+  if (!loan || loan.loanStatus !== loanStatus.INPROGRESS) {
+    throw new Error("loan repaymenthook failed");
+  }
+  let currentInstallment = loan.installment[loan.installment.length - 1];
+
+  if (amount <= currentInstallment.amount) { 
+      
+      currentInstallment.remainingBalance -= amount;
+    currentInstallment.lastPaymentDate = moment().toDate();
+
+    if (currentInstallment.status === loanInstallmentStatus.DEFAULTED) {
+      currentInstallment.latePayment = true;
+    }
+     
+     if(amount ===  currentInstallment.amount){
+         
+      loan.installment.push({
+ amount : loan.monthlyPayment  ,
+ dueDate: moment(currentInstallment.dueDate).add(1,'m').toDate() ,
+ remainingBalance : loan.monthlyPayment  , 
+ status : loanInstallmentStatus.UNPAID  ,
+ latePayment : false , 
+ lastPaymentDate:  moment().toDate()
+      })
+
+      currentInstallment.status = loanInstallmentStatus.SETTLED ;
+     }
+
+  } else  {
+
+       
+     let x = amount - currentInstallment.remainingBalance;
+      currentInstallment.remainingBalance  = 0
+      currentInstallment.lastPaymentDate = moment().toDate();
+
+      if (currentInstallment.status === loanInstallmentStatus.DEFAULTED) {
+        currentInstallment.latePayment = true;
+      }
+
+      currentInstallment.status =  loanInstallmentStatus.SETTLED ;
+ 
+      let i =1 ;
+       while(x > 0){
+      
+      loan.installment.push({
+        amount: loan.monthlyPayment,
+        dueDate: moment(currentInstallment.dueDate).add(i, "m").toDate(),
+        remainingBalance: x > loan.monthlyPayment  ?  0 :  loan.monthlyPayment - x,
+        status: loanInstallmentStatus.UNPAID,
+        latePayment: false,
+        lastPaymentDate: moment().toDate(),
+      });
+      
+      i++;
+      x-= loan.monthlyPayment ;
+     
+       }
+ 
+
+
+  }
+
+  loan.remainingBalance  -=amount;
+ 
+  loan.lastRepaymentDate=  moment().toDate();
+  
+  if (loan.remainingBalance <= 0) {
+    //settle loan ;
+    loan.loanStatus =  loanStatus.SETTLED ;
+
+  }
+
+ 
+
+ 
+  const payment =  await new Payment({
+    loan: loan , 
+    paymentType , 
+    amount
+  }).save()
+
+
+  res.send({
+    success:true
+  })
 
 
 
-
-
-
+  //change lastrepaymentdate ;]
 }
 export const getAllLoans= async (req:Request ,res:Response)=>{
   console.log(req.query)

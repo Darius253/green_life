@@ -178,8 +178,15 @@ export enum loanStatus {
   INPROGRESS ="inprogress" , 
   DENIED = "denied",
   PAID = "paid",
+  SETTLED = 'settled' ,
   DEFAULTED = "defaulted",
   REJECTED= "rejected"
+}
+
+export interface Ipayment {
+ paymentType:String  ,
+ amount: number , 
+ loan: Types.ObjectId
 }
 export enum LOANTYPE{
   PERSONALLOAN = "Personal loan" ,
@@ -190,7 +197,8 @@ export enum loanInstallmentStatus{
 
   PAID="paid" ,
   DEFAULTED ="defaulted" ,
-    UNPAID= "unpaid"
+    UNPAID= "unpaid" ,
+    SETTLED ='settled'
 }
 
 export interface IloanInstallment{
