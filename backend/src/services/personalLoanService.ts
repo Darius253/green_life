@@ -365,7 +365,7 @@ console.log(policyRepo)
       client: Iclient;
     }>("client");
 
-    const loanInprogress =  await Loan.findOne({loanStatus:loanStatus.INPROGRESS})
+    const loanInprogress =  await Loan.findOne({loanStatus:loanStatus.INPROGRESS , client: req.user.id})
 
 
     if (!loan) {
