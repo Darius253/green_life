@@ -100,7 +100,7 @@ export const repaymentHook = async (req:Request , res:Response) => {
       currentInstallment.status =  loanInstallmentStatus.SETTLED ;
  
       let i =1 ;
-       while(x > 0){
+       while(x > 0 && loan.installment.length <  loan.loanterm){
       
       loan.installment.push({
         amount: loan.monthlyPayment,
@@ -139,7 +139,7 @@ export const repaymentHook = async (req:Request , res:Response) => {
     amount
   }).save()
 
-
+         
   res.send({
     success:true
   })
