@@ -15,10 +15,10 @@ const installmentSchema = new Schema<IloanInstallment>({
      
   amount:{type:Number , required:true , min:0} , 
   dueDate:{type:Date , required:true} , 
-  remainingBalance:{type:Number ,required:true,min:0} , 
+  remainingBalance:{type:Number ,required:true} , 
   status:{type:String , required:true , enum:Object.values(loanInstallmentStatus)} , 
   latePayment:{type:Boolean , required:true },
-  lastPaymentDate:{type:Date ,required:true}
+  lastPaymentDate:{type:Date }
 })
 type loanModel =  Model<ILoan , {} , loanDocprops >
 const loanSchema = new mongoose.Schema<ILoan>(
@@ -39,13 +39,13 @@ const loanSchema = new mongoose.Schema<ILoan>(
     monthlyPayment:{type:Number },
     
     repaymentAmount: { type: Number, required: true ,default:0.0 ,min:0 },
-    remainingBalance: { type: Number, required: true , default:0.0 ,min:0},
+    remainingBalance: { type: Number, required: true , default:0.0 },
     client: { type: Schema.Types.ObjectId, required: true, ref: "Client" },
    
     DateApproved: { type: Date  },
    
     DateAccepted: { type: Date},
-    clientAgent: {type:Schema.Types.ObjectId , ref:'User' , required:true} ,
+    clientAgent: {type:Schema.Types.ObjectId ,required:true ,  ref:'User' } ,
     DatePaid: { type: Date },
     requestedBy:String
   },

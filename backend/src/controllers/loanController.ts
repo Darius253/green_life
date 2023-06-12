@@ -62,9 +62,22 @@ export const repaymentHook = async (req:Request , res:Response) => {
     throw new Error("loan repaymenthook failed");
   }
   let currentInstallment = loan.installment[loan.installment.length - 1];
-
+  console.log(currentInstallment)
   if (amount <= currentInstallment.amount) { 
-      
+
+    
+         if (amount === currentInstallment.remainingBalance) {
+           loan.installment.push({
+             amount: loan.monthlyPayment,
+             dueDate: moment(currentInstallment.dueDate).add(1, "m").toDate(),
+             remainingBalance: loan.monthlyPayment,
+             status: loanInstallmentStatus.UNPAID,
+             latePayment: false,
+             lastPaymentDate: moment().toDate(),
+           });
+
+           currentInstallment.status = loanInstallmentStatus.SETTLED;
+         }
       currentInstallment.remainingBalance -= amount;
     currentInstallment.lastPaymentDate = moment().toDate();
 
@@ -72,22 +85,13 @@ export const repaymentHook = async (req:Request , res:Response) => {
       currentInstallment.latePayment = true;
     }
      
-     if(amount ===  currentInstallment.amount){
-         
-      loan.installment.push({
- amount : loan.monthlyPayment  ,
- dueDate: moment(currentInstallment.dueDate).add(1,'m').toDate() ,
- remainingBalance : loan.monthlyPayment  , 
- status : loanInstallmentStatus.UNPAID  ,
- latePayment : false , 
- lastPaymentDate:  moment().toDate()
-      })
 
-      currentInstallment.status = loanInstallmentStatus.SETTLED ;
-     }
 
-  } else  {
+  }
+ else  
+  {
 
+    console.log("er")
        
      let x = amount - currentInstallment.remainingBalance;
       currentInstallment.remainingBalance  = 0
@@ -106,7 +110,7 @@ export const repaymentHook = async (req:Request , res:Response) => {
         amount: loan.monthlyPayment,
         dueDate: moment(currentInstallment.dueDate).add(i, "m").toDate(),
         remainingBalance: x > loan.monthlyPayment  ?  0 :  loan.monthlyPayment - x,
-        status: loanInstallmentStatus.UNPAID,
+        status:  x > loan.monthlyPayment ? loanInstallmentStatus.SETTLED : loanInstallmentStatus.UNPAID,
         latePayment: false,
         lastPaymentDate: moment().toDate(),
       });
@@ -130,6 +134,8 @@ export const repaymentHook = async (req:Request , res:Response) => {
 
   }
 
+
+  await loan.save() ;
  
 
  

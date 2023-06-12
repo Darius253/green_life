@@ -318,8 +318,8 @@ console.log(policyRepo)
     });
   } //reject request if loan status is pending
 
-  async acceptloan(req: Request, res: Response) {
-//     //fetch loan
+  // async acceptloan(req: Request, res: Response) {
+////     //fetch loan
 //     const loan =   await Loan.findById(req.params.id) ;
 //     if(!loan){
 //       throw new BadAuthError("Loan does not exist or deleted", 404, ACTIONS.APPROVE_LOAN_ATTEMPTS);
@@ -332,7 +332,7 @@ console.log(policyRepo)
 //          ACTIONS.REJECT_LOAN_ATTEMPTS
 //        );
 
-  }
+ // }
 
 // let newLoan ;    
 //     const currentLoan =  await Loan.findOne({client:req.user.id , loanStatus:loanStatus.INPROGRESS}) ; 

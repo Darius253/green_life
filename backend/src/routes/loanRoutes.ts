@@ -1,5 +1,5 @@
 import  express  , {NextFunction, Request , Response}from 'express' ; 
-import {acceptPersonalLoanRequest, agentCreatePersonalloanRequest, agentCreateSmeRequest, approvePersonalLoanRequest, createSmeRequest, denyPersonalLoanRequest, editLoan, getAgentLoan, getAgentLoans, getAllLoans, getLoan, getclientLoan, getclientLoans, getuserLoans, rejectPersonalLoanRequest, repayment, requestPersonalLoan } from '../controllers/loanController'
+import {acceptPersonalLoanRequest, agentCreatePersonalloanRequest, agentCreateSmeRequest, approvePersonalLoanRequest, createSmeRequest, denyPersonalLoanRequest, editLoan, getAgentLoan, getAgentLoans, getAllLoans, getLoan, getclientLoan, getclientLoans, getuserLoans, rejectPersonalLoanRequest, repayment, requestPersonalLoan  ,repaymentHook } from '../controllers/loanController'
 import {upload} from '../middlewares/uploads'
 import { Auth } from '../middlewares/Auth';
 import  {body, query, validationResult} from 'express-validator'
@@ -8,6 +8,7 @@ import { ValidationErrors } from '../utils/validationError';
 
 import { isRegionalAgent  , userAuth} from '../middlewares/userAuth';
 import { LOANTYPE } from '../models/models.interface';
+
 
 const Router=  express.Router() ;
 
@@ -126,10 +127,10 @@ Router.route("/personalloan/request/agent/:id").post(
 
 );
 
-Router.route("/reject/:id").patch(Auth,rejectPersonalLoanRequest)  ;
-Router.route("/accept/:id").patch(Auth ,acceptPersonalLoanRequest) 
-Router.route("/deny/:id").patch(Auth,isRegionalAgent, denyPersonalLoanRequest) ; 
-Router.route("/approve/:id").patch(Auth , isRegionalAgent, approvePersonalLoanRequest);
+Router.route("/reject/:id").put(Auth,rejectPersonalLoanRequest)  ;
+Router.route("/accept/:id").put(Auth ,acceptPersonalLoanRequest) 
+Router.route("/deny/:id").put(Auth,isRegionalAgent, denyPersonalLoanRequest) ; 
+Router.route("/approve/:id").put(Auth , isRegionalAgent, approvePersonalLoanRequest);
 Router.route("/repayment/:id").put(
   [
     body("amount")
@@ -147,6 +148,9 @@ Router.route("/repayment/:id").put(
   Auth,
   repayment
 );
+
+
+
 //ADMIN orCLientmanager
 //query loans 
 

@@ -10,11 +10,13 @@ import { userRouter } from "./routes/userRoutes";
 import { hubtelRoute } from "@routes/hubtel";
 import { query } from "express-validator";
 import { policyRouter } from "./routes/aprRoutes";
+import {hookRouter} from './routes/hooks'
 import { loanRouter } from "./routes/loanRoutes";
-import  {connectRedis} from './redisClient'
+import  {connectRedis} from './redisClient' 
 import { createClient } from "redis";
 import { User } from "@models/User";
 import { Loan } from "@models/Loan";
+
 
 // import { registrationRouter } from "./routes/registrationRoutes";
 
@@ -35,8 +37,9 @@ app.use(clientRouter);
 app.use(userRouter);
 // app.use("/hubtel" , hubtelRoute)
 app.use(policyRouter)
-app.use("/api/loan" ,loanRouter)
 
+app.use("/api/loan" ,loanRouter)
+app.use('/api/webhook'  , hookRouter)
 // app.use(registrationRouter) ; 
 
 app.use(errorHandler);
