@@ -576,7 +576,7 @@ export class Auth<T extends Iauth> {
     const user = await doc.findOne({  phoneNumber});
 
     if (!user) {
-      throw new BadAuthError("user not found", 403 , ACTIONS.RESET_PASSWORD_ATTEMTPS);
+      throw new BadAuthError("user not found", 400 , ACTIONS.RESET_PASSWORD_ATTEMTPS);
     }
 
     //generate an otp to user
@@ -605,7 +605,7 @@ export class Auth<T extends Iauth> {
     const user = await doc.findOne({ phoneNumber });
 
     if (!user) {
-      throw new BadAuthError("wrong or incorrect phoneNumber", 401 , ACTIONS.RESET_PASSWORD_ATTEMTPS);
+      throw new BadAuthError(" incorrect phoneNumber", 401 , ACTIONS.RESET_PASSWORD_ATTEMTPS);
     }
 
     // if (user.otp !== otp) {
