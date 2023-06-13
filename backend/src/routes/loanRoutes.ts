@@ -1,5 +1,5 @@
 import  express  , {NextFunction, Request , Response}from 'express' ; 
-import {acceptPersonalLoanRequest, agentCreatePersonalloanRequest, agentCreateSmeRequest, approvePersonalLoanRequest, createSmeRequest, denyPersonalLoanRequest, editLoan, getAgentLoan, getAgentLoans, getAllLoans, getLoan, getclientLoan, getclientLoans, getuserLoans, rejectPersonalLoanRequest, requestPersonalLoan } from '../controllers/loanController'
+import { acceptPersonalLoanRequest, agentCreatePersonalloanRequest, agentCreateSmeRequest, approvePersonalLoanRequest, createSmeRequest, denyPersonalLoanRequest, editLoan, getAgentLoan, getAgentLoans, getAllLoans, getLoan, getclientLoan, getclientLoans, getuserLoans, rejectPersonalLoanRequest, requestPersonalLoan } from '../controllers/loanController'
 import {upload} from '../middlewares/uploads'
 import { Auth } from '../middlewares/Auth';
 import  {body, query, validationResult} from 'express-validator'
@@ -446,5 +446,7 @@ Router.route("/smeLoan/request/agent/:id").post(
 
   agentCreateSmeRequest
 );
+
+
 
 export {Router as loanRouter} ; 

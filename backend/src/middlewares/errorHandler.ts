@@ -12,7 +12,7 @@ export function errorHandler(err:any , req:Request , res:Response , next:NextFun
 if(err instanceof ValidationErrors  || err instanceof BadAuthError){
  
     
-        logger.error({body:req.body , device:{ip:req.ip , agent:req.headers["user-agent"] , method:req.method , url:req.url} , err:err.serialize() , action:err.action});
+        logger.error({body:req.body , device:{ip:req.ip , agent:req.headers["user-agent"] , method:req.method , url:req.url} , err:err.serialize() , action:err.action , user:req.user || null});
     
    return res.status(err.statusCode).send({
         success:false ,
@@ -32,7 +32,7 @@ else {
     }
 }
 
-logger.error({statusCode:err.code ,body:req.body ,  device:{ip:req.ip , agent:req.headers["user-agent"] , method:req.method , url:req.url}, message:err.message})
+logger.error({statusCode:err.code ,body:req.body ,  device:{ip:req.ip , agent:req.headers["user-agent"] , method:req.method , url:req.url}, message:err.message , user:req.user ||null})
     res.status(err.code || 500).send({
         
         success: false,

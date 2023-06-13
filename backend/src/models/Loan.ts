@@ -18,10 +18,10 @@ const installmentSchema = new Schema<IloanInstallment>({
   remainingBalance:{type:Number ,required:true,min:0} , 
   status:{type:String , required:true , enum:Object.values(loanInstallmentStatus)} , 
   latePayment:{type:Boolean , required:true },
-  lastPaymentDate:{type:Date ,required:true}
+  lastPaymentDate:{type:Date }
 })
 type loanModel =  Model<ILoan , {} , loanDocprops >
-const loanSchema = new mongoose.Schema<ILoan>(
+const loanSchema = new mongoose.Schema<ILoan ,{} , loanModel>(
   {
     principal: { type: Number, required: true, min: 0 },
     interestrate: { type: Number, required: true, min: 0 },
@@ -100,4 +100,4 @@ const self =  this ;
 
 })
 
-export const Loan = mongoose.model("Loan", loanSchema);
+export const Loan = mongoose.model<ILoan , loanModel>("Loan", loanSchema);
