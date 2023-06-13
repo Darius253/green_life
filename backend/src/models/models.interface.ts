@@ -1,5 +1,5 @@
 import { Document, Types } from "mongoose";
-import { Type } from "typescript";
+;
 
 export interface Iauth {
   name?: string;
