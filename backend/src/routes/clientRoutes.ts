@@ -4,7 +4,7 @@ import {body, query } from 'express-validator' ;
 import  {validate} from '../middlewares/validate'
 import { Auth } from '../middlewares/Auth';
 import { sanitizeName, sanitizeNumber } from '../utils/Sanitize';
-import { userAuth } from '../middlewares/userAuth';
+import { isRegionalAgent, userAuth } from '../middlewares/userAuth';
 const Router = express.Router();
 
 
@@ -223,13 +223,13 @@ Router.route("/api/clients").get(
     
     query("page").escape().trim() ,
   ],
-  Auth  , userAuth ,
+  Auth  , isRegionalAgent ,
   
   getAllClients
 );
 
 
 //query a single clients
-Router.route("/api/clients/:id") .get(Auth  , userAuth, getClient)     
+Router.route("/api/clients/:id") .get(Auth  , isRegionalAgent, getClient)     
 
 export { Router as clientRouter };
