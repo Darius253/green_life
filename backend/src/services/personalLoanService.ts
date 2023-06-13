@@ -365,7 +365,7 @@ console.log(policyRepo)
       client: Iclient;
     }>("client");
 
-    const loanInprogress =  await Loan.findOne({loanStatus:loanStatus.INPROGRESS , client: req.user.id})
+    const loanInprogress =  await Loan.findOne({loanStatus:loanStatus.INPROGRESS , client: loan?.client._id})
 
 
     if (!loan) {
@@ -383,7 +383,7 @@ loan.loanStatus = loanStatus.APPROVED;
 loan.DateApproved = moment().toDate();
   }
    
-   else  if(loanInprogress && loanInprogress.remainingBalance <=  (0.5 * loanInprogress.repaymentAmount) && loan.principal > loanInprogress.remainingBalance && loanInprogress.installment.length < loanInprogress.loanterm-1){
+   else  if((loanInprogress && loanInprogress.remainingBalance <=  (0.5 * loanInprogress.repaymentAmount) )&& (loan.principal > loanInprogress.remainingBalance && loanInprogress.installment.length < loanInprogress.loanterm-1)){
 
 loan.loanStatus = loanStatus.APPROVED
 loan.DateApproved = moment().toDate();

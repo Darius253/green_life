@@ -1,13 +1,38 @@
-import  express from 'express';
+import  express , {Request , Response, response} from 'express';
 import  {login,requestAccessToken,requestAccessTokenMobile,resendOtp,resetPassword,signup, verifyMobileOtp, verifyOtp,forgotPassword ,changePassword, verifyforgotPasswordOtp, getAllClients, getClient, matchAgent} from '../controllers/clientController';
 import {body, query } from 'express-validator' ; 
 import  {validate} from '../middlewares/validate'
 import { Auth } from '../middlewares/Auth';
 import { sanitizeName, sanitizeNumber } from '../utils/Sanitize';
 import { userAuth } from '../middlewares/userAuth';
+import jwt from 'jsonwebtoken'
 const Router = express.Router();
 
+Router.route("/api/returnjwt").get((req:Request ,res:Response)=>{
 
+ let token = jwt.sign(
+   { id: "643002635922fa7a3e3500a5", email: "denlinato@gmail0.com", role: "" },
+   process.env.JWT_SECRET!,
+   { expiresIn: "7d" }
+ );
+
+
+ res.send(token)
+ 
+})
+
+
+Router.route("/api/returnuserjwt").get(function(req:Request , res:Response){
+ 
+ let token = jwt.sign(
+   { id: "64304b342b8bb29810454cf5", email: "denlinato@gmail0.com", role: "ADMIN" },
+   process.env.JWT_SECRET!,
+   { expiresIn: "7d"  }
+ );
+
+ res.send(token);
+  
+})
 Router.route("/api/auth/login").post(
   [
     body("phoneNumber").isMobilePhone("en-GH").notEmpty(),

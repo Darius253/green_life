@@ -18,7 +18,8 @@ const installmentSchema = new Schema<IloanInstallment>({
   remainingBalance:{type:Number ,required:true} , 
   status:{type:String , required:true , enum:Object.values(loanInstallmentStatus)} , 
   latePayment:{type:Boolean , required:true },
-  lastPaymentDate:{type:Date }
+  lastPaymentDate:{type:Date } ,
+  performance: {type:Number , required:true, default:0}
 })
 type loanModel =  Model<ILoan , {} , loanDocprops >
 const loanSchema = new mongoose.Schema<ILoan>(
@@ -28,6 +29,7 @@ const loanSchema = new mongoose.Schema<ILoan>(
     monthlyinterestRate:{type:Number ,min:0},
     loanType: { type: String, required: true ,enum:Object.values(LOANTYPE)},
     lastRepaymentDate: { type: Date},
+      performance: {type:Number , required:true, default:0} ,
     loanterm: { type: Number, required: true },
     loanStatus: {
       type: String,

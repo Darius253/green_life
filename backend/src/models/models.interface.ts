@@ -209,6 +209,7 @@ export interface IloanInstallment{
   status: loanInstallmentStatus
   latePayment:boolean
   lastPaymentDate:Date
+  performance?:number
 
 
 }
@@ -217,6 +218,7 @@ export interface ILoan {
   interestrate: number;
   monthlyinterestRate:number;
   charges: number;
+  performance? :number  ;
   lastRepaymentDate: Date;
   loanStatus: loanStatus;
   repaymentAmount: number;

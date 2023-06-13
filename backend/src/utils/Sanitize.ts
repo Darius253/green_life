@@ -1,4 +1,5 @@
 
+import { IloanInstallment } from '../models/models.interface';
 import Decimal from 'decimal.js'
 
 export function sanitizeName(name:string){
@@ -78,4 +79,40 @@ export function calculateMonthlyInstallment(principal:number, interestRate:numbe
     monthlyInstallment: roundedInstallment, 
     monthlyRate
   };
+}
+
+
+
+export function caclPerform(amount:number , balance:number , performance:number){ 
+
+
+
+
+if(performance){
+
+let  x  =new Decimal(amount)
+    .dividedBy(balance)
+    .times(100)
+    .toDecimalPlaces(2)
+    .toNumber();
+
+return  new Decimal(x+performance).dividedBy(2).toDecimalPlaces(2).toNumber()
+}
+ 
+
+return  new Decimal(amount).dividedBy(balance).times(100).toDecimalPlaces(2).toNumber()
+
+}
+
+export function calcLoanperfomance(arr:IloanInstallment[]){
+ 
+
+
+  const x =  arr.reduce((curr , val)=>{
+          
+    return  curr+= val.performance! ;
+  } , 0)
+
+ 
+  return new Decimal(x).dividedBy(arr.length).toDecimalPlaces(2).toNumber() ;
 }

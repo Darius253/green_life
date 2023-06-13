@@ -8,6 +8,7 @@ import { logger } from '../utils/logger';
 import { hubtelService } from './huntelService';
 import moment from 'moment';
 import { loanInstallmentStatus } from '../models/models.interface';
+import Decimal from 'decimal.js';
 
 export abstract class LoanService {
   abstract createRequest(req: Request, res: Response): Promise<any>;
@@ -80,9 +81,9 @@ export abstract class LoanService {
    { new: true, upsert: true }
  );
       
- hubtelService.sendMoney({
+ await hubtelService.sendMoney({
    mobileNumber: loan.client.phoneNumber,
-   amount: loan.principal - x,
+   amount: new Decimal(loan.principal - x).toDecimalPlaces(2).toNumber(),
    title: `Loan with id ${loan._id.toString()}  has been accepted`,
    description: `Loan with id ${loan._id.toString()} and amount ${
      loan.principal
@@ -120,14 +121,18 @@ DatePaid:  moment().toDate() ,
 
 
 //sen money to user 
-hubtelService.sendMoney({
-  mobileNumber:loan.client.phoneNumber ,
-  amount :loan.principal ,
-  title: `Loan with id ${loan._id.toString()}  has been accepted`,
-  description: `Loan with id ${loan._id.toString()} and amount ${loan.principal} has been paid. Your first installment is due ${newLoan.installment[0].dueDate}` ,
-  clientReference: loan._id.toString() ,
-  callbackUrl : "" ,
-})
+ await hubtelService.sendMoney({
+   mobileNumber: loan.client.phoneNumber,
+   amount: loan.principal,
+   title: `Loan with id ${loan._id.toString()}  has been accepted`,
+   description: `Loan with id ${loan._id.toString()} and amount ${
+     loan.principal
+   } has been paid. Your first installment is due ${
+     newLoan.installment[0].dueDate
+   }`,
+   clientReference: loan._id.toString(),
+   callbackUrl: "https://eoo2gv2yay7zvw4.m.pipedream.net",
+ });
 console.log("ff")
 
 
