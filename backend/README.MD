@@ -200,7 +200,9 @@ password:string , follow prev rules
 
 
 
-
+///you cant create a user now but you can use this cred to login as agent  ::   "password":"Kwame12341.",
+    "phoneNumber":"0507069806" ,
+    
 
 <h1>AGENT AUTH ENDPOINT</h1>
   <h2>Login endpoint</h2>
