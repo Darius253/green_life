@@ -20,8 +20,8 @@ async () => {
 
      
 console.log(process.env.MONGO_URI)
-const conn =  await mongoose.connect(process.env.MONGO_URI!) ; 
-   console.log(conn.connection.host);
+// const conn =  await mongoose.connect(process.env.MONGO_URI!) ; 
+//    console.log(conn.connection.host);
 
 
    
