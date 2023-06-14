@@ -348,8 +348,6 @@ phoneNumber:string , follow prev rules
 <p>401 unauthorized , errMessage:object</p>
 <p>400 bad request </p>
 
-
-
 <h2>change password</h2>
 <p>/api/user/auth/changePassword</p>
 <h4>method : post</h4>
@@ -366,6 +364,49 @@ password:string , follow prev rules
 </ul>
 <h4>responses</h4>
 <p>200 success {success:true , data:{message:String }} </p>
+<p>422 unprocessable entity , errMessage:object</p>
+<p>401 unauthorized , errMessage:object</p>
+<p>400 bad request </p>
+
+
+<h2>fetch  all clients</h2>
+<p>/api/clients</p>
+<h4>method : get</h4>
+</ul>
+<h4>responses</h4>
+<p>200 success {success:true , data:object} </p>
+<p>422 unprocessable entity , errMessage:object</p>
+<p>401 unauthorized , errMessage:object</p>
+<p>400 bad request </p>
+
+<h2>fetch  a client</h2>
+<p>/api/clients/:id</p>
+<h4>method : get</h4>
+</ul>
+<h4>responses</h4>
+<p>200 success {success:true , data:object} </p>
+<p>422 unprocessable entity , errMessage:object</p>
+<p>401 unauthorized , errMessage:object</p>
+<p>400 bad request </p>
+
+
+<h2>fetch  all agents</h2>
+<p>/api/users/</p>
+<h4>method : get</h4>
+</ul>
+<h4>responses</h4>
+<p>200 success {success:true , data:object} </p>
+<p>422 unprocessable entity , errMessage:object</p>
+<p>401 unauthorized , errMessage:object</p>
+<p>400 bad request </p>
+
+
+<h2>fetch  a agent</h2>
+<p>/api/users/:id</p>
+<h4>method : get</h4>
+</ul>
+<h4>responses</h4>
+<p>200 success {success:true , data:object} </p>
 <p>422 unprocessable entity , errMessage:object</p>
 <p>401 unauthorized , errMessage:object</p>
 <p>400 bad request </p>
