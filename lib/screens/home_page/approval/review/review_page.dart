@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:green_life/screens/home_page/approval/review/review_card.dart';
-import 'package:green_life/screens/home_page/notification/widgets/confirm_card.dart';
 
 class ReviewPage extends StatelessWidget {
   const ReviewPage({super.key});
