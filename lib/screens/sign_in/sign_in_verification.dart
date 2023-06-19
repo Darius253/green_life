@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:green_life/screens/forgot_password/create_new_password.dart';
+import 'package:green_life/screens/home_page/home.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../shared/exports.dart';
 
@@ -161,7 +161,7 @@ class _LoginVerificationState extends State<LoginVerification> {
                         )),
                     button(height * 0.07, width * 0.7, () {
                       if (formKey.currentState!.validate()) {
-                        Get.off(const HomePage());
+                        Get.off(const Home());
                       }
                     }, 'Send', const Color.fromARGB(255, 52, 168, 83), 24,
                         Colors.white)
