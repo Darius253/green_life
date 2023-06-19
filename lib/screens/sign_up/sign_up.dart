@@ -175,14 +175,14 @@ class _SignUpState extends State<SignUp> {
                             SizedBox(
                               height: height * 0.02,
                             ),
-                            textform(
-                              'Referral Code',
-                              height,
-                              width,
-                              TextInputType.text,
-                              _referralCode,
-                              (value) {},
-                            ),
+                            // textform(
+                            //   'Referral Code',
+                            //   height,
+                            //   width,
+                            //   TextInputType.text,
+                            //   referralCode,
+                            //   (value) {},
+                            // ),
                             SizedBox(
                               height: height * 0.07,
                             ),
