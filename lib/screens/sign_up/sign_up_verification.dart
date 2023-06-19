@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:green_life/screens/forgot_password/create_new_password.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../shared/exports.dart';
 
