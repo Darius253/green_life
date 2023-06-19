@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:green_life/screens/forgot_password/forgot_password.dart';
-import 'package:green_life/screens/forgot_password/forgot_password.dart';
-import 'package:green_life/screens/sign_in/sign_in_verification.dart';
 import '../../shared/exports.dart';
 
 class SignIn extends StatefulWidget {
@@ -163,7 +161,7 @@ class _SignInState extends State<SignIn> {
                           ),
                           button(height * 0.08, width, () {
                             if (_formKey.currentState!.validate()) {}
-                          }, 'Log in', Colors.green, Colors.white),
+                          }, 'Log in', Colors.green, 15, Colors.white),
                           SizedBox(
                             height: height * 0.054,
                           ),
