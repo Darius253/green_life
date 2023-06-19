@@ -12,7 +12,7 @@ class _AddGuarantorState extends State<AddGuarantor> {
   bool obscurePassword = false;
   final TextEditingController _fullName1 = TextEditingController();
   final TextEditingController _phoneNumber1 = TextEditingController();
-  final TextEditingController _fullName2 = TextEditingController();
+  // final TextEditingController _fullName2 = TextEditingController();
   final TextEditingController _phoneNumber2 = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
@@ -34,9 +34,9 @@ class _AddGuarantorState extends State<AddGuarantor> {
                   SizedBox(
                     height: height * 0.034,
                   ),
-                  Center(
+                  const Center(
                     child: Column(
-                      children: const [
+                      children:  [
                         Text(
                           "Guarantors’ Details",
                           style: TextStyle(
